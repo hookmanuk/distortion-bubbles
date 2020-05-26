@@ -12,11 +12,34 @@ namespace BubbleDistortionPhysics
         private int _currentPathIndex = 0;
         private Rigidbody _rigidBody;
         private int _pathIncrement = 1;
+        private int _ticksSincePathChange = 0;
+
+        private bool _isSlowed;
+
+        public bool IsSlowed
+        {
+            get { return _isSlowed; }
+            set {
+                _isSlowed = value; 
+
+                if (_isSlowed)
+                {
+                    Speed = Speed * 0.1f;
+                }
+                else
+                {
+                    Speed = Speed * 10;
+                }
+                //OutputLogManager.OutputText(name + " speed now " + Speed);
+            }
+        }
+
 
         public void Start()
         {
             PhysicsManager.Instance.PhysicsObjects.Add(this);
             _rigidBody = GetComponent<Rigidbody>();
+            this.tag = "PhysicsObject";
         }
 
         public void OnDestroy()
@@ -27,10 +50,11 @@ namespace BubbleDistortionPhysics
        
         public void FixedUpdate()
         {
-            Vector3 direction;
+            Vector3 direction;            
 
-            if ((_rigidBody.transform.position - Path[_currentPathIndex]).magnitude < 0.01)
-            {                
+            if (_ticksSincePathChange > 10 && (_rigidBody.transform.position - Path[_currentPathIndex]).magnitude < 0.05)
+            {
+                _ticksSincePathChange = 0;
                 _currentPathIndex += _pathIncrement;
 
                 if (_currentPathIndex > Path.Length - 1)
@@ -52,6 +76,8 @@ namespace BubbleDistortionPhysics
 
             _rigidBody.MovePosition(_rigidBody.transform.position + direction * Speed * Time.deltaTime);
             _rigidBody.velocity = Speed * _rigidBody.velocity.normalized;
+
+            _ticksSincePathChange++;
         }
 
         private void Update()

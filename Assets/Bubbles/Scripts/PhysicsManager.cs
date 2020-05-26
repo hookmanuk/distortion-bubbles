@@ -10,6 +10,7 @@ namespace BubbleDistortionPhysics
         public PhysicsManager()
         {            
             PhysicsObjects = new List<PhysicsObject>();
+            PhysicsDistorters = new List<PhysicsDistorter>();
         }
 
         private static PhysicsManager _instance;
@@ -24,7 +25,8 @@ namespace BubbleDistortionPhysics
             }            
         }
 
-        public List<PhysicsObject> PhysicsObjects { get; set; }        
+        public List<PhysicsObject> PhysicsObjects { get; set; }
+        public List<PhysicsDistorter> PhysicsDistorters { get; set; }
 
         private void FixedUpdate()
         {
