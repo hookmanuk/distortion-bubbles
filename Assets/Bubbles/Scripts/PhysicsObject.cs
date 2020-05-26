@@ -34,6 +34,46 @@ namespace BubbleDistortionPhysics
             }
         }
 
+        private bool _isGrown;
+
+        public bool IsGrown
+        {
+            get { return _isGrown; }
+            set
+            {
+                _isGrown = value;
+
+                if (_isGrown)
+                {
+                    transform.localScale = transform.localScale * 3;
+                }
+                else
+                {
+                    transform.localScale = transform.localScale / 3;
+                }                
+            }
+        }
+
+        private bool _isShrunk;
+
+        public bool IsShrunk
+        {
+            get { return _isShrunk; }
+            set
+            {
+                _isShrunk = value;
+
+                if (_isShrunk)
+                {
+                    transform.localScale = transform.localScale / 3;
+                }
+                else
+                {
+                    transform.localScale = transform.localScale * 3;
+                }
+            }
+        }
+
 
         public void Start()
         {

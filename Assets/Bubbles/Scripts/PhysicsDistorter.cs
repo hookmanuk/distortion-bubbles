@@ -14,6 +14,7 @@ namespace BubbleDistortionPhysics
         private Rigidbody _rigidbody;
         private BoxCollider _boxCollider;
         private SphereCollider _sphereCollider;
+        public DistorterType DistorterType;
 
         public void Start()
         {
@@ -77,8 +78,19 @@ namespace BubbleDistortionPhysics
 
             if (other.gameObject.CompareTag("PhysicsObject"))
             {
-                //OutputLogManager.OutputText(other.gameObject.name + " slowed");
-                other.gameObject.GetComponent<PhysicsObject>().IsSlowed = true;
+                if (DistorterType == DistorterType.Slow)
+                {
+                    //OutputLogManager.OutputText(other.gameObject.name + " slowed");
+                    other.gameObject.GetComponent<PhysicsObject>().IsSlowed = true;
+                }
+                else if (DistorterType == DistorterType.Grow)
+                {
+                    other.gameObject.GetComponent<PhysicsObject>().IsGrown = true;
+                }
+                else if (DistorterType == DistorterType.Shrink)
+                {
+                    other.gameObject.GetComponent<PhysicsObject>().IsShrunk = true;
+                }
             }            
         }
 
@@ -86,9 +98,27 @@ namespace BubbleDistortionPhysics
         {
             if (other.gameObject.CompareTag("PhysicsObject"))
             {
-                //OutputLogManager.OutputText(other.gameObject.name + " sped up");
-                other.gameObject.GetComponent<PhysicsObject>().IsSlowed = false;
+                if (DistorterType == DistorterType.Slow)
+                {
+                    //OutputLogManager.OutputText(other.gameObject.name + " sped up");
+                    other.gameObject.GetComponent<PhysicsObject>().IsSlowed = false;
+                }
+                else if (DistorterType == DistorterType.Grow)
+                {
+                    other.gameObject.GetComponent<PhysicsObject>().IsGrown = false;
+                }
+                else if (DistorterType == DistorterType.Shrink)
+                {
+                    other.gameObject.GetComponent<PhysicsObject>().IsShrunk = false;
+                }
             }
         }
+    }
+
+    public enum DistorterType
+    {
+        Slow,
+        Grow,
+        Shrink
     }
 }
