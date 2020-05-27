@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StereoRenderingMode: 1
   InitializationType: 1
-  EditorAppKey: application.generated.unity.legacy.xrinteractionexamples.20876546.exe
+  EditorAppKey: application.generated.unity.legacy.xrinteractionexamples.1290210944.exe
   IsLegacy: 1
-  ActionManifestFileRelativeFilePath: C:/Unity Projects/distortion-bubbles/VR/Assets/StreamingAssets\SteamVR\legacy_manifest.json
+  ActionManifestFileRelativeFilePath: C:/Unity Projects/distortion-bubbles/distortion-bubbles/Assets/StreamingAssets\SteamVR\legacy_manifest.json
   MirrorViewMode: 3
   HasCopiedDefaults: 0
