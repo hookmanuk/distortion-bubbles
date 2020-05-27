@@ -10,7 +10,7 @@ namespace BubbleDistortionPhysics
         public float Speed;        
         public Vector3[] Path;
         private int _currentPathIndex = 0;
-        private Rigidbody _rigidBody;
+        public Rigidbody RigidBody { get; set; }
         private int _pathIncrement = 1;
         private int _ticksSincePathChange = 0;
 
@@ -45,11 +45,13 @@ namespace BubbleDistortionPhysics
 
                 if (_isGrown)
                 {
-                    transform.localScale = transform.localScale * 3;
+                    transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y * 3, transform.localScale.z);
+                    transform.position = new Vector3(transform.position.x, transform.position.y + (transform.localScale.y / 2), transform.position.z);
                 }
                 else
                 {
-                    transform.localScale = transform.localScale / 3;
+                    transform.position = new Vector3(transform.position.x, transform.position.y - (transform.localScale.y / 2), transform.position.z);
+                    transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y / 3, transform.localScale.z);
                 }                
             }
         }
@@ -65,11 +67,13 @@ namespace BubbleDistortionPhysics
 
                 if (_isShrunk)
                 {
-                    transform.localScale = transform.localScale / 3;
+                    transform.position = new Vector3(transform.position.x, transform.position.y - (transform.localScale.y / 2), transform.position.z);
+                    transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y / 4, transform.localScale.z);                    
                 }
                 else
-                {
-                    transform.localScale = transform.localScale * 3;
+                {                    
+                    transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y * 4, transform.localScale.z);
+                    transform.position = new Vector3(transform.position.x, transform.position.y + (transform.localScale.y / 2), transform.position.z);
                 }
             }
         }
@@ -78,7 +82,7 @@ namespace BubbleDistortionPhysics
         public void Start()
         {
             PhysicsManager.Instance.PhysicsObjects.Add(this);
-            _rigidBody = GetComponent<Rigidbody>();
+            RigidBody = GetComponent<Rigidbody>();
             this.tag = "PhysicsObject";
         }
 
@@ -92,7 +96,7 @@ namespace BubbleDistortionPhysics
         {
             Vector3 direction;            
 
-            if (_ticksSincePathChange > 10 && (_rigidBody.transform.position - Path[_currentPathIndex]).magnitude < 0.05)
+            if (_ticksSincePathChange > 10 && (RigidBody.transform.position - Path[_currentPathIndex]).magnitude < 0.05)
             {
                 _ticksSincePathChange = 0;
                 _currentPathIndex += _pathIncrement;
@@ -111,11 +115,11 @@ namespace BubbleDistortionPhysics
                 }
             }
 
-            direction = (Path[_currentPathIndex] - _rigidBody.transform.position);
+            direction = (Path[_currentPathIndex] - RigidBody.transform.position);
             direction.Normalize();
 
-            _rigidBody.MovePosition(_rigidBody.transform.position + direction * Speed * Time.deltaTime);
-            _rigidBody.velocity = Speed * _rigidBody.velocity.normalized;
+            RigidBody.MovePosition(RigidBody.transform.position + direction * Speed * Time.deltaTime);
+            RigidBody.velocity = Speed * RigidBody.velocity.normalized;
 
             _ticksSincePathChange++;
         }
