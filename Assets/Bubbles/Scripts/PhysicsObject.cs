@@ -94,37 +94,34 @@ namespace BubbleDistortionPhysics
        
         public void FixedUpdate()
         {
-            Vector3 direction;
+            Vector3 direction;            
 
-            if (Path?.Length > 0)
+            if (_ticksSincePathChange > 10 && (RigidBody.transform.position - Path[_currentPathIndex]).magnitude < 0.05)
             {
-                if (_ticksSincePathChange > 10 && (RigidBody.transform.position - Path[_currentPathIndex]).magnitude < 0.05)
+                _ticksSincePathChange = 0;
+                _currentPathIndex += _pathIncrement;
+
+                if (_currentPathIndex > Path.Length - 1)
                 {
-                    _ticksSincePathChange = 0;
+                    _pathIncrement = -_pathIncrement;
                     _currentPathIndex += _pathIncrement;
-
-                    if (_currentPathIndex > Path.Length - 1)
-                    {
-                        _pathIncrement = -_pathIncrement;
-                        _currentPathIndex += _pathIncrement;
-                        _currentPathIndex += _pathIncrement;
-                    }
-                    else if (_currentPathIndex < 0)
-                    {
-                        _pathIncrement = -_pathIncrement;
-                        _currentPathIndex += _pathIncrement;
-                        _currentPathIndex += _pathIncrement;
-                    }
+                    _currentPathIndex += _pathIncrement;
                 }
-
-                direction = (Path[_currentPathIndex] - RigidBody.transform.position);
-                direction.Normalize();
-
-                RigidBody.MovePosition(RigidBody.transform.position + direction * Speed * Time.deltaTime);
-                RigidBody.velocity = Speed * RigidBody.velocity.normalized;
-
-                _ticksSincePathChange++;
+                else if (_currentPathIndex < 0)
+                {
+                    _pathIncrement = -_pathIncrement;
+                    _currentPathIndex += _pathIncrement;
+                    _currentPathIndex += _pathIncrement;
+                }
             }
+
+            direction = (Path[_currentPathIndex] - RigidBody.transform.position);
+            direction.Normalize();
+
+            RigidBody.MovePosition(RigidBody.transform.position + direction * Speed * Time.deltaTime);
+            RigidBody.velocity = Speed * RigidBody.velocity.normalized;
+
+            _ticksSincePathChange++;
         }
 
         private void Update()
