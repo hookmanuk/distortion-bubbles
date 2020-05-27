@@ -27,7 +27,7 @@ namespace BubbleDistortionPhysics
             characterController = GetComponent<CharacterController>();
             capsuleCollider = GetComponent<CapsuleCollider>();
             MainCamera = GameObject.FindGameObjectWithTag("MainCamera");
-            _outOfBoundsFace = GameObject.FindGameObjectWithTag("OutOfBoundsFace").GetComponent<MeshRenderer>();
+            //_outOfBoundsFace = GameObject.FindGameObjectWithTag("OutOfBoundsFace").GetComponent<MeshRenderer>();
         }
 
         private void Update()
@@ -44,6 +44,7 @@ namespace BubbleDistortionPhysics
             {
                 characterController.height = MainCamera.transform.localPosition.y;
                 characterController.center = new Vector3(MainCamera.transform.localPosition.x, MainCamera.transform.localPosition.y / 2, MainCamera.transform.localPosition.z);
+
 
                 InputDevice device = controller.inputDevice;
                 InputFeatureUsage<Vector2> feature = CommonUsages.secondary2DAxis;
@@ -67,12 +68,19 @@ namespace BubbleDistortionPhysics
         {
             if (other.gameObject.CompareTag("PhysicsObject"))
             {
-                //stop!
-                //OutputLogManager.OutputText("Player entered object " + other.gameObject.name);
-                _preventCharacterMovement = true;
-                Color32 col = _outOfBoundsFace.material.GetColor("_Color");
-                col.a = 255;
-                _outOfBoundsFace.material.SetColor("_Color", col);
+                //OutputLogManager.OutputText(other.gameObject.name + " y pos " + other.gameObject.transform.position.y.ToString());
+                //OutputLogManager.OutputText("character y pos " + characterController.gameObject.transform.position.y.ToString());
+
+                //allow walking on platforms
+                if (characterController.gameObject.transform.position.y - other.gameObject.transform.position.y > 0.1f)
+                {
+                    //stop!
+                    //OutputLogManager.OutputText("Player entered object " + other.gameObject.name);
+                    _preventCharacterMovement = true;
+                    //Color32 col = _outOfBoundsFace.material.GetColor("_Color");
+                    //col.a = 255;
+                    //_outOfBoundsFace.material.SetColor("_Color", col);
+                }
             }
         }
 
@@ -83,16 +91,16 @@ namespace BubbleDistortionPhysics
                 //go!
                 //OutputLogManager.OutputText("Player exited object " + other.gameObject.name);
                 _preventCharacterMovement = false;
-                Color32 col = _outOfBoundsFace.material.GetColor("_Color");
-                col.a = 0;
-                _outOfBoundsFace.material.SetColor("_Color", col);
+                //Color32 col = _outOfBoundsFace.material.GetColor("_Color");
+                //col.a = 0;
+                //_outOfBoundsFace.material.SetColor("_Color", col);
             }
         }
 
         void LateUpdate()
         {
             
-                //characterController.center = new Vector3(characterController.center.x, MainCamera.transform.localPosition.y, characterController.center.z);
+               // characterController.center = new Vector3(characterController.center.x, MainCamera.transform.localPosition.y, characterController.center.z);
             
         }
     }
