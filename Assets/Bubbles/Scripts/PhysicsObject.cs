@@ -67,13 +67,13 @@ namespace BubbleDistortionPhysics
 
                 if (_isShrunk)
                 {
-                    transform.position = new Vector3(transform.position.x, transform.position.y - (transform.localScale.y / 2), transform.position.z);
+                    transform.position = new Vector3(transform.position.x, transform.position.y - (transform.localScale.y / 3), transform.position.z);
                     transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y / 4, transform.localScale.z);                    
                 }
                 else
                 {                    
                     transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y * 4, transform.localScale.z);
-                    transform.position = new Vector3(transform.position.x, transform.position.y + (transform.localScale.y / 2), transform.position.z);
+                    transform.position = new Vector3(transform.position.x, transform.position.y + (transform.localScale.y / 3), transform.position.z);
                 }
             }
         }

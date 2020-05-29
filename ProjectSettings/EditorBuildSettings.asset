@@ -9,5 +9,7 @@ EditorBuildSettings:
     path: Assets/Scenes/WorldInteractionDemo.unity
     guid: cd5458b6a8920b348b4fbd0dd1cd06f4
   m_configObjects:
+    Unity.XR.OpenVR.Settings: {fileID: 11400000, guid: feb3d557a1fe9f744899ccb5248a95e8,
+      type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: c466c4e9f711c2949baf9890f388567b,
       type: 2}

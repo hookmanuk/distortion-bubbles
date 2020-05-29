@@ -34,7 +34,7 @@ namespace BubbleDistortionPhysics
         {
             //OutputLogManager.OutputText(name + " select exit " + interactor.gameObject.name);
             _thrown = true;
-        }
+        }        
 
         public void OnDestroy()
         {
@@ -69,7 +69,8 @@ namespace BubbleDistortionPhysics
             _sphereCollider.enabled = true;
             _rigidbody.velocity = new Vector3(0, 0, 0);
             transform.localScale = new Vector3(2, 2, 2);
-            transform.position = new Vector3(transform.position.x, transform.position.y + 0.33f, transform.position.z);            
+            transform.position = new Vector3(transform.position.x, transform.position.y + 0.33f, transform.position.z);
+            _grabInteractable.interactionLayerMask = LayerMask.GetMask("Nothing");
         }
 
         private void OnTriggerEnter(Collider other)

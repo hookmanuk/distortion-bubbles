@@ -1,4 +1,4 @@
-﻿Shader "Custom/Bubble"
+﻿Shader "Custom/TransparentCullOff"
 {
     Properties
     {
