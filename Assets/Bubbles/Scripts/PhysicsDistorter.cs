@@ -68,6 +68,7 @@ namespace BubbleDistortionPhysics
             _boxCollider.enabled = false;
             _sphereCollider.enabled = true;
             _rigidbody.velocity = new Vector3(0, 0, 0);
+            _rigidbody.freezeRotation = true;
             transform.localScale = new Vector3(2, 2, 2);
             transform.position = new Vector3(transform.position.x, transform.position.y + 0.33f, transform.position.z);
             _grabInteractable.interactionLayerMask = LayerMask.GetMask("Nothing");
