@@ -13,6 +13,9 @@ namespace BubbleDistortionPhysics
         public Rigidbody RigidBody { get; set; }
         private int _pathIncrement = 1;
         private int _ticksSincePathChange = 0;
+        private Vector3 _startPosition;
+        private Quaternion _startRotation;
+
 
         private bool _isSlowed;
 
@@ -84,6 +87,29 @@ namespace BubbleDistortionPhysics
             PhysicsManager.Instance.PhysicsObjects.Add(this);
             RigidBody = GetComponent<Rigidbody>();
             this.tag = "PhysicsObject";
+
+            _startPosition = transform.position;
+            _startRotation = transform.rotation;
+        }
+
+        public void Reset()
+        {
+            transform.position = _startPosition;
+            transform.rotation = _startRotation;
+            RigidBody.velocity = Vector3.zero;
+            _currentPathIndex = 0;
+            if (IsShrunk)
+            {
+                IsShrunk = false;
+            }
+            if (IsGrown)
+            {
+                IsGrown = false;
+            }
+            if (IsSlowed)
+            {
+                IsSlowed = false;
+            }
         }
 
         public void OnDestroy()

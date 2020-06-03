@@ -46,11 +46,13 @@ namespace BubbleDistortionPhysics
                     bubbleClone = Instantiate(_vendingMachine.BubbleShrink.gameObject);
                 }
                 
-                bubbleClone.tag = "";
+                bubbleClone.tag = "Untagged";
                 bubbleClone.transform.position = new Vector3(_vendingMachine.transform.position.x - 0.46f, _vendingMachine.transform.position.y + 0.505f, _vendingMachine.transform.position.z + 0.049f);
                 bubbleClone.transform.rotation = new Quaternion(120, 90, 0, 0);
                 bubbleClone.GetComponent<Rigidbody>().useGravity = true;
                 bubbleClone.GetComponent<AudioSource>().Play();
+
+                _vendingMachine.MyBubbles.Add(bubbleClone);
                 _vendingMachine.SetStockLevel(_vendingMachine.StockLevel - 1);
 
             }

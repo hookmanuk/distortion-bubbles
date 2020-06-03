@@ -8,7 +8,7 @@ namespace BubbleDistortionPhysics
 {
     public class VendingMachine : MonoBehaviour
     {        
-        public int StockLevel;
+        public int StockLevel;        
 
         public SimpleHelvetica CountText;
 
@@ -17,6 +17,16 @@ namespace BubbleDistortionPhysics
         public PhysicsDistorter BubbleShrink { get; set; }
 
         public DateTime LastButtonPressed { get; set; }
+
+        public List<GameObject> MyBubbles { get; set; }
+
+        public List<PhysicsObject> MyPhysicsObjects;
+        private int _startStockLevel;
+
+        private void Start()
+        {
+            MyBubbles = new List<GameObject>();
+        }
 
         private void Awake()
         {
@@ -28,6 +38,29 @@ namespace BubbleDistortionPhysics
             CountText.GenerateText();
 
             LastButtonPressed = DateTime.Now;
+            
+            PhysicsManager.Instance.VendingMachines.Add(this);
+            _startStockLevel = StockLevel;
+        }
+
+        public void OnDestroy()
+        {
+            PhysicsManager.Instance.VendingMachines.Remove(this);
+        }
+
+        public void Reset()
+        {
+            foreach (var item in MyBubbles)
+            {
+                Destroy(item);
+            }
+
+            foreach (PhysicsObject physicsObject in MyPhysicsObjects)
+            {
+                physicsObject.Reset();
+            }
+
+            SetStockLevel(_startStockLevel);
         }
 
         public void SetStockLevel(int stockLevel)

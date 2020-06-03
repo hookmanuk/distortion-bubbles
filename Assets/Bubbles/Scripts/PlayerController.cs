@@ -37,30 +37,44 @@ namespace BubbleDistortionPhysics
 
         void FixedUpdate()
         {
-            capsuleCollider.height = MainCamera.transform.localPosition.y;
-            capsuleCollider.center = new Vector3(MainCamera.transform.localPosition.x, MainCamera.transform.localPosition.y / 2, MainCamera.transform.localPosition.z);
+            bool blnResetClicked = false;
 
-            if (!_preventCharacterMovement)
+            controller?.inputDevice.TryGetFeatureValue(CommonUsages.secondaryButton, out blnResetClicked);
+
+            if (blnResetClicked)
             {
-                characterController.height = MainCamera.transform.localPosition.y;
-                characterController.center = new Vector3(MainCamera.transform.localPosition.x, MainCamera.transform.localPosition.y / 2, MainCamera.transform.localPosition.z);
+                Vector3 resetPosition = PhysicsManager.Instance.Reset();                
+                characterController.transform.position = resetPosition - new Vector3(1 + MainCamera.transform.localPosition.x, 0, MainCamera.transform.localPosition.z);
+                capsuleCollider.height = MainCamera.transform.localPosition.y;
+                capsuleCollider.center = new Vector3(MainCamera.transform.localPosition.x, MainCamera.transform.localPosition.y / 2, MainCamera.transform.localPosition.z);
+            }
+            else
+            {
+                capsuleCollider.height = MainCamera.transform.localPosition.y;
+                capsuleCollider.center = new Vector3(MainCamera.transform.localPosition.x, MainCamera.transform.localPosition.y / 2, MainCamera.transform.localPosition.z);
 
-
-                InputDevice device = controller.inputDevice;
-                InputFeatureUsage<Vector2> feature = CommonUsages.secondary2DAxis;
-                Vector3 movement;
-
-                movement = new Vector3(0, -9.81f, 0) * Time.deltaTime;
-
-                if (device.TryGetFeatureValue(feature, out currentState))
+                if (!_preventCharacterMovement)
                 {
-                    if (currentState.magnitude > 0.1)
-                    {
-                        movement = movement + speed * Time.deltaTime * Vector3.ProjectOnPlane(direction, Vector3.up);
-                    }
-                }
+                    characterController.height = MainCamera.transform.localPosition.y;
+                    characterController.center = new Vector3(MainCamera.transform.localPosition.x, MainCamera.transform.localPosition.y / 2, MainCamera.transform.localPosition.z);
 
-                characterController.Move(movement);
+
+                    InputDevice device = controller.inputDevice;
+                    InputFeatureUsage<Vector2> feature = CommonUsages.secondary2DAxis;
+                    Vector3 movement;
+
+                    movement = new Vector3(0, -9.81f, 0) * Time.deltaTime;
+
+                    if (device.TryGetFeatureValue(feature, out currentState))
+                    {
+                        if (currentState.magnitude > 0.1)
+                        {
+                            movement = movement + speed * Time.deltaTime * Vector3.ProjectOnPlane(direction, Vector3.up);
+                        }
+                    }
+
+                    characterController.Move(movement);
+                }
             }
         }
 

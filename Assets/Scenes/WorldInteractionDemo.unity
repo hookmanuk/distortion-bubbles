@@ -989,6 +989,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Modern Vending Machine (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 5184428746208041341, guid: 0079057789770404db6b36e24d66af71,
+        type: 3}
+      propertyPath: MyPhysicsObjects.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5184428746208041341, guid: 0079057789770404db6b36e24d66af71,
+        type: 3}
+      propertyPath: MyPhysicsObjects.Array.data[0]
+      value: 
+      objectReference: {fileID: 1310940041}
     - target: {fileID: 5186570740159656122, guid: 0079057789770404db6b36e24d66af71,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2181,6 +2191,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Modern Vending Machine (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5184428746208041341, guid: 0079057789770404db6b36e24d66af71,
+        type: 3}
+      propertyPath: MyPhysicsObjects.Array.size
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5184428746208041341, guid: 0079057789770404db6b36e24d66af71,
         type: 3}
@@ -3843,6 +3858,18 @@ Transform:
   m_Father: {fileID: 1659174493}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &927340747 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5269788232488421219, guid: cfa194a9d234e0141ab9804c32ea9744,
+    type: 3}
+  m_PrefabInstance: {fileID: 5269788233723236208}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4c838f4ad8050347a76cc71ac7ce205, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &932956076
 GameObject:
   m_ObjectHideFlags: 0
@@ -5438,6 +5465,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Modern Vending Machine (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 5184428746208041341, guid: 0079057789770404db6b36e24d66af71,
+        type: 3}
+      propertyPath: MyPhysicsObjects.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5184428746208041341, guid: 0079057789770404db6b36e24d66af71,
+        type: 3}
+      propertyPath: MyPhysicsObjects.Array.data[0]
+      value: 
+      objectReference: {fileID: 1024465073}
     - target: {fileID: 5186570740159656122, guid: 0079057789770404db6b36e24d66af71,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -8328,6 +8365,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Modern Vending Machine
       objectReference: {fileID: 0}
+    - target: {fileID: 5184428746208041341, guid: 0079057789770404db6b36e24d66af71,
+        type: 3}
+      propertyPath: MyPhysicsObjects.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5184428746208041341, guid: 0079057789770404db6b36e24d66af71,
+        type: 3}
+      propertyPath: MyPhysicsObjects.Array.data[0]
+      value: 
+      objectReference: {fileID: 927340747}
     - target: {fileID: 5186570740159656122, guid: 0079057789770404db6b36e24d66af71,
         type: 3}
       propertyPath: m_LocalPosition.x
