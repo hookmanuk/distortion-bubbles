@@ -124,7 +124,7 @@ namespace BubbleDistortionPhysics
 
             if (Path?.Length > 0)
             {
-                if (_ticksSincePathChange > 10 && (RigidBody.transform.position - Path[_currentPathIndex]).magnitude < 0.05)
+                if (_ticksSincePathChange > 10 && (RigidBody.transform.position - Path[_currentPathIndex]).magnitude < 0.05f)
                 {
                     _ticksSincePathChange = 0;
                     _currentPathIndex += _pathIncrement;
@@ -155,6 +155,20 @@ namespace BubbleDistortionPhysics
 
         private void Update()
         {            
+        }
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            //OutputLogManager.OutputText(this.name + " collided with " + collision.gameObject.name);
+            if (Path.Length > 0 && collision.gameObject.GetComponent<PhysicsObject>() != null)
+            {
+                //OutputLogManager.OutputText(this.name + " collided with " + collision.gameObject.name);
+                //OutputLogManager.OutputText(this.name + " reversed direction");
+                //reverse direction
+                _pathIncrement = -_pathIncrement;
+                _currentPathIndex += _pathIncrement;
+                RigidBody.velocity = Vector3.zero;
+            }
         }
     }
 }

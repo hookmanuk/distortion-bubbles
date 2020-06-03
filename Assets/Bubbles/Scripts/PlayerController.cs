@@ -82,7 +82,12 @@ namespace BubbleDistortionPhysics
         {
             if (other.gameObject.CompareTag("PhysicsObject"))
             {
-                //OutputLogManager.OutputText(other.gameObject.name + " y pos " + other.gameObject.transform.position.y.ToString());
+                if (other.gameObject.GetComponent<PhysicsObject>().Speed > 0)
+                {
+                    OutputLogManager.OutputText("player hit " + other.gameObject.name);
+                    PhysicsManager.Instance.Reset();
+                }
+                
                 //OutputLogManager.OutputText("character y pos " + characterController.gameObject.transform.position.y.ToString());
 
                 //allow walking on platforms

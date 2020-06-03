@@ -35,6 +35,8 @@ namespace BubbleDistortionPhysics
                 HMDLog.text = "";
             }
             HMDLog.text += Environment.NewLine + text;
+
+            Debug.Log(text);
         }
     }
 }
