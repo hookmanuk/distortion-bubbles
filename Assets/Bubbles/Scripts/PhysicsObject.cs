@@ -23,15 +23,35 @@ namespace BubbleDistortionPhysics
         {
             get { return _isSlowed; }
             set {
-                _isSlowed = value; 
+                _isSlowed = value;
 
-                if (_isSlowed)
+                if (Path.Length > 0)
                 {
-                    Speed = Speed * 0.1f;
+                    //path based, we use speed variable to manually plot path
+                    if (_isSlowed)
+                    {
+                        Speed = Speed * 0.1f;
+                    }
+                    else
+                    {
+                        Speed = Speed * 10;
+                    }
                 }
                 else
                 {
-                    Speed = Speed * 10;
+                    //not a path based object, so we have to alter unity physics instead
+                    if (_isSlowed)
+                    {
+                        OutputLogManager.OutputText(this.gameObject.name + " movement reduced");
+                        RigidBody.velocity = RigidBody.velocity * 0.1f;
+                        RigidBody.useGravity = false; //hack, really gravity should be 1/10th instead of disabled
+                    }
+                    else
+                    {
+                        OutputLogManager.OutputText(this.gameObject.name + " movement sped up");
+                        RigidBody.velocity = RigidBody.velocity * 10f;
+                        RigidBody.useGravity = true;
+                    }
                 }
                 //OutputLogManager.OutputText(name + " speed now " + Speed);
             }
@@ -150,7 +170,7 @@ namespace BubbleDistortionPhysics
                 RigidBody.velocity = Speed * RigidBody.velocity.normalized;
 
                 _ticksSincePathChange++;
-            }
+            }            
         }
 
         private void Update()

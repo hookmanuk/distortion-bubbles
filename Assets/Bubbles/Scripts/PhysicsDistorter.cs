@@ -76,13 +76,13 @@ namespace BubbleDistortionPhysics
 
         private void OnTriggerEnter(Collider other)
         {
-            //OutputLogManager.OutputText(name + " triggered " + other.gameObject.name);
+            OutputLogManager.OutputText(name + " triggered " + other.gameObject.name);
 
             if (other.gameObject.CompareTag("PhysicsObject"))
             {
                 if (DistorterType == DistorterType.Slow)
                 {
-                    //OutputLogManager.OutputText(other.gameObject.name + " slowed");
+                    OutputLogManager.OutputText(other.gameObject.name + " slowed");
                     other.gameObject.GetComponent<PhysicsObject>().IsSlowed = true;
                 }
                 else if (DistorterType == DistorterType.Grow)

@@ -9,6 +9,7 @@ TagManager:
   - BubbleSlow
   - BubbleGrow
   - BubbleShrink
+  - KeyLock
   layers:
   - Default
   - TransparentFX
