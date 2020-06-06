@@ -28,7 +28,7 @@ namespace BubbleDistortionPhysics
 
         protected override void OnHoverEnter(XRBaseInteractor interactor)
         {
-            if (ButtonEnabled && _vendingMachine.StockLevel > 0 && (DateTime.Now - _vendingMachine.LastButtonPressed).TotalMilliseconds > 500)
+            if (ButtonEnabled && (DateTime.Now - _vendingMachine.LastButtonPressed).TotalMilliseconds > 500)
             {
                 _vendingMachine.LastButtonPressed = DateTime.Now;
                 GameObject bubbleClone;
@@ -36,14 +36,17 @@ namespace BubbleDistortionPhysics
                 if (Type == DistorterType.Slow)
                 {
                     bubbleClone = Instantiate(_vendingMachine.BubbleSlow.gameObject);
+                    _vendingMachine.SetStockSlowLevel(_vendingMachine.StockSlowLevel - 1);
                 }
                 else if (Type == DistorterType.Grow)
                 {
                     bubbleClone = Instantiate(_vendingMachine.BubbleGrow.gameObject);
+                    _vendingMachine.SetStockGrowLevel(_vendingMachine.StockGrowLevel - 1);
                 }
                 else
                 {
                     bubbleClone = Instantiate(_vendingMachine.BubbleShrink.gameObject);
+                    _vendingMachine.SetStockShrinkLevel(_vendingMachine.StockShrinkLevel - 1);
                 }
                 
                 bubbleClone.tag = "Untagged";
@@ -52,9 +55,7 @@ namespace BubbleDistortionPhysics
                 bubbleClone.GetComponent<Rigidbody>().useGravity = true;
                 bubbleClone.GetComponent<AudioSource>().Play();
 
-                _vendingMachine.MyBubbles.Add(bubbleClone);
-                _vendingMachine.SetStockLevel(_vendingMachine.StockLevel - 1);
-
+                _vendingMachine.MyBubbles.Add(bubbleClone);                
             }
 
             base.OnSelectEnter(interactor);

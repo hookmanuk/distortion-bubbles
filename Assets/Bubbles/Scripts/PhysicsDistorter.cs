@@ -76,7 +76,7 @@ namespace BubbleDistortionPhysics
 
         private void OnTriggerEnter(Collider other)
         {
-            OutputLogManager.OutputText(name + " triggered " + other.gameObject.name);
+            //OutputLogManager.OutputText(name + " triggered " + other.gameObject.name);
 
             if (other.gameObject.CompareTag("PhysicsObject"))
             {
@@ -100,20 +100,29 @@ namespace BubbleDistortionPhysics
         {
             if (other.gameObject.CompareTag("PhysicsObject"))
             {
-                if (DistorterType == DistorterType.Slow)
+                StartCoroutine(ExecuteAfterTime(0.1f, (otherCollider) =>
                 {
-                    //OutputLogManager.OutputText(other.gameObject.name + " sped up");
-                    other.gameObject.GetComponent<PhysicsObject>().IsSlowed = false;
-                }
-                else if (DistorterType == DistorterType.Grow)
-                {
-                    other.gameObject.GetComponent<PhysicsObject>().IsGrown = false;
-                }
-                else if (DistorterType == DistorterType.Shrink)
-                {
-                    other.gameObject.GetComponent<PhysicsObject>().IsShrunk = false;
-                }
+                    if (DistorterType == DistorterType.Slow)
+                    {
+                        //OutputLogManager.OutputText(other.gameObject.name + " sped up");
+                        otherCollider.gameObject.GetComponent<PhysicsObject>().IsSlowed = false;
+                    }
+                    else if (DistorterType == DistorterType.Grow)
+                    {
+                        otherCollider.gameObject.GetComponent<PhysicsObject>().IsGrown = false;
+                    }
+                    else if (DistorterType == DistorterType.Shrink)
+                    {
+                        otherCollider.gameObject.GetComponent<PhysicsObject>().IsShrunk = false;
+                    }
+                }, other));
             }
+        }
+
+        IEnumerator ExecuteAfterTime(float time, Action<Collider> task, Collider other)
+        {
+            yield return new WaitForSeconds(time);
+            task(other);        
         }
     }
 

@@ -8,9 +8,16 @@ namespace BubbleDistortionPhysics
 {
     public class VendingMachine : MonoBehaviour
     {        
-        public int StockLevel;        
+        public int StockSlowLevel;
+        public int StockGrowLevel;
+        public int StockShrinkLevel;
 
-        public SimpleHelvetica CountText;
+        public SimpleHelvetica CountSlowText;
+        public SimpleHelvetica CountGrowText;
+        public SimpleHelvetica CountShrinkText;
+        public VendingButton SlowButton;
+        public VendingButton GrowButton;
+        public VendingButton ShrinkButton;
 
         public PhysicsDistorter BubbleSlow { get; set; }
         public PhysicsDistorter BubbleGrow { get; set; }
@@ -21,7 +28,9 @@ namespace BubbleDistortionPhysics
         public List<GameObject> MyBubbles { get; set; }
 
         public List<PhysicsObject> MyPhysicsObjects;
-        private int _startStockLevel;
+        private int _startStockSlowLevel;
+        private int _startStockGrowLevel;
+        private int _startStockShrinkLevel;
 
         private void Start()
         {
@@ -34,13 +43,16 @@ namespace BubbleDistortionPhysics
             BubbleGrow = GameObject.FindGameObjectWithTag("BubbleGrow").GetComponent<PhysicsDistorter>();
             BubbleShrink = GameObject.FindGameObjectWithTag("BubbleShrink").GetComponent<PhysicsDistorter>();
 
-            CountText.Text = StockLevel.ToString();
-            CountText.GenerateText();
+            SetStockSlowLevel(StockSlowLevel);
+            SetStockGrowLevel(StockGrowLevel);
+            SetStockShrinkLevel(StockShrinkLevel);            
 
             LastButtonPressed = DateTime.Now;
             
             PhysicsManager.Instance.VendingMachines.Add(this);
-            _startStockLevel = StockLevel;
+            _startStockSlowLevel = StockSlowLevel;
+            _startStockGrowLevel = StockGrowLevel;
+            _startStockShrinkLevel = StockShrinkLevel;
         }
 
         public void OnDestroy()
@@ -60,15 +72,48 @@ namespace BubbleDistortionPhysics
                 physicsObject.Reset();
             }
 
-            SetStockLevel(_startStockLevel);
+            SetStockSlowLevel(_startStockSlowLevel);
+            SetStockGrowLevel(_startStockGrowLevel);
+            SetStockShrinkLevel(_startStockShrinkLevel);
         }
 
-        public void SetStockLevel(int stockLevel)
+        public void SetStockSlowLevel(int stockLevel)
         {
-            StockLevel = stockLevel;
+            StockSlowLevel = stockLevel;
 
-            CountText.Text = StockLevel.ToString();
-            CountText.GenerateText();
+            CountSlowText.Text = StockSlowLevel.ToString();
+            CountSlowText.GenerateText();
+
+            if (stockLevel == 0)
+            {
+                SlowButton.ButtonEnabled = false;
+            }
+        }
+
+        public void SetStockGrowLevel(int stockLevel)
+        {
+            StockGrowLevel = stockLevel;
+
+            CountGrowText.Text = StockGrowLevel.ToString();
+            CountGrowText.GenerateText();
+
+            if (stockLevel == 0)
+            {
+                GrowButton.ButtonEnabled = false;
+            }
+        }
+
+        public void SetStockShrinkLevel(int stockLevel)
+        {
+            StockShrinkLevel = stockLevel;
+
+            CountShrinkText.Text = StockShrinkLevel.ToString();
+            CountShrinkText.GenerateText();
+
+            if (stockLevel == 0)
+            {
+                ShrinkButton.ButtonEnabled = false;
+            }
         }
     }
 }
