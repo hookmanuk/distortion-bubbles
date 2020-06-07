@@ -19,6 +19,8 @@ namespace BubbleDistortionPhysics
         private bool _preventCharacterMovement;
         private bool _resetting;
         private MeshRenderer _outOfBoundsFace;
+        public bool ReverseGravity;
+        private float GravityMultiplier = 1f;
 
         Vector2 currentState;
         Vector3 direction;
@@ -41,48 +43,105 @@ namespace BubbleDistortionPhysics
             _resetting = true;            
         }
 
+        private bool _blnReversingGravity = false;
+        private IEnumerator ReversePlayerGravity()
+        {
+            if (!_blnReversingGravity)
+            {
+                ReverseGravity = !ReverseGravity;
+                
+                _blnReversingGravity = true;
+
+                var originalGravity = GravityMultiplier;
+                var t = 0f;
+                var intTimeToOpen = 0.3f;
+                while (t < 1)
+                {
+                    t += Time.deltaTime / intTimeToOpen;
+
+                    GravityMultiplier = originalGravity + (t * 2 * -originalGravity);
+                    //GravityMultiplier = 0;
+
+                    //transform.rotation = Quaternion.Euler(0, 0,(ReverseGravity ? t : (1-t)) * 180);                    
+
+                    //OutputLogManager.OutputText(transform.rotation.x.ToString());
+
+                    //OutputLogManager.OutputText(t.ToString());
+
+                    yield return null;
+                }
+                
+                _blnReversingGravity = false;
+            }
+        }
+
+        private IEnumerator RotatePlayer()
+        {            
+            var t = 0f;
+            var intTimeToOpen = 0.7f;
+            while (t < 1)
+            {
+                t += Time.deltaTime / intTimeToOpen;
+                
+                transform.rotation = Quaternion.Euler(0, 0, (ReverseGravity ? t : (1 - t)) * 180);
+                yield return null;
+            }            
+        }
+
         void FixedUpdate()
         {
             bool blnResetClicked = false;
+            bool blnTriggerClicked = false;
 
-            controller?.inputDevice.TryGetFeatureValue(CommonUsages.secondaryButton, out blnResetClicked);
+            controller?.inputDevice.TryGetFeatureValue(CommonUsages.secondary2DAxisClick, out blnTriggerClicked);
 
-            if (_resetting || blnResetClicked)
-            {
-                Vector3 resetPosition = PhysicsManager.Instance.Reset();
-                characterController.transform.position = resetPosition - new Vector3(1 + MainCamera.transform.localPosition.x, 0, MainCamera.transform.localPosition.z);
-                capsuleCollider.height = MainCamera.transform.localPosition.y;
-                capsuleCollider.center = new Vector3(MainCamera.transform.localPosition.x, MainCamera.transform.localPosition.y / 2, MainCamera.transform.localPosition.z);
-                _resetting = false;
-            }
-            else
-            {
-                capsuleCollider.height = MainCamera.transform.localPosition.y;
-                capsuleCollider.center = new Vector3(MainCamera.transform.localPosition.x, MainCamera.transform.localPosition.y / 2, MainCamera.transform.localPosition.z);
-
-                if (!_preventCharacterMovement)
+            //if (!_blnReversingGravity)
+            //{
+                if (blnTriggerClicked)
                 {
-                    characterController.height = MainCamera.transform.localPosition.y;
-                    characterController.center = new Vector3(MainCamera.transform.localPosition.x, MainCamera.transform.localPosition.y / 2, MainCamera.transform.localPosition.z);
-
-
-                    InputDevice device = controller.inputDevice;
-                    InputFeatureUsage<Vector2> feature = CommonUsages.secondary2DAxis;
-                    Vector3 movement;
-
-                    movement = new Vector3(0, -9.81f, 0) * Time.deltaTime;
-
-                    if (device.TryGetFeatureValue(feature, out currentState))
-                    {
-                        if (currentState.magnitude > 0.1)
-                        {
-                            movement = movement + speed * Time.deltaTime * Vector3.ProjectOnPlane(direction, Vector3.up);
-                        }
-                    }
-
-                    characterController.Move(movement);
+                    StartCoroutine(ReversePlayerGravity());
+                    StartCoroutine(RotatePlayer());
                 }
-            }
+
+                controller?.inputDevice.TryGetFeatureValue(CommonUsages.secondaryButton, out blnResetClicked);
+
+                if (_resetting || blnResetClicked)
+                {
+                    Vector3 resetPosition = PhysicsManager.Instance.Reset();
+                    characterController.transform.position = resetPosition - new Vector3(1 + MainCamera.transform.localPosition.x, 0, MainCamera.transform.localPosition.z);
+                    capsuleCollider.height = MainCamera.transform.localPosition.y;
+                    capsuleCollider.center = new Vector3(MainCamera.transform.localPosition.x, MainCamera.transform.localPosition.y / 2, MainCamera.transform.localPosition.z);
+                    _resetting = false;
+                }
+                else
+                {
+                    capsuleCollider.height = MainCamera.transform.localPosition.y;
+                    capsuleCollider.center = new Vector3(MainCamera.transform.localPosition.x, MainCamera.transform.localPosition.y / 2, MainCamera.transform.localPosition.z);
+
+                    if (!_preventCharacterMovement)
+                    {
+                        characterController.height = MainCamera.transform.localPosition.y;
+                        characterController.center = new Vector3(MainCamera.transform.localPosition.x, MainCamera.transform.localPosition.y / 2, MainCamera.transform.localPosition.z);
+
+
+                        InputDevice device = controller.inputDevice;
+                        InputFeatureUsage<Vector2> feature = CommonUsages.secondary2DAxis;
+                        Vector3 movement;
+
+                        movement = new Vector3(0, -9.81f * GravityMultiplier, 0) * Time.deltaTime;
+
+                        if (device.TryGetFeatureValue(feature, out currentState))
+                        {
+                            if (currentState.magnitude > 0.1)
+                            {
+                                movement = movement + speed * Time.deltaTime * Vector3.ProjectOnPlane(direction, Vector3.up);
+                            }
+                        }
+
+                        characterController.Move(movement);
+                    }
+                }
+            //}
         }
 
         private void OnTriggerEnter(Collider other)

@@ -15,10 +15,10 @@ namespace BubbleDistortionPhysics
 
         private void OnCollisionEnter(Collision collision)
         {
-            OutputLogManager.OutputText(this.name + " lock bottom hit by " + collision.gameObject.name);
+            //OutputLogManager.OutputText(this.name + " lock bottom hit by " + collision.gameObject.name);
             if (collision.gameObject.GetComponent<KeyObject>() != null)
             {
-                OutputLogManager.OutputText("Opening door");
+                //OutputLogManager.OutputText("Opening door");
                 StartCoroutine(_door.OpenDoor());
             }
         }
