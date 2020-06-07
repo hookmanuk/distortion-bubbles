@@ -16,12 +16,13 @@ GameObject:
   - component: {fileID: 5818682025818055632}
   - component: {fileID: 5818682025818055647}
   - component: {fileID: 8796382516760474021}
+  - component: {fileID: 344456034957098683}
   m_Layer: 0
   m_Name: Drone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 1
   m_IsActive: 1
 --- !u!4 &5818682025818055646
 Transform:
@@ -63,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b60130c015d4b9f4a8724c6ddeaa46da, type: 2}
+  - {fileID: 2100000, guid: 981b095301566a840b85ea8ff34fb517, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -149,9 +150,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: d59c88f5355c2594898b7d384b36ffe8, type: 3}
+  m_audioClip: {fileID: 8300000, guid: dd014c7a18a979a4c81116703fd605dd, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.157
+  m_Volume: 0.107
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -235,3 +236,15 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &344456034957098683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5818682025818055645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd7f27ab13f6a5f46a37318df052c6a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

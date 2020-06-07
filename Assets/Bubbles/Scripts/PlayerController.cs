@@ -17,6 +17,7 @@ namespace BubbleDistortionPhysics
         public GameObject MainCamera { get; set; }
 
         private bool _preventCharacterMovement;
+        private bool _resetting;
         private MeshRenderer _outOfBoundsFace;
 
         Vector2 currentState;
@@ -35,18 +36,24 @@ namespace BubbleDistortionPhysics
             direction = characterController.GetComponentInChildren<Camera>().transform.TransformDirection(new Vector3(currentState.x, 0, currentState.y)); //Player.instance.hmdTransform.TransformDirection(new Vector3(input.axis.x, 0, input.axis.y));
         }
 
+        public void Reset()
+        {
+            _resetting = true;            
+        }
+
         void FixedUpdate()
         {
             bool blnResetClicked = false;
 
             controller?.inputDevice.TryGetFeatureValue(CommonUsages.secondaryButton, out blnResetClicked);
 
-            if (blnResetClicked)
+            if (_resetting || blnResetClicked)
             {
-                Vector3 resetPosition = PhysicsManager.Instance.Reset();                
+                Vector3 resetPosition = PhysicsManager.Instance.Reset();
                 characterController.transform.position = resetPosition - new Vector3(1 + MainCamera.transform.localPosition.x, 0, MainCamera.transform.localPosition.z);
                 capsuleCollider.height = MainCamera.transform.localPosition.y;
                 capsuleCollider.center = new Vector3(MainCamera.transform.localPosition.x, MainCamera.transform.localPosition.y / 2, MainCamera.transform.localPosition.z);
+                _resetting = false;
             }
             else
             {

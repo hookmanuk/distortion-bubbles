@@ -88,6 +88,10 @@ namespace BubbleDistortionPhysics
             {
                 SlowButton.ButtonEnabled = false;
             }
+            else
+            {
+                SlowButton.ButtonEnabled = true;
+            }
         }
 
         public void SetStockGrowLevel(int stockLevel)
@@ -101,6 +105,10 @@ namespace BubbleDistortionPhysics
             {
                 GrowButton.ButtonEnabled = false;
             }
+            else
+            {
+                GrowButton.ButtonEnabled = true;
+            }
         }
 
         public void SetStockShrinkLevel(int stockLevel)
@@ -113,6 +121,10 @@ namespace BubbleDistortionPhysics
             if (stockLevel == 0)
             {
                 ShrinkButton.ButtonEnabled = false;
+            }
+            else
+            {
+                ShrinkButton.ButtonEnabled = true;
             }
         }
     }
