@@ -18,6 +18,7 @@ namespace BubbleDistortionPhysics
 
         private bool _preventCharacterMovement;
         private bool _resetting;
+        private bool _flipping;
         private MeshRenderer _outOfBoundsFace;
         public bool ReverseGravity;
         private float GravityMultiplier = 1f;
@@ -40,7 +41,7 @@ namespace BubbleDistortionPhysics
 
         public void Reset()
         {
-            _resetting = true;            
+            _resetting = true;               
         }
 
         private bool _blnReversingGravity = false;
@@ -85,63 +86,86 @@ namespace BubbleDistortionPhysics
                 
                 transform.rotation = Quaternion.Euler(0, 0, (ReverseGravity ? t : (1 - t)) * 180);
                 yield return null;
-            }            
+            }
+
+            _flipping = false;
+        }
+
+        public void FlipGravity()
+        {
+            _flipping = true;
+            StartCoroutine(ReversePlayerGravity());
+            StartCoroutine(RotatePlayer());
         }
 
         void FixedUpdate()
         {
             bool blnResetClicked = false;
             bool blnTriggerClicked = false;
+            bool blnClicked = false;
+            Vector2 state;
+            state = new Vector2();
 
             controller?.inputDevice.TryGetFeatureValue(CommonUsages.secondary2DAxisClick, out blnTriggerClicked);
+            
+            if (blnTriggerClicked)
+            {
+                FlipGravity();
+            }
 
-            //if (!_blnReversingGravity)
-            //{
-                if (blnTriggerClicked)
+            controller?.inputDevice.TryGetFeatureValue(CommonUsages.secondaryButton, out blnResetClicked);
+
+            if (blnResetClicked)
+            {
+                Reset();
+            }
+
+            if (_resetting)
+            {                
+                if (ReverseGravity)
                 {
-                    StartCoroutine(ReversePlayerGravity());
-                    StartCoroutine(RotatePlayer());
+                    OutputLogManager.OutputText("flip from reset");
+                    FlipGravity();
                 }
-
-                controller?.inputDevice.TryGetFeatureValue(CommonUsages.secondaryButton, out blnResetClicked);
-
-                if (_resetting || blnResetClicked)
+                if (!_flipping)
                 {
+                    _resetting = false;
+                    OutputLogManager.OutputText("no longer flipping, now reset");
                     Vector3 resetPosition = PhysicsManager.Instance.Reset();
                     characterController.transform.position = resetPosition - new Vector3(1 + MainCamera.transform.localPosition.x, 0, MainCamera.transform.localPosition.z);
                     capsuleCollider.height = MainCamera.transform.localPosition.y;
                     capsuleCollider.center = new Vector3(MainCamera.transform.localPosition.x, MainCamera.transform.localPosition.y / 2, MainCamera.transform.localPosition.z);
-                    _resetting = false;
-                }
-                else
+                    
+                }                
+            }
+            else
+            {
+                capsuleCollider.height = MainCamera.transform.localPosition.y;
+                capsuleCollider.center = new Vector3(MainCamera.transform.localPosition.x, MainCamera.transform.localPosition.y / 2, MainCamera.transform.localPosition.z);
+
+                if (!_preventCharacterMovement)
                 {
-                    capsuleCollider.height = MainCamera.transform.localPosition.y;
-                    capsuleCollider.center = new Vector3(MainCamera.transform.localPosition.x, MainCamera.transform.localPosition.y / 2, MainCamera.transform.localPosition.z);
+                    characterController.height = MainCamera.transform.localPosition.y;
+                    characterController.center = new Vector3(MainCamera.transform.localPosition.x, MainCamera.transform.localPosition.y / 2, MainCamera.transform.localPosition.z);
 
-                    if (!_preventCharacterMovement)
+
+                    InputDevice device = controller.inputDevice;
+                    InputFeatureUsage<Vector2> feature = CommonUsages.secondary2DAxis;
+                    Vector3 movement;
+
+                    movement = new Vector3(0, -9.81f * GravityMultiplier, 0) * Time.deltaTime;
+
+                    if (device.TryGetFeatureValue(feature, out currentState))
                     {
-                        characterController.height = MainCamera.transform.localPosition.y;
-                        characterController.center = new Vector3(MainCamera.transform.localPosition.x, MainCamera.transform.localPosition.y / 2, MainCamera.transform.localPosition.z);
-
-
-                        InputDevice device = controller.inputDevice;
-                        InputFeatureUsage<Vector2> feature = CommonUsages.secondary2DAxis;
-                        Vector3 movement;
-
-                        movement = new Vector3(0, -9.81f * GravityMultiplier, 0) * Time.deltaTime;
-
-                        if (device.TryGetFeatureValue(feature, out currentState))
+                        if (currentState.magnitude > 0.1)
                         {
-                            if (currentState.magnitude > 0.1)
-                            {
-                                movement = movement + speed * Time.deltaTime * Vector3.ProjectOnPlane(direction, Vector3.up);
-                            }
+                            movement = movement + speed * Time.deltaTime * Vector3.ProjectOnPlane(direction, Vector3.up);
                         }
-
-                        characterController.Move(movement);
                     }
+
+                    characterController.Move(movement);
                 }
-            //}
+            }           
         }
 
         private void OnTriggerEnter(Collider other)

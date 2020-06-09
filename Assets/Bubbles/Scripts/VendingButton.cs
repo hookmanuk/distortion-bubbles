@@ -33,6 +33,8 @@ namespace BubbleDistortionPhysics
                 _vendingMachine.LastButtonPressed = DateTime.Now;
                 GameObject bubbleClone;
 
+                bubbleClone = null;
+
                 if (Type == DistorterType.Slow)
                 {
                     bubbleClone = Instantiate(_vendingMachine.BubbleSlow.gameObject);
@@ -43,10 +45,15 @@ namespace BubbleDistortionPhysics
                     bubbleClone = Instantiate(_vendingMachine.BubbleGrow.gameObject);
                     _vendingMachine.SetStockGrowLevel(_vendingMachine.StockGrowLevel - 1);
                 }
-                else
+                else if (Type == DistorterType.Shrink)
                 {
                     bubbleClone = Instantiate(_vendingMachine.BubbleShrink.gameObject);
                     _vendingMachine.SetStockShrinkLevel(_vendingMachine.StockShrinkLevel - 1);
+                }
+                else if (Type == DistorterType.Gravity)
+                {
+                    bubbleClone = Instantiate(_vendingMachine.BubbleGravity.gameObject);
+                    _vendingMachine.SetStockGravityLevel(_vendingMachine.StockGravityLevel - 1);
                 }
                 
                 bubbleClone.tag = "Untagged";

@@ -15,7 +15,8 @@ namespace BubbleDistortionPhysics
         private BoxCollider _boxCollider;
         private SphereCollider _sphereCollider;
         public DistorterType DistorterType;
-
+        public bool ExpandAsDisc;
+        
         public void Start()
         {
             PhysicsManager.Instance.PhysicsDistorters.Add(this);
@@ -52,12 +53,32 @@ namespace BubbleDistortionPhysics
 
         private void OnCollisionEnter(Collision collision)
         {
-            //OutputLogManager.OutputText(name + " hit " + collision.gameObject.name);
+            OutputLogManager.OutputText(name + " hit " + collision.gameObject.name);
 
             if (_thrown && collision.gameObject.GetComponent<PhysicsSurface>() != null)
             {
-                ExpandBubble();
+                if (ExpandAsDisc)
+                {
+                    ExpandDisc();
+                }
+                else
+                {
+                    ExpandBubble();
+                }                
             }
+        }
+
+        private void ExpandDisc()
+        {
+            _rigidbody.useGravity = false;
+            _rigidbody.velocity = new Vector3(0, 0, 0);
+            _rigidbody.freezeRotation = true;
+            _boxCollider.enabled = false;
+            _sphereCollider.enabled = true;
+            transform.localScale = new Vector3(1, 0.1f, 1);
+            //transform.localPosition = transform.localPosition + new Vector3(0, 0.09f, 0);
+            transform.localRotation = new Quaternion(0, 0, 0, 0);
+            _grabInteractable.interactionLayerMask = LayerMask.GetMask("Nothing");
         }
 
         private void ExpandBubble()
@@ -76,46 +97,55 @@ namespace BubbleDistortionPhysics
 
         private void OnTriggerEnter(Collider other)
         {
-            //OutputLogManager.OutputText(name + " triggered " + other.gameObject.name);
-
-            if (other.gameObject.CompareTag("PhysicsObject"))
+            OutputLogManager.OutputText(name + " triggered " + other.gameObject.name);
+            if (_thrown)
             {
-                if (DistorterType == DistorterType.Slow)
+                if (other.gameObject.CompareTag("PhysicsObject"))
                 {
-                    OutputLogManager.OutputText(other.gameObject.name + " slowed");
-                    other.gameObject.GetComponent<PhysicsObject>().IsSlowed = true;
+                    if (DistorterType == DistorterType.Slow)
+                    {
+                        OutputLogManager.OutputText(other.gameObject.name + " slowed");
+                        other.gameObject.GetComponent<PhysicsObject>().IsSlowed = true;
+                    }
+                    else if (DistorterType == DistorterType.Grow)
+                    {
+                        other.gameObject.GetComponent<PhysicsObject>().IsGrown = true;
+                    }
+                    else if (DistorterType == DistorterType.Shrink)
+                    {
+                        other.gameObject.GetComponent<PhysicsObject>().IsShrunk = true;
+                    }
                 }
-                else if (DistorterType == DistorterType.Grow)
+                if (other.gameObject.CompareTag("Player") && DistorterType == DistorterType.Gravity)
                 {
-                    other.gameObject.GetComponent<PhysicsObject>().IsGrown = true;
+                    other.gameObject.GetComponent<PlayerController>().FlipGravity();
                 }
-                else if (DistorterType == DistorterType.Shrink)
-                {
-                    other.gameObject.GetComponent<PhysicsObject>().IsShrunk = true;
-                }
-            }            
+            }
         }
 
         private void OnTriggerExit(Collider other)
         {
-            if (other.gameObject.CompareTag("PhysicsObject"))
+            if (_thrown)
             {
-                StartCoroutine(ExecuteAfterTime(0.1f, (otherCollider) =>
+                if (other.gameObject.CompareTag("PhysicsObject"))
                 {
-                    if (DistorterType == DistorterType.Slow)
+                    StartCoroutine(ExecuteAfterTime(0.1f, (otherCollider) =>
                     {
+                        if (DistorterType == DistorterType.Slow)
+                        {
                         //OutputLogManager.OutputText(other.gameObject.name + " sped up");
                         otherCollider.gameObject.GetComponent<PhysicsObject>().IsSlowed = false;
-                    }
-                    else if (DistorterType == DistorterType.Grow)
-                    {
-                        otherCollider.gameObject.GetComponent<PhysicsObject>().IsGrown = false;
-                    }
-                    else if (DistorterType == DistorterType.Shrink)
-                    {
-                        otherCollider.gameObject.GetComponent<PhysicsObject>().IsShrunk = false;
-                    }
-                }, other));
+                        }
+                        else if (DistorterType == DistorterType.Grow)
+                        {
+                            otherCollider.gameObject.GetComponent<PhysicsObject>().IsGrown = false;
+                        }
+                        else if (DistorterType == DistorterType.Shrink)
+                        {
+                            otherCollider.gameObject.GetComponent<PhysicsObject>().IsShrunk = false;
+                        }
+                    }, other));
+                }
             }
         }
 
@@ -130,6 +160,7 @@ namespace BubbleDistortionPhysics
     {
         Slow,
         Grow,
-        Shrink
+        Shrink,
+        Gravity
     }
 }

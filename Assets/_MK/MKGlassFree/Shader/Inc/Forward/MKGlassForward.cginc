@@ -105,7 +105,7 @@
 		mkts.Color_Out.a = lerp(0.625, 0.95, _MainTint);
 
 		//if enabled add some fog - forward rendering only
-		UNITY_APPLY_FOG(o.fogCoord, mkts.Color_Out);
+		//UNITY_APPLY_FOG(o.fogCoord, mkts.Color_Out);
 		return mkts.Color_Out;
 	}
 #endif

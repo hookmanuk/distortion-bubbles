@@ -11,17 +11,21 @@ namespace BubbleDistortionPhysics
         public int StockSlowLevel;
         public int StockGrowLevel;
         public int StockShrinkLevel;
+        public int StockGravityLevel;
 
         public SimpleHelvetica CountSlowText;
         public SimpleHelvetica CountGrowText;
         public SimpleHelvetica CountShrinkText;
+        public SimpleHelvetica CountGravityText;
         public VendingButton SlowButton;
         public VendingButton GrowButton;
         public VendingButton ShrinkButton;
+        public VendingButton GravityButton;
 
         public PhysicsDistorter BubbleSlow { get; set; }
         public PhysicsDistorter BubbleGrow { get; set; }
         public PhysicsDistorter BubbleShrink { get; set; }
+        public PhysicsDistorter BubbleGravity { get; set; }
 
         public DateTime LastButtonPressed { get; set; }
 
@@ -31,6 +35,7 @@ namespace BubbleDistortionPhysics
         private int _startStockSlowLevel;
         private int _startStockGrowLevel;
         private int _startStockShrinkLevel;
+        private int _startStockGravityLevel;
 
         private void Start()
         {
@@ -42,10 +47,12 @@ namespace BubbleDistortionPhysics
             BubbleSlow = GameObject.FindGameObjectWithTag("BubbleSlow").GetComponent<PhysicsDistorter>();
             BubbleGrow = GameObject.FindGameObjectWithTag("BubbleGrow").GetComponent<PhysicsDistorter>();
             BubbleShrink = GameObject.FindGameObjectWithTag("BubbleShrink").GetComponent<PhysicsDistorter>();
+            BubbleGravity = GameObject.FindGameObjectWithTag("BubbleGravity").GetComponent<PhysicsDistorter>();
 
             SetStockSlowLevel(StockSlowLevel);
             SetStockGrowLevel(StockGrowLevel);
-            SetStockShrinkLevel(StockShrinkLevel);            
+            SetStockShrinkLevel(StockShrinkLevel);
+            SetStockGravityLevel(StockGravityLevel);
 
             LastButtonPressed = DateTime.Now;
             
@@ -53,6 +60,7 @@ namespace BubbleDistortionPhysics
             _startStockSlowLevel = StockSlowLevel;
             _startStockGrowLevel = StockGrowLevel;
             _startStockShrinkLevel = StockShrinkLevel;
+            _startStockGravityLevel = StockGravityLevel;
         }
 
         public void OnDestroy()
@@ -64,7 +72,8 @@ namespace BubbleDistortionPhysics
         {
             foreach (var item in MyBubbles)
             {
-                Destroy(item);
+                item.gameObject.SetActive(false);
+                //Destroy(item);
             }
 
             foreach (PhysicsObject physicsObject in MyPhysicsObjects)
@@ -75,6 +84,7 @@ namespace BubbleDistortionPhysics
             SetStockSlowLevel(_startStockSlowLevel);
             SetStockGrowLevel(_startStockGrowLevel);
             SetStockShrinkLevel(_startStockShrinkLevel);
+            SetStockGravityLevel(_startStockGravityLevel);
         }
 
         public void SetStockSlowLevel(int stockLevel)
@@ -125,6 +135,23 @@ namespace BubbleDistortionPhysics
             else
             {
                 ShrinkButton.ButtonEnabled = true;
+            }
+        }
+
+        public void SetStockGravityLevel(int stockLevel)
+        {
+            StockGravityLevel = stockLevel;
+
+            CountGravityText.Text = StockGravityLevel.ToString();
+            CountGravityText.GenerateText();
+
+            if (stockLevel == 0)
+            {
+                GravityButton.ButtonEnabled = false;
+            }
+            else
+            {
+                GravityButton.ButtonEnabled = true;
             }
         }
     }

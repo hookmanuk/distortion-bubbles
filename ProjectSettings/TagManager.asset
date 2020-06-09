@@ -10,6 +10,7 @@ TagManager:
   - BubbleGrow
   - BubbleShrink
   - KeyLock
+  - BubbleGravity
   layers:
   - Default
   - TransparentFX
