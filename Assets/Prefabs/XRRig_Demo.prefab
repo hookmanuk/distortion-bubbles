@@ -1349,12 +1349,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba706e5cce610884ab194e68db6a910e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ActivationButtons: 0b00000006000000
-  m_DeactivationButtons: 03000000
-  m_LeftBaseController: {fileID: 1717954560873690078}
-  m_LeftTeleportController: {fileID: 1717954561233508939}
-  m_RightBaseController: {fileID: 1717954560309945980}
-  m_RightTeleportController: {fileID: 1717954560958943209}
+  m_ActivationButtons: 
+  m_DeactivationButtons: 
+  m_LeftBaseController: {fileID: 0}
+  m_LeftTeleportController: {fileID: 0}
+  m_RightBaseController: {fileID: 0}
+  m_RightTeleportController: {fileID: 0}
 --- !u!114 &6255545169491779
 MonoBehaviour:
   m_ObjectHideFlags: 0
