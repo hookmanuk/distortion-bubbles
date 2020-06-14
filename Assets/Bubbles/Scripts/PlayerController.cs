@@ -175,7 +175,11 @@ namespace BubbleDistortionPhysics
                 if (other.gameObject.GetComponent<PhysicsObject>().Speed > 0)
                 {
                     OutputLogManager.OutputText("player hit " + other.gameObject.name);
-                    PhysicsManager.Instance.Reset();
+                    if (other.gameObject.GetComponent<Drone>() != null)
+                    {
+                        //hit a drone, so reset
+                        PhysicsManager.Instance.Reset();
+                    }                    
                 }
                 
                 //OutputLogManager.OutputText("character y pos " + characterController.gameObject.transform.position.y.ToString());

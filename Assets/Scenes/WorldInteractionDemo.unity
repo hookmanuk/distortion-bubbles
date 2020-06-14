@@ -1381,6 +1381,11 @@ PrefabInstance:
       propertyPath: ExpandAsDisc
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2555759198454890670, guid: d03963bc190a4f547899a5d9d4a66963,
+        type: 3}
+      propertyPath: DistorterType
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 3713896487159297793, guid: d03963bc190a4f547899a5d9d4a66963,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -5063,6 +5068,11 @@ PrefabInstance:
     - target: {fileID: 5184428746208041341, guid: 0079057789770404db6b36e24d66af71,
         type: 3}
       propertyPath: StockShrinkLevel
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5184428746208041341, guid: 0079057789770404db6b36e24d66af71,
+        type: 3}
+      propertyPath: StockSlowLevel
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5186570740159656122, guid: 0079057789770404db6b36e24d66af71,
@@ -10787,7 +10797,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 441482e8936e35048a1dffac814e3ef8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Profile: {fileID: 11400000, guid: 60a0164c01954084f923c301b5f4dd39, type: 2}
+  m_Profile: {fileID: 0}
   m_StaticLightingSkyUniqueID: 0
 --- !u!4 &2147301467
 Transform:
@@ -10864,7 +10874,7 @@ PrefabInstance:
     - target: {fileID: 5818682025818055645, guid: 4c7b57db42ece4e46816883e535611a3,
         type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 4294967295
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5818682025818055645, guid: 4c7b57db42ece4e46816883e535611a3,
         type: 3}
@@ -11092,17 +11102,17 @@ PrefabInstance:
     - target: {fileID: 1717954561456925283, guid: 3473a9ca2b6bef2458a4f52e10903b7d,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.91
+      value: 0.923
       objectReference: {fileID: 0}
     - target: {fileID: 1717954561456925283, guid: 3473a9ca2b6bef2458a4f52e10903b7d,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.09
+      value: 4.235
       objectReference: {fileID: 0}
     - target: {fileID: 1717954561456925283, guid: 3473a9ca2b6bef2458a4f52e10903b7d,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1
+      value: 8.69
       objectReference: {fileID: 0}
     - target: {fileID: 1717954561456925283, guid: 3473a9ca2b6bef2458a4f52e10903b7d,
         type: 3}
