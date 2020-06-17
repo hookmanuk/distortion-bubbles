@@ -12,8 +12,9 @@ GameObject:
   - component: {fileID: 4681562662801049432}
   - component: {fileID: 4681562662801049439}
   - component: {fileID: 4681562662801049438}
+  - component: {fileID: 842375805600940731}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: StripLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -94,6 +95,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &842375805600940731
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4681562662801049437}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65c2e02f959b61f489f58beb7308628d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DoorPanel: {fileID: 0}
+  KeyLock: {fileID: 0}
 --- !u!1 &4681562663164434691
 GameObject:
   m_ObjectHideFlags: 0
