@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 4461614030082673158}
   - component: {fileID: 833853518012844808}
   - component: {fileID: 3080805378302032177}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BubbleGrow
   m_TagString: BubbleGrow
   m_Icon: {fileID: 0}
@@ -201,6 +201,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DistorterType: 1
+  ExpandAsDisc: 0
 --- !u!135 &833853518012844808
 SphereCollider:
   m_ObjectHideFlags: 0

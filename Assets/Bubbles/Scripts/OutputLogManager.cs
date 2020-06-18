@@ -8,6 +8,7 @@ namespace BubbleDistortionPhysics
 {
     class OutputLogManager : MonoBehaviour
     {
+        public bool EnableLog;
         public OutputLogManager()
         {            
         }
@@ -30,11 +31,14 @@ namespace BubbleDistortionPhysics
         
         public static void OutputText(string text)
         {
-            if (HMDLog.text.Length > 1000)
+            if (OutputLogManager.Instance.EnableLog)
             {
-                HMDLog.text = "";
+                if (HMDLog.text.Length > 1000)
+                {
+                    HMDLog.text = "";
+                }
+                HMDLog.text += Environment.NewLine + text;
             }
-            HMDLog.text += Environment.NewLine + text;
 
             Debug.Log(text);
         }

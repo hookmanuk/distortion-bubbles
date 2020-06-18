@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 2555759198454890670}
   - component: {fileID: 1517509089908801952}
   - component: {fileID: 7352808024759926359}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BubbleShrink
   m_TagString: BubbleShrink
   m_Icon: {fileID: 0}
@@ -201,6 +201,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DistorterType: 2
+  ExpandAsDisc: 0
 --- !u!135 &1517509089908801952
 SphereCollider:
   m_ObjectHideFlags: 0

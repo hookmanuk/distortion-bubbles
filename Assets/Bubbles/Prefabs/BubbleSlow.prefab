@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 6833443666355882561}
   - component: {fileID: 6833443666355882566}
   - component: {fileID: 1229021417}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BubbleSlow
   m_TagString: BubbleSlow
   m_Icon: {fileID: 0}
@@ -201,6 +201,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DistorterType: 0
+  ExpandAsDisc: 0
 --- !u!135 &6833443666355882566
 SphereCollider:
   m_ObjectHideFlags: 0

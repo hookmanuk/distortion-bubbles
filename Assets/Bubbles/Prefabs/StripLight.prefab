@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 4681562662801049437}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.25, y: 3.493, z: 4.38}
-  m_LocalScale: {x: 0.05, y: 0.05, z: 2}
+  m_LocalScale: {x: 0.4, y: 0.05, z: 2}
   m_Children:
   - {fileID: 4681562663164434702}
   m_Father: {fileID: 0}
@@ -107,8 +107,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65c2e02f959b61f489f58beb7308628d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DoorPanel: {fileID: 0}
-  KeyLock: {fileID: 0}
 --- !u!1 &4681562663164434691
 GameObject:
   m_ObjectHideFlags: 0
@@ -135,7 +133,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4681562663164434691}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.12, z: 0}
   m_LocalScale: {x: 100, y: 0.5, z: 100}
   m_Children: []
   m_Father: {fileID: 4681562662801049433}
@@ -154,7 +152,7 @@ Light:
   m_Shape: 0
   m_Color: {r: 0.8608079, g: 0, b: 1, a: 1}
   m_Intensity: 6.3661976
-  m_Range: 10
+  m_Range: 20
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -198,7 +196,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 10}
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 20}
   m_UseBoundingSphereOverride: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
