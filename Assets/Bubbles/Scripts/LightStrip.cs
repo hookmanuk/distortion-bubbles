@@ -11,6 +11,7 @@ namespace BubbleDistortionPhysics
         private Light _light;
         private float _lightIntensity;
         private MeshRenderer _meshRenderer;
+        public bool Flickers = true;
 
         public void Awake()
         {            
@@ -18,9 +19,12 @@ namespace BubbleDistortionPhysics
             _light = GetComponentInChildren<Light>();
             _lightIntensity = _light.intensity;
             _meshRenderer = GetComponent<MeshRenderer>();
-            _meshRenderer.material.EnableKeyword("_EMISSION");            
+            _meshRenderer.material.EnableKeyword("_EMISSION");
 
-            StartCoroutine(FlickerLight());
+            if (Flickers)
+            {
+                StartCoroutine(FlickerLight());
+            }
         }
     
 

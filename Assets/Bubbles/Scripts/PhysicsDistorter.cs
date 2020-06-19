@@ -28,7 +28,7 @@ namespace BubbleDistortionPhysics
 
             _rigidbody = GetComponent<Rigidbody>();
             _boxCollider = GetComponent<BoxCollider>();
-            _sphereCollider = GetComponent<SphereCollider>();
+            _sphereCollider = GetComponent<SphereCollider>();            
         }
 
         private void OnSelectExit(XRBaseInteractor interactor)
@@ -45,6 +45,10 @@ namespace BubbleDistortionPhysics
        
         public void FixedUpdate()
         {            
+            //if (PlayerController.Instance.ReverseGravity)
+            //{
+               // _rigidbody.AddForce(Vector3.up * 9.81f * Time.deltaTime);
+            //}
         }
 
         private void Update()
@@ -64,7 +68,8 @@ namespace BubbleDistortionPhysics
                 else
                 {
                     ExpandBubble();
-                }                
+                }
+                this.gameObject.layer = 0;
             }
         }
 

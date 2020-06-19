@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Experimental.XR;
@@ -19,9 +20,15 @@ namespace BubbleDistortionPhysics
         private bool _preventCharacterMovement;
         private bool _resetting;
         private bool _flipping;
+        private static PlayerController _instance;
+        public static PlayerController Instance { get { return _instance; } }
+        public bool Flipping { get { return _flipping; } }
         private MeshRenderer _outOfBoundsFace;
         public bool ReverseGravity;
         private float GravityMultiplier = 1f;
+
+        private List<GameObject> HeldObjects { get; set; } = new List<GameObject>();
+        private List<int> HeldObjectLayers { get; set; } = new List<int>();
 
         Vector2 currentState;
         Vector3 direction;
@@ -32,6 +39,7 @@ namespace BubbleDistortionPhysics
             capsuleCollider = GetComponent<CapsuleCollider>();
             MainCamera = GameObject.FindGameObjectWithTag("MainCamera");
             //_outOfBoundsFace = GameObject.FindGameObjectWithTag("OutOfBoundsFace").GetComponent<MeshRenderer>();
+            _instance = this;
         }
 
         private void Update()
@@ -53,14 +61,20 @@ namespace BubbleDistortionPhysics
                 
                 _blnReversingGravity = true;
 
-                var originalGravity = GravityMultiplier;
+                var originalGravity = Physics.gravity.y;
                 var t = 0f;
                 var intTimeToOpen = 0.3f;
                 while (t < 1)
                 {
                     t += Time.deltaTime / intTimeToOpen;
 
-                    GravityMultiplier = originalGravity + (t * 2 * -originalGravity);
+                    Physics.gravity = new Vector3(0, originalGravity + (t * 2f * -originalGravity), 0);
+
+                    if (Math.Abs(Physics.gravity.y) > Math.Abs(originalGravity))
+                    {
+                        Physics.gravity = new Vector3(0, -originalGravity, 0);
+                        break;
+                    }
                     //GravityMultiplier = 0;
 
                     //transform.rotation = Quaternion.Euler(0, 0,(ReverseGravity ? t : (1-t)) * 180);                    
@@ -89,12 +103,33 @@ namespace BubbleDistortionPhysics
             }
 
             _flipping = false;
+
+            SetHeldObjectsInteractable();
         }
 
         public void FlipGravity()
         {
             _flipping = true;
+
+            SetHeldObjectsUninteractable();
+
+            KeyObject keyObject = controller.gameObject.GetComponentInChildren<KeyObject>();
+            if (keyObject != null)
+            {
+                keyObject.GetComponent<Rigidbody>().isKinematic = true;
+            }
+
+            if (ReverseGravity)
+            {
+                PhysicsManager.Instance.GravityNormal();
+            }
+            else
+            {                
+                PhysicsManager.Instance.GravityInverse();
+            }
+            
             StartCoroutine(ReversePlayerGravity());
+
             StartCoroutine(RotatePlayer());
         }
 
@@ -111,7 +146,7 @@ namespace BubbleDistortionPhysics
             if (blnTriggerClicked)
             {
                 FlipGravity();
-            }
+            }            
 
             controller?.inputDevice.TryGetFeatureValue(CommonUsages.secondaryButton, out blnResetClicked);
 
@@ -153,7 +188,8 @@ namespace BubbleDistortionPhysics
                     InputFeatureUsage<Vector2> feature = CommonUsages.secondary2DAxis;
                     Vector3 movement;
 
-                    movement = new Vector3(0, -9.81f * GravityMultiplier, 0) * Time.deltaTime;
+                    //movement = new Vector3(0, -9.81f * GravityMultiplier, 0) * Time.deltaTime;
+                    movement = Physics.gravity * Time.deltaTime;
 
                     if (device.TryGetFeatureValue(feature, out currentState))
                     {
@@ -215,6 +251,35 @@ namespace BubbleDistortionPhysics
             
                // characterController.center = new Vector3(characterController.center.x, MainCamera.transform.localPosition.y, characterController.center.z);
             
+        }       
+
+        public static void AddGrabbedObject(GameObject gameObject)
+        {
+            OutputLogManager.OutputText("added grabbed object " + gameObject.name);
+            Instance.HeldObjects.Add(gameObject);
+            Instance.HeldObjectLayers.Add(gameObject.layer);
+        }
+
+        public static void RemoveGrabbedObject(GameObject gameObject)
+        {
+            Instance.HeldObjects.Remove(gameObject);
+            Instance.HeldObjectLayers.Remove(gameObject.layer);
+        }
+
+        private void SetHeldObjectsUninteractable()
+        {            
+            foreach (var item in HeldObjects)
+            {
+                item.layer = 30;
+            }
+        }
+
+        private void SetHeldObjectsInteractable()
+        {         
+            for (int i = 0; i < HeldObjects.Count; i++)
+            {
+                HeldObjects[i].layer = HeldObjectLayers[i];
+            }            
         }
     }
 }

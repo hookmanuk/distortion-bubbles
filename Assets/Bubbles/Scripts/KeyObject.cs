@@ -2,25 +2,41 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 
 namespace BubbleDistortionPhysics
 {
     public class KeyObject : MonoBehaviour
     {
-        public Rigidbody RigidBody { get; set; }        
+        public Rigidbody RigidBody { get; set; }
+        XRGrabInteractable m_GrabInteractable;        
 
         public void Start()
         {            
             RigidBody = GetComponent<Rigidbody>();
+            m_GrabInteractable = GetComponent<XRGrabInteractable>();
+            m_GrabInteractable.onSelectEnter.AddListener(OnGrabbed);
+            m_GrabInteractable.onSelectExit.AddListener(OnReleased);            
         }
-        
+
+        private void OnGrabbed(XRBaseInteractor obj)
+        {
+            PlayerController.AddGrabbedObject(gameObject);            
+        }
+
+        void OnReleased(XRBaseInteractor obj)
+        {
+            PlayerController.RemoveGrabbedObject(gameObject);
+        }
+
         private void OnCollisionEnter(Collision collision)
         {
             //OutputLogManager.OutputText(this.name + " collided with " + collision.gameObject.name);
             //OutputLogManager.OutputText(this.name + " collided with magnitude " + collision.relativeVelocity.magnitude.ToString());
             if (!collision.gameObject.CompareTag("Player") 
                 && !collision.gameObject.CompareTag("KeyLock")
-                && collision.relativeVelocity.magnitude > 1)
+                && collision.relativeVelocity.magnitude > 1
+                && !PlayerController.Instance.Flipping)
             {
                 OutputLogManager.OutputText(this.name + " collided with " + collision.gameObject.name);
 

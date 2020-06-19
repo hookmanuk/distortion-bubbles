@@ -52,5 +52,21 @@ namespace BubbleDistortionPhysics
 
             return newPlayerPosition;
         }
+
+        public void GravityInverse()
+        {
+            foreach (var item in PhysicsDistorters)
+            {
+                item.GetComponent<Rigidbody>().useGravity = false;
+            }
+        }
+
+        public void GravityNormal()
+        {
+            foreach (var item in PhysicsDistorters)
+            {
+                item.GetComponent<Rigidbody>().useGravity = true;
+            }
+        }
     }
 }
