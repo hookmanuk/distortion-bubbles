@@ -153,11 +153,12 @@ MonoBehaviour:
   m_RenderPipelineRayTracingResources: {fileID: 0}
   m_DefaultVolumeProfile: {fileID: 11400000, guid: cb6c31401c8587f488d484649ec8afe5,
     type: 2}
-  m_DefaultLookDevProfile: {fileID: 0}
+  m_DefaultLookDevProfile: {fileID: 11400000, guid: 254c4fe87beb7be4fa72e1681edbed02,
+    type: 2}
   m_RenderingPathDefaultCameraFrameSettings:
     bitDatas:
       data1: 70297877217101
-      data2: 4539628425463136256
+      data2: 4539628425461039104
     lodBias: 1
     lodBiasMode: 0
     lodBiasQualityLevel: 0
