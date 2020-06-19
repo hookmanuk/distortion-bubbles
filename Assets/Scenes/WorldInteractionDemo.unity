@@ -5146,6 +5146,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1035802786}
     m_Modifications:
+    - target: {fileID: 4880012715514940730, guid: 0079057789770404db6b36e24d66af71,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.349
+      objectReference: {fileID: 0}
     - target: {fileID: 5184428746208041340, guid: 0079057789770404db6b36e24d66af71,
         type: 3}
       propertyPath: m_Name
@@ -5235,6 +5240,21 @@ PrefabInstance:
         type: 3}
       propertyPath: ButtonEnabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8753783714986361416, guid: 0079057789770404db6b36e24d66af71,
+        type: 3}
+      propertyPath: m_Intensity
+      value: 3.9788735
+      objectReference: {fileID: 0}
+    - target: {fileID: 8753783714986361416, guid: 0079057789770404db6b36e24d66af71,
+        type: 3}
+      propertyPath: m_Range
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9006832338528567100, guid: 0079057789770404db6b36e24d66af71,
+        type: 3}
+      propertyPath: m_Intensity
+      value: 50
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0079057789770404db6b36e24d66af71, type: 3}
@@ -8170,17 +8190,17 @@ PrefabInstance:
     - target: {fileID: 1717954561456925283, guid: 3473a9ca2b6bef2458a4f52e10903b7d,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 8.62
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: 1717954561456925283, guid: 3473a9ca2b6bef2458a4f52e10903b7d,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.09
+      value: 0.32
       objectReference: {fileID: 0}
     - target: {fileID: 1717954561456925283, guid: 3473a9ca2b6bef2458a4f52e10903b7d,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 6.7
+      value: -0.71
       objectReference: {fileID: 0}
     - target: {fileID: 1717954561456925283, guid: 3473a9ca2b6bef2458a4f52e10903b7d,
         type: 3}
