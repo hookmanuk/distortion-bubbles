@@ -8,13 +8,14 @@
     "com.unity.ide.rider": "1.2.1",
     "com.unity.ide.visualstudio": "2.0.1",
     "com.unity.ide.vscode": "1.2.0",
+    "com.unity.inputsystem": "1.0.0",
     "com.unity.render-pipelines.high-definition": "7.4.1",
     "com.unity.test-framework": "1.1.13",
     "com.unity.textmeshpro": "3.0.0-preview.1",
     "com.unity.ugui": "1.0.0",
     "com.unity.xr.interaction.toolkit": "0.9.3-preview",
     "com.unity.xr.management": "3.2.10",
-    "com.valve.openvr": "https://github.com/ValveSoftware/steamvr_unity_plugin.git#UnityXRPlugin",
+    "com.valvesoftware.unity.openvr": "1.0.0-preview.4",
     "com.unity.modules.ai": "1.0.0",
     "com.unity.modules.androidjni": "1.0.0",
     "com.unity.modules.animation": "1.0.0",
@@ -50,10 +51,14 @@
   "testables": [
     "com.unity.xr.interaction.toolkit"
   ],
-  "lock": {
-    "com.valve.openvr": {
-      "revision": "UnityXRPlugin",
-      "hash": "db9e35089d6c1d7b7c4846b7ca5fe25c47163482"
+  "scopedRegistries": [
+    {
+      "name": "Valve",
+      "url": "https://registry.npmjs.org/",
+      "scopes": [
+        "com.valvesoftware",
+        "com.valvesoftware.unity.openvr"
+      ]
     }
-  }
+  ]
 }
