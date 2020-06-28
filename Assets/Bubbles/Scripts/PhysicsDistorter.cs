@@ -16,6 +16,7 @@ namespace BubbleDistortionPhysics
         private SphereCollider _sphereCollider;
         public DistorterType DistorterType;
         public bool ExpandAsDisc;
+        public bool Expanded { get; set; }
         
         public void Start()
         {
@@ -61,6 +62,8 @@ namespace BubbleDistortionPhysics
 
             if (_thrown && collision.gameObject.GetComponent<PhysicsSurface>() != null)
             {
+                Expanded = true;
+
                 if (ExpandAsDisc)
                 {
                     ExpandDisc();

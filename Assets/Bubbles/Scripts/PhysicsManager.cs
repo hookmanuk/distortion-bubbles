@@ -57,7 +57,10 @@ namespace BubbleDistortionPhysics
         {
             foreach (var item in PhysicsDistorters)
             {
-                item.GetComponent<Rigidbody>().useGravity = false;
+                if (!item.Expanded)
+                {
+                    item.GetComponent<Rigidbody>().useGravity = false;
+                }
             }
         }
 
@@ -65,7 +68,10 @@ namespace BubbleDistortionPhysics
         {
             foreach (var item in PhysicsDistorters)
             {
-                item.GetComponent<Rigidbody>().useGravity = true;
+                if (!item.Expanded)
+                {
+                    item.GetComponent<Rigidbody>().useGravity = true;
+                }
             }
         }
     }
