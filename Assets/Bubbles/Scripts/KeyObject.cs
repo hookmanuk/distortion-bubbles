@@ -40,13 +40,13 @@ namespace BubbleDistortionPhysics
             {
                 OutputLogManager.OutputText(this.name + " collided with " + collision.gameObject.name);
 
+                //todo, this now has no mesh, so we should instead go through each child object, which does
                 StartCoroutine(SplitMesh());
             }
         }
 
         public IEnumerator SplitMesh()
         {
-
             if (GetComponent<MeshFilter>() == null && GetComponent<SkinnedMeshRenderer>() == null)
             {
                 yield return null;

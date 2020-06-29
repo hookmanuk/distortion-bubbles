@@ -22,7 +22,7 @@ MonoBehaviour:
     m_Value: 0
   color:
     m_OverrideState: 1
-    m_Value: {r: 0.4056604, g: 0, b: 0, a: 1}
+    m_Value: {r: 0.18867922, g: 0, b: 0, a: 1}
     hdr: 1
     showAlpha: 0
     showEyeDropper: 1
@@ -51,7 +51,7 @@ MonoBehaviour:
     min: 0
   baseHeight:
     m_OverrideState: 1
-    m_Value: -263.7
+    m_Value: -870
   maximumHeight:
     m_OverrideState: 0
     m_Value: 168.4
