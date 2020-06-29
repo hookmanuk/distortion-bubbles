@@ -15,7 +15,10 @@ namespace BubbleDistortionPhysics
         private int _ticksSincePathChange = 0;
         private Vector3 _startPosition;
         private Quaternion _startRotation;
-
+        private Material _material;        
+        private Color _emissiveColor;
+        private float _lastBassLevelUsed;
+        private DateTime _lastEmission;        
 
         private bool _isSlowed;
 
@@ -110,6 +113,10 @@ namespace BubbleDistortionPhysics
 
             _startPosition = transform.position;
             _startRotation = transform.rotation;
+
+            _material = GetComponent<MeshRenderer>().material;
+
+            _emissiveColor = new Color(0.2f, 0, 0);
         }
 
         public void Reset()
@@ -170,7 +177,50 @@ namespace BubbleDistortionPhysics
                 RigidBody.velocity = Speed * RigidBody.velocity.normalized;
 
                 _ticksSincePathChange++;
-            }            
+            }
+
+            //if (Math.Abs(_lastBassLevelUsed - AudioManager.Instance.BassLevel / 2f) > 0.2f)
+            //{
+            //    _material.SetColor("_EmissiveColor", _emissiveColor * AudioManager.Instance.BassLevel / 2f);
+            //    _lastBassLevelUsed = AudioManager.Instance.BassLevel / 2f;
+            //}
+
+            if (AudioManager.Instance.BassLevel == 2f)
+            {
+                _lastEmission = DateTime.Now;
+                _material.SetColor("_EmissiveColor", _emissiveColor * AudioManager.Instance.BassLevel / 2f);
+            }
+            else
+            {
+                if ((DateTime.Now - _lastEmission).TotalMilliseconds > 100)
+                {
+                    _material.SetColor("_EmissiveColor", _emissiveColor * 0);
+                }
+            }
+
+
+            //long ticksSinceBeat = DateTime.Now.Ticks - AudioManager.Instance.LastBeatTicks;
+            //if (ticksSinceBeat < 1000)
+            //{
+            //    if (!_isEmitting)
+            //    {
+            //        _isEmitting = true;
+            //        Color color = new Color(255, 255, 255);
+
+            //        // for some reason, the desired intensity value (set in the UI slider) needs to be modified slightly for proper internal consumption
+            //        //float adjustedIntensity = 0.3f;
+
+            //        // redefine the color with intensity factored in - this should result in the UI slider matching the desired value
+            //        //color *= Mathf.Pow(2.0F, adjustedIntensity);
+            //        _material.SetColor("_BaseColor", color);                    
+            //    }
+            //}
+            //else
+            //{
+            //    _isEmitting = false;
+            //    Color color = new Color(0, 0, 0);
+            //    _material.SetColor("_Color", color);
+            //}
         }
 
         private void Update()

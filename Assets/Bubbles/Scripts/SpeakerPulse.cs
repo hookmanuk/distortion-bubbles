@@ -1,46 +1,50 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace BubbleDistortionPhysics
 {
     public class SpeakerPulse : MonoBehaviour
     {
-        AudioListener Audio;
+        public GameObject[] ball;
+        bool isAboveMax = false;
 
-        Color colorStart = Color.red;
-        Color colorEnd = Color.green;
-        float duration = 1.0f;
-
-        public GameObject ball;
-        GameObject ball2;
-        Light pointLight;        
-        int freq = 0;
-        float[] number = new float[64];
-        float scale;
-        int updateEvery = 10;
-        int currentFrame = 0;
+        public DateTime LastBeat { get; set; }
 
         private void FixedUpdate()
         {
-            currentFrame++;
-
-            //if (currentFrame == updateEvery)
-            //{
-                AudioListener.GetSpectrumData(number, 0, FFTWindow.Rectangular);
-                scale = Math.Max(Math.Min(number[freq] * 40f, 2), 0.5f);
-                ball.transform.localScale = new Vector3(scale, scale, scale);
-
-            //    currentFrame = 0;
-            //}
-
-            //Camera.main.fieldOfView = 60 + number[0] * 15;
-            //pointLight.GetComponent<Light>().intensity = 0.7f + number[freq] * 1.2f;
-
-            //var lerp : float = Mathf.PingPong(number[freq], duration) / duration;
-            //ball2.renderer.material.color = Color.Lerp(colorStart, colorEnd, lerp);
+            if (!isAboveMax && AudioManager.Instance.BassLevel >= 2)
+            {
+                StartCoroutine(ScaleOverTime(0.04f));
+                isAboveMax = true;                
+            }
+            else if (isAboveMax && AudioManager.Instance.BassLevel < 2)
+            {
+                if ((DateTime.Now - AudioManager.Instance.LastBeat).TotalMilliseconds > 100)
+                {
+                    isAboveMax = false;
+                    ball[0].transform.localScale = new Vector3(1f, 1f, 1f);
+                    ball[1].transform.localScale = new Vector3(1f, 1f, 1f);
+                }
+            }
         }
 
+        IEnumerator ScaleOverTime(float time)
+        {
+            Vector3 originalScale = ball[0].transform.localScale;
+            Vector3 destinationScale = new Vector3(1.7f, 1.7f, 1.7f);
+
+            float currentTime = 0.0f;
+
+            do
+            {
+                ball[0].transform.localScale = Vector3.Lerp(originalScale, destinationScale, currentTime / time);
+                ball[1].transform.localScale = Vector3.Lerp(originalScale, destinationScale, currentTime / time);
+                currentTime += Time.deltaTime;
+                yield return null;
+            } while (currentTime <= time);
+        }
     }
 }
