@@ -35,7 +35,7 @@ namespace BubbleDistortionPhysics
         {            
             AudioListener.GetSpectrumData(number, 0, FFTWindow.Hamming);
             //OutputLogManager.OutputText((number[freq] * 25f).ToString());
-            BassLevel = Math.Max(Math.Min(number[freq] * 23f, 2f), 0.5f);
+            BassLevel = Math.Max(Math.Min(number[freq] * 28f, 2f), 0.5f);
 
             if (!isAboveMax && AudioManager.Instance.BassLevel >= 2)
             {

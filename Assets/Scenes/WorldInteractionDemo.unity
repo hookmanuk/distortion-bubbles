@@ -1365,7 +1365,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_SelectActionTrigger: 1
-  m_HideControllerOnSelect: 0
+  m_HideControllerOnSelect: 1
   m_PlayAudioClipOnSelectEnter: 0
   m_AudioClipForOnSelectEnter: {fileID: 0}
   m_PlayAudioClipOnSelectExit: 0
@@ -1534,7 +1534,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 423402864}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.75, y: 3.25, z: 0.1}
+  m_LocalPosition: {x: 6.75, y: 3.25, z: 0.225}
   m_LocalScale: {x: 1.5, y: 2, z: 0.1}
   m_Children: []
   m_Father: {fileID: 1035802786}
@@ -4789,7 +4789,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 122
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!65 &1056047373
 BoxCollider:
@@ -8106,7 +8106,7 @@ GameObject:
   m_TagString: Forcefield
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 1
   m_IsActive: 1
 --- !u!4 &2134804972
 Transform:
@@ -8168,7 +8168,7 @@ MeshRenderer:
   m_StitchLightmapSeams: 1
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxDistance: 2
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
@@ -8560,7 +8560,7 @@ PrefabInstance:
     - target: {fileID: 1717954560309945982, guid: 3473a9ca2b6bef2458a4f52e10903b7d,
         type: 3}
       propertyPath: m_HideControllerOnSelect
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1717954560542311229, guid: 3473a9ca2b6bef2458a4f52e10903b7d,
         type: 3}
@@ -8645,17 +8645,17 @@ PrefabInstance:
     - target: {fileID: 1717954561456925283, guid: 3473a9ca2b6bef2458a4f52e10903b7d,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 7
+      value: -0.21
       objectReference: {fileID: 0}
     - target: {fileID: 1717954561456925283, guid: 3473a9ca2b6bef2458a4f52e10903b7d,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.27
+      value: 0.38
       objectReference: {fileID: 0}
     - target: {fileID: 1717954561456925283, guid: 3473a9ca2b6bef2458a4f52e10903b7d,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 11.978
+      value: -1.14
       objectReference: {fileID: 0}
     - target: {fileID: 1717954561456925283, guid: 3473a9ca2b6bef2458a4f52e10903b7d,
         type: 3}
@@ -9020,7 +9020,7 @@ PrefabInstance:
     - target: {fileID: 1946246297316693543, guid: 8b5f3bb9d70b0ab4b9088c02c6821b80,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.1
+      value: 0.225
       objectReference: {fileID: 0}
     - target: {fileID: 1946246297316693543, guid: 8b5f3bb9d70b0ab4b9088c02c6821b80,
         type: 3}
@@ -9587,6 +9587,11 @@ PrefabInstance:
       propertyPath: Speed
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 5818682025818055633, guid: 4c7b57db42ece4e46816883e535611a3,
+        type: 3}
+      propertyPath: m_Constraints
+      value: 126
+      objectReference: {fileID: 0}
     - target: {fileID: 5818682025818055635, guid: 4c7b57db42ece4e46816883e535611a3,
         type: 3}
       propertyPath: m_ImportantGI
@@ -9615,7 +9620,7 @@ PrefabInstance:
     - target: {fileID: 5818682025818055646, guid: 4c7b57db42ece4e46816883e535611a3,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.5
+      value: 1.329
       objectReference: {fileID: 0}
     - target: {fileID: 5818682025818055646, guid: 4c7b57db42ece4e46816883e535611a3,
         type: 3}
@@ -9804,7 +9809,7 @@ PrefabInstance:
     - target: {fileID: 5818682025818055632, guid: 4c7b57db42ece4e46816883e535611a3,
         type: 3}
       propertyPath: Path.Array.data[0].x
-      value: 3
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5818682025818055632, guid: 4c7b57db42ece4e46816883e535611a3,
         type: 3}
@@ -9819,7 +9824,7 @@ PrefabInstance:
     - target: {fileID: 5818682025818055632, guid: 4c7b57db42ece4e46816883e535611a3,
         type: 3}
       propertyPath: Path.Array.data[1].x
-      value: -0.5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5818682025818055632, guid: 4c7b57db42ece4e46816883e535611a3,
         type: 3}
@@ -9834,7 +9839,7 @@ PrefabInstance:
     - target: {fileID: 5818682025818055632, guid: 4c7b57db42ece4e46816883e535611a3,
         type: 3}
       propertyPath: Speed
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5818682025818055633, guid: 4c7b57db42ece4e46816883e535611a3,
         type: 3}
@@ -9854,7 +9859,7 @@ PrefabInstance:
     - target: {fileID: 5818682025818055646, guid: 4c7b57db42ece4e46816883e535611a3,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5818682025818055646, guid: 4c7b57db42ece4e46816883e535611a3,
         type: 3}
