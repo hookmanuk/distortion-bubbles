@@ -9,7 +9,8 @@ namespace BubbleDistortionPhysics
     public class KeyObject : MonoBehaviour
     {
         public Rigidbody RigidBody { get; set; }
-        XRGrabInteractable m_GrabInteractable;        
+        XRGrabInteractable m_GrabInteractable;
+        public XRInteractionManager InteractionManager;
 
         public void Start()
         {            
@@ -35,13 +36,50 @@ namespace BubbleDistortionPhysics
             //OutputLogManager.OutputText(this.name + " collided with magnitude " + collision.relativeVelocity.magnitude.ToString());
             if (!collision.gameObject.CompareTag("Player") 
                 && !collision.gameObject.CompareTag("KeyLock")
-                && collision.relativeVelocity.magnitude > 1
+                && collision.relativeVelocity.magnitude > 3
                 && !PlayerController.Instance.Flipping)
             {
                 OutputLogManager.OutputText(this.name + " collided with " + collision.gameObject.name);
 
                 //todo, this now has no mesh, so we should instead go through each child object, which does
-                StartCoroutine(SplitMesh());
+                //StartCoroutine(SplitMesh());
+
+                try
+                {
+                    InteractionManager.SelectExit(PlayerController.Instance.LeftController.GetComponent<XRDirectInteractor>(), this.GetComponent<XRGrabInteractable>());
+                    GetComponent<PhysicsObject>().Reset();
+                }
+                catch (Exception)
+                {                    
+                }
+
+                try
+                {
+                    InteractionManager.SelectExit(PlayerController.Instance.RightController.GetComponent<XRDirectInteractor>(), this.GetComponent<XRGrabInteractable>());
+                    GetComponent<PhysicsObject>().Reset();
+                }
+                catch (Exception)
+                {
+                }
+                
+
+                            
+            }
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.gameObject.CompareTag("Forcefield"))
+            {
+                OutputLogManager.OutputText(this.name + " collided with " + other.gameObject.name);
+
+                //todo, this now has no mesh, so we should instead go through each child object, which does
+                //StartCoroutine(SplitMesh());
+
+
+                GetComponent<PhysicsObject>().Reset();
+                //InteractionManager.RegisterInteractable(this.GetComponent<XRGrabInteractable>());
+
             }
         }
 

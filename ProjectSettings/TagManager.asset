@@ -11,6 +11,7 @@ TagManager:
   - BubbleShrink
   - KeyLock
   - BubbleGravity
+  - Forcefield
   layers:
   - Default
   - TransparentFX

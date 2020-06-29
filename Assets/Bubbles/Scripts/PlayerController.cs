@@ -14,7 +14,8 @@ namespace BubbleDistortionPhysics
         public float speed = 1;
         public CharacterController characterController { get; set; }
         public CapsuleCollider capsuleCollider { get; set; }
-        public XRController controller;
+        public XRController LeftController;
+        public XRController RightController;
         public GameObject MainCamera { get; set; }
 
         private bool _preventCharacterMovement;
@@ -113,7 +114,7 @@ namespace BubbleDistortionPhysics
 
             SetHeldObjectsUninteractable();
 
-            KeyObject keyObject = controller.gameObject.GetComponentInChildren<KeyObject>();
+            KeyObject keyObject = LeftController.gameObject.GetComponentInChildren<KeyObject>();
             if (keyObject != null)
             {
                 keyObject.GetComponent<Rigidbody>().isKinematic = true;
@@ -141,14 +142,14 @@ namespace BubbleDistortionPhysics
             Vector2 state;
             state = new Vector2();
 
-            controller?.inputDevice.TryGetFeatureValue(CommonUsages.secondary2DAxisClick, out blnTriggerClicked);
+            LeftController?.inputDevice.TryGetFeatureValue(CommonUsages.secondary2DAxisClick, out blnTriggerClicked);
             
             if (blnTriggerClicked)
             {
                 FlipGravity();
             }            
 
-            controller?.inputDevice.TryGetFeatureValue(CommonUsages.secondaryButton, out blnResetClicked);
+            LeftController?.inputDevice.TryGetFeatureValue(CommonUsages.secondaryButton, out blnResetClicked);
 
             if (blnResetClicked)
             {
@@ -184,7 +185,7 @@ namespace BubbleDistortionPhysics
                     characterController.center = new Vector3(MainCamera.transform.localPosition.x, MainCamera.transform.localPosition.y / 2, MainCamera.transform.localPosition.z);
 
 
-                    InputDevice device = controller.inputDevice;
+                    InputDevice device = LeftController.inputDevice;
                     InputFeatureUsage<Vector2> feature = CommonUsages.secondary2DAxis;
                     Vector3 movement;
 

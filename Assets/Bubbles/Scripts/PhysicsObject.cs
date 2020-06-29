@@ -114,7 +114,7 @@ namespace BubbleDistortionPhysics
             _startPosition = transform.position;
             _startRotation = transform.rotation;
 
-            _material = GetComponent<MeshRenderer>().material;
+            _material = GetComponent<MeshRenderer>()?.material;
 
             _emissiveColor = new Color(0.2f, 0, 0);
         }
@@ -185,16 +185,19 @@ namespace BubbleDistortionPhysics
             //    _lastBassLevelUsed = AudioManager.Instance.BassLevel / 2f;
             //}
 
-            if (AudioManager.Instance.BassLevel == 2f)
+            if (_material != null)
             {
-                _lastEmission = DateTime.Now;
-                _material.SetColor("_EmissiveColor", _emissiveColor * AudioManager.Instance.BassLevel / 2f);
-            }
-            else
-            {
-                if ((DateTime.Now - _lastEmission).TotalMilliseconds > 100)
+                if (AudioManager.Instance.BassLevel == 2f)
                 {
-                    _material.SetColor("_EmissiveColor", _emissiveColor * 0);
+                    _lastEmission = DateTime.Now;
+                    _material.SetColor("_EmissiveColor", _emissiveColor * AudioManager.Instance.BassLevel / 2f);
+                }
+                else
+                {
+                    if ((DateTime.Now - _lastEmission).TotalMilliseconds > 100)
+                    {
+                        _material.SetColor("_EmissiveColor", _emissiveColor * 0);
+                    }
                 }
             }
 
