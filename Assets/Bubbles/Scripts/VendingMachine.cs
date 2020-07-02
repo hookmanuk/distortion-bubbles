@@ -21,6 +21,7 @@ namespace BubbleDistortionPhysics
         public VendingButton GrowButton;
         public VendingButton ShrinkButton;
         public VendingButton GravityButton;
+        public int Order;
 
         public PhysicsDistorter BubbleSlow { get; set; }
         public PhysicsDistorter BubbleGrow { get; set; }

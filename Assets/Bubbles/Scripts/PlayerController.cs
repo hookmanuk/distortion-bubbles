@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Experimental.XR;
 using UnityEngine.XR;
@@ -20,6 +21,7 @@ namespace BubbleDistortionPhysics
 
         private bool _preventCharacterMovement;
         private bool _resetting;
+        private DateTime _lastSkipTime = DateTime.Now;
         private bool _flipping;
         private static PlayerController _instance;
         public static PlayerController Instance { get { return _instance; } }
@@ -28,7 +30,7 @@ namespace BubbleDistortionPhysics
         public bool ReverseGravity;
         private float GravityMultiplier = 1f;
 
-        private List<GameObject> HeldObjects { get; set; } = new List<GameObject>();
+        public List<GameObject> HeldObjects { get; set; } = new List<GameObject>();
         private List<int> HeldObjectLayers { get; set; } = new List<int>();
 
         Vector2 currentState;
@@ -137,16 +139,34 @@ namespace BubbleDistortionPhysics
         void FixedUpdate()
         {
             bool blnResetClicked = false;
-            bool blnTriggerClicked = false;
-            bool blnClicked = false;
-            Vector2 state;
-            state = new Vector2();
+            bool blnDebugSkipClicked = false;
+            int LastVend = -1;            
 
-            LeftController?.inputDevice.TryGetFeatureValue(CommonUsages.secondary2DAxisClick, out blnTriggerClicked);
-            
-            if (blnTriggerClicked)
+            RightController?.inputDevice.TryGetFeatureValue(CommonUsages.secondaryButton, out blnDebugSkipClicked);
+
+            if (blnDebugSkipClicked && _lastSkipTime < DateTime.Now.AddSeconds(-.5f))
             {
-                FlipGravity();
+                _lastSkipTime = DateTime.Now;
+                VendingMachine vendingMachine = PhysicsManager.Instance.VendingMachines.OrderByDescending(vm => vm.LastButtonPressed).FirstOrDefault();
+
+                if (vendingMachine != null)
+                {
+                    LastVend = vendingMachine.Order;
+                }
+                LastVend++;
+
+                OutputLogManager.OutputText("Skipping to machine " + LastVend.ToString());
+
+                vendingMachine = PhysicsManager.Instance.VendingMachines.Where(vm => vm.Order == LastVend).FirstOrDefault();
+
+                if (vendingMachine == null)
+                { 
+                    vendingMachine = PhysicsManager.Instance.VendingMachines.Where(vm => vm.Order == 0).FirstOrDefault();
+                }
+             
+                vendingMachine.LastButtonPressed = DateTime.Now;             
+
+                Reset();
             }            
 
             LeftController?.inputDevice.TryGetFeatureValue(CommonUsages.secondaryButton, out blnResetClicked);

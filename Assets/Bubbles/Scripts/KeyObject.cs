@@ -28,58 +28,30 @@ namespace BubbleDistortionPhysics
         void OnReleased(XRBaseInteractor obj)
         {
             PlayerController.RemoveGrabbedObject(gameObject);
+            if (gameObject.activeSelf == false)
+            {
+                gameObject.SetActive(true);
+                GetComponent<PhysicsObject>().Reset();
+            }
         }
 
         private void OnCollisionEnter(Collision collision)
         {
-            //OutputLogManager.OutputText(this.name + " collided with " + collision.gameObject.name);
-            //OutputLogManager.OutputText(this.name + " collided with magnitude " + collision.relativeVelocity.magnitude.ToString());
-            if (!collision.gameObject.CompareTag("Player") 
-                && !collision.gameObject.CompareTag("KeyLock")
-                && collision.relativeVelocity.magnitude > 3
-                && !PlayerController.Instance.Flipping)
-            {
-                OutputLogManager.OutputText(this.name + " collided with " + collision.gameObject.name);
-
-                //todo, this now has no mesh, so we should instead go through each child object, which does
-                //StartCoroutine(SplitMesh());
-
-                try
-                {
-                    InteractionManager.SelectExit(PlayerController.Instance.LeftController.GetComponent<XRDirectInteractor>(), this.GetComponent<XRGrabInteractable>());
-                    GetComponent<PhysicsObject>().Reset();
-                }
-                catch (Exception)
-                {                    
-                }
-
-                try
-                {
-                    InteractionManager.SelectExit(PlayerController.Instance.RightController.GetComponent<XRDirectInteractor>(), this.GetComponent<XRGrabInteractable>());
-                    GetComponent<PhysicsObject>().Reset();
-                }
-                catch (Exception)
-                {
-                }
-                
-
-                            
-            }
         }
 
         private void OnTriggerEnter(Collider other)
         {
+            OutputLogManager.OutputText(this.name + " triggered with " + other.gameObject.name);
             if (other.gameObject.CompareTag("Forcefield"))
             {
-                OutputLogManager.OutputText(this.name + " collided with " + other.gameObject.name);
-
-                //todo, this now has no mesh, so we should instead go through each child object, which does
-                //StartCoroutine(SplitMesh());
-
-
-                GetComponent<PhysicsObject>().Reset();
-                //InteractionManager.RegisterInteractable(this.GetComponent<XRGrabInteractable>());
-
+                if (PlayerController.Instance.HeldObjects.Contains(gameObject))
+                {
+                    gameObject.SetActive(false);
+                }
+                else
+                {
+                    GetComponent<PhysicsObject>().Reset();
+                }
             }
         }
 
