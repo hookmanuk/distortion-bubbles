@@ -82,8 +82,7 @@ namespace BubbleDistortionPhysics
                 
                 previousHandHeight = newHandHeight;
 
-                float newPosition = transform.localPosition.z - handDifference;
-                OutputLogManager.OutputText(newPosition.ToString());
+                float newPosition = transform.localPosition.z - handDifference;                
                 SetYPosition(newPosition);
 
                 CheckPress();
@@ -137,6 +136,11 @@ namespace BubbleDistortionPhysics
                     {
                         bubbleClone = Instantiate(_vendingMachine.BubbleGravity.gameObject);
                         _vendingMachine.SetStockGravityLevel(_vendingMachine.StockGravityLevel - 1);
+                    }
+                    else if (Type == DistorterType.Launch)
+                    {
+                        bubbleClone = Instantiate(_vendingMachine.BubbleLaunch.gameObject);
+                        _vendingMachine.SetStockLaunchLevel(_vendingMachine.StockLaunchLevel - 1);
                     }
 
                     bubbleClone.tag = "Untagged";

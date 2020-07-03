@@ -12,6 +12,7 @@ TagManager:
   - KeyLock
   - BubbleGravity
   - Forcefield
+  - BubbleLaunch
   layers:
   - Default
   - TransparentFX

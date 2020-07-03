@@ -12,21 +12,25 @@ namespace BubbleDistortionPhysics
         public int StockGrowLevel;
         public int StockShrinkLevel;
         public int StockGravityLevel;
+        public int StockLaunchLevel;
 
         public SimpleHelvetica CountSlowText;
         public SimpleHelvetica CountGrowText;
         public SimpleHelvetica CountShrinkText;
         public SimpleHelvetica CountGravityText;
+        public SimpleHelvetica CountLaunchText;
         public VendingButton SlowButton;
         public VendingButton GrowButton;
         public VendingButton ShrinkButton;
         public VendingButton GravityButton;
+        public VendingButton LaunchButton;
         public int Order;
 
         public PhysicsDistorter BubbleSlow { get; set; }
         public PhysicsDistorter BubbleGrow { get; set; }
         public PhysicsDistorter BubbleShrink { get; set; }
         public PhysicsDistorter BubbleGravity { get; set; }
+        public PhysicsDistorter BubbleLaunch { get; set; }
 
         public DateTime LastButtonPressed { get; set; }
 
@@ -37,6 +41,7 @@ namespace BubbleDistortionPhysics
         private int _startStockGrowLevel;
         private int _startStockShrinkLevel;
         private int _startStockGravityLevel;
+        private int _startStockLaunchLevel;
 
         private void Start()
         {
@@ -49,11 +54,13 @@ namespace BubbleDistortionPhysics
             BubbleGrow = GameObject.FindGameObjectWithTag("BubbleGrow").GetComponent<PhysicsDistorter>();
             BubbleShrink = GameObject.FindGameObjectWithTag("BubbleShrink").GetComponent<PhysicsDistorter>();
             BubbleGravity = GameObject.FindGameObjectWithTag("BubbleGravity").GetComponent<PhysicsDistorter>();
+            BubbleLaunch = GameObject.FindGameObjectWithTag("BubbleLaunch").GetComponent<PhysicsDistorter>();
 
             SetStockSlowLevel(StockSlowLevel);
             SetStockGrowLevel(StockGrowLevel);
             SetStockShrinkLevel(StockShrinkLevel);
             SetStockGravityLevel(StockGravityLevel);
+            SetStockLaunchLevel(StockLaunchLevel);
 
             LastButtonPressed = DateTime.Now;
             
@@ -62,6 +69,7 @@ namespace BubbleDistortionPhysics
             _startStockGrowLevel = StockGrowLevel;
             _startStockShrinkLevel = StockShrinkLevel;
             _startStockGravityLevel = StockGravityLevel;
+            _startStockLaunchLevel = StockLaunchLevel;
         }
 
         public void OnDestroy()
@@ -86,6 +94,7 @@ namespace BubbleDistortionPhysics
             SetStockGrowLevel(_startStockGrowLevel);
             SetStockShrinkLevel(_startStockShrinkLevel);
             SetStockGravityLevel(_startStockGravityLevel);
+            SetStockLaunchLevel(_startStockLaunchLevel);
         }
 
         public void SetStockSlowLevel(int stockLevel)
@@ -153,6 +162,23 @@ namespace BubbleDistortionPhysics
             else
             {
                 GravityButton.ButtonEnabled = true;
+            }
+        }
+
+        public void SetStockLaunchLevel(int stockLevel)
+        {
+            StockLaunchLevel = stockLevel;
+
+            CountLaunchText.Text = StockLaunchLevel.ToString();
+            CountLaunchText.GenerateText();
+
+            if (stockLevel == 0)
+            {
+                LaunchButton.ButtonEnabled = false;
+            }
+            else
+            {
+                LaunchButton.ButtonEnabled = true;
             }
         }
     }

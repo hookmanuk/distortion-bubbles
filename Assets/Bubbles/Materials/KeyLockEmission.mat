@@ -21,16 +21,16 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: KeyLockEmission
-  m_Shader: {fileID: 4800000, guid: 6e4ae4064600d784cac1e41a9e6f2e59, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: bcd1d74963857ab4392d391eaae05ff6,
+    type: 3}
   m_ShaderKeywords: _BLENDMODE_ALPHA _BLENDMODE_PRESERVE_SPECULAR_LIGHTING _ENABLE_FOG_ON_TRANSPARENT
     _NORMALMAP_TANGENT_SPACE _SURFACE_TYPE_TRANSPARENT
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3000
+  m_CustomRenderQueue: -1
   stringTagMap:
     MotionVector: User
-    RenderType: Transparent
   disabledShaderPasses:
   - DistortionVectors
   - MOTIONVECTORS
@@ -129,6 +129,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - HIDDEN_RATIO: 0
     - Vector1_222091CD: 0.02
     - Vector1_5EE3892: 30
     - Vector1_7DF6A6FF: 0
@@ -136,6 +137,7 @@ Material:
     - Vector1_E28EF18F: 5
     - Vector1_EC3EC3E5: 0.2
     - Vector1_F2B391F2: 0.05
+    - Vector1_F4DF208D: 0
     - _AORemapMax: 1
     - _AORemapMin: 0
     - _ATDistance: 1
@@ -256,8 +258,10 @@ Material:
     - _ZTestTransparent: 4
     - _ZWrite: 0
     m_Colors:
+    - Color_1B255A6D: {r: 0, g: 0.9820245, b: 1.049595, a: 0}
     - Color_3EFBD9C5: {r: 0, g: 0.22920491, b: 0.8113208, a: 0}
     - Color_5313CDBC: {r: 0, g: 0, b: 0, a: 0}
+    - Color_A2F84ACB: {r: 0, g: 0.9705882, b: 1, a: 0}
     - Color_CA5FECEA: {r: 1, g: 0.02417053, b: 0, a: 0}
     - Color_F1C66BCE: {r: 0, g: 0.8729156, b: 1.907273, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 0.003921569}

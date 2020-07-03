@@ -83,10 +83,10 @@ namespace BubbleDistortionPhysics
             _rigidbody.freezeRotation = true;
             _boxCollider.enabled = false;
             _sphereCollider.enabled = true;
-            transform.localScale = new Vector3(1, 0.1f, 1);
+            transform.localScale = new Vector3(1, 0.2f, 1);
             //transform.localPosition = transform.localPosition + new Vector3(0, 0.09f, 0);
-            transform.localRotation = new Quaternion(0, 0, 0, 0);
-            _grabInteractable.interactionLayerMask = LayerMask.GetMask("Nothing");
+            transform.rotation = new Quaternion(0, 0, 0, 0);
+            _grabInteractable.interactionLayerMask = LayerMask.GetMask("Nothing");            
         }
 
         private void ExpandBubble()
@@ -124,9 +124,16 @@ namespace BubbleDistortionPhysics
                         other.gameObject.GetComponent<PhysicsObject>().IsShrunk = true;
                     }
                 }
-                if (other.gameObject.CompareTag("Player") && DistorterType == DistorterType.Gravity)
+                if (other.gameObject.CompareTag("Player"))
                 {
-                    other.gameObject.GetComponent<PlayerController>().FlipGravity();
+                    if (DistorterType == DistorterType.Gravity)
+                    {
+                        other.gameObject.GetComponent<PlayerController>().FlipGravity();
+                    }
+                    else if (DistorterType == DistorterType.Launch)
+                    {
+                        other.gameObject.GetComponent<PlayerController>().LaunchPlayer();
+                    }
                 }
             }
         }
@@ -169,6 +176,7 @@ namespace BubbleDistortionPhysics
         Slow,
         Grow,
         Shrink,
-        Gravity
+        Gravity,
+        Launch
     }
 }

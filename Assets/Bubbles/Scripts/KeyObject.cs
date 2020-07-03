@@ -11,17 +11,22 @@ namespace BubbleDistortionPhysics
         public Rigidbody RigidBody { get; set; }
         XRGrabInteractable m_GrabInteractable;
         public XRInteractionManager InteractionManager;
+        public GameObject KeyCentre;
+        private Material _keyCentreMaterial;
 
         public void Start()
         {            
             RigidBody = GetComponent<Rigidbody>();
             m_GrabInteractable = GetComponent<XRGrabInteractable>();
             m_GrabInteractable.onSelectEnter.AddListener(OnGrabbed);
-            m_GrabInteractable.onSelectExit.AddListener(OnReleased);            
+            m_GrabInteractable.onSelectExit.AddListener(OnReleased);
+
+            _keyCentreMaterial = KeyCentre.GetComponent<MeshRenderer>().material;
         }
 
         private void OnGrabbed(XRBaseInteractor obj)
         {
+            GetComponent<XRGrabInteractable>().throwOnDetach = true;
             PlayerController.AddGrabbedObject(gameObject);            
         }
 
@@ -32,6 +37,7 @@ namespace BubbleDistortionPhysics
             {
                 gameObject.SetActive(true);
                 GetComponent<PhysicsObject>().Reset();
+                _keyCentreMaterial.SetFloat("HIDDEN_RATIO", 0);
             }
         }
 
@@ -44,14 +50,32 @@ namespace BubbleDistortionPhysics
             OutputLogManager.OutputText(this.name + " triggered with " + other.gameObject.name);
             if (other.gameObject.CompareTag("Forcefield"))
             {
-                if (PlayerController.Instance.HeldObjects.Contains(gameObject))
-                {
-                    gameObject.SetActive(false);
-                }
-                else
-                {
-                    GetComponent<PhysicsObject>().Reset();
-                }
+                StartCoroutine(Dissolve());
+            }
+        }
+
+        private IEnumerator Dissolve()
+        {
+            var t = 0f;
+            var intTimeToOpen = 1f;
+            while (t < 1)
+            {
+                t += Time.deltaTime / intTimeToOpen;
+
+                _keyCentreMaterial.SetFloat("HIDDEN_RATIO", t);
+                
+                yield return null;
+            }
+
+            if (PlayerController.Instance.HeldObjects.Contains(gameObject))
+            {
+                gameObject.SetActive(false);
+                GetComponent<XRGrabInteractable>().throwOnDetach = false;
+            }
+            else
+            {
+                GetComponent<PhysicsObject>().Reset();
+                _keyCentreMaterial.SetFloat("HIDDEN_RATIO", 0);
             }
         }
 

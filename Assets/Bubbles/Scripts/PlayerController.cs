@@ -29,6 +29,8 @@ namespace BubbleDistortionPhysics
         private MeshRenderer _outOfBoundsFace;
         public bool ReverseGravity;
         private float GravityMultiplier = 1f;
+        private DateTime _lastLaunch;
+        private bool _isAirbourne;
 
         public List<GameObject> HeldObjects { get; set; } = new List<GameObject>();
         private List<int> HeldObjectLayers { get; set; } = new List<int>();
@@ -36,23 +38,31 @@ namespace BubbleDistortionPhysics
         Vector2 currentState;
         Vector3 direction;
 
+        float mass = 1.0F; // defines the character mass
+        Vector3 impact = Vector3.zero;
+
         private void Start()
         {
             characterController = GetComponent<CharacterController>();
             capsuleCollider = GetComponent<CapsuleCollider>();
             MainCamera = GameObject.FindGameObjectWithTag("MainCamera");
             //_outOfBoundsFace = GameObject.FindGameObjectWithTag("OutOfBoundsFace").GetComponent<MeshRenderer>();
-            _instance = this;
+            _instance = this;            
         }
 
         private void Update()
         {
             direction = characterController.GetComponentInChildren<Camera>().transform.TransformDirection(new Vector3(currentState.x, 0, currentState.y)); //Player.instance.hmdTransform.TransformDirection(new Vector3(input.axis.x, 0, input.axis.y));
+
+            // apply the impact force:
+            if (impact.magnitude > 0.2F) characterController.Move(impact * Time.deltaTime);
+            // consumes the impact energy each cycle:
+            impact = Vector3.Lerp(impact, Vector3.zero, 2 * Time.deltaTime);
         }
 
         public void Reset()
         {
-            _resetting = true;               
+            _resetting = true;            
         }
 
         private bool _blnReversingGravity = false;
@@ -136,6 +146,27 @@ namespace BubbleDistortionPhysics
             StartCoroutine(RotatePlayer());
         }
 
+        public void LaunchPlayer()
+        {
+            if ((DateTime.Now - _lastLaunch).TotalMilliseconds > 100)
+            {
+                _lastLaunch = DateTime.Now;
+                Vector3 direction = new Vector3(characterController.velocity.x, 3f, characterController.velocity.z);
+                AddImpact(direction, 10f);
+                _isAirbourne = true;
+            }            
+        }
+
+        // call this function to add an impact force:
+        public void AddImpact(Vector3 dir, float force)
+        {            
+            //dir.Normalize();
+            OutputLogManager.OutputText(dir.ToString());
+            if (dir.y < 0) dir.y = -dir.y; // reflect down force on the ground
+            //impact += dir.normalized * force / mass;
+            impact += dir * force / mass;
+        }
+        
         void FixedUpdate()
         {
             bool blnResetClicked = false;
@@ -185,6 +216,7 @@ namespace BubbleDistortionPhysics
                 }
                 if (!_flipping)
                 {
+                    _isAirbourne = false;
                     _resetting = false;
                     OutputLogManager.OutputText("no longer flipping, now reset");
                     Vector3 resetPosition = PhysicsManager.Instance.Reset();
@@ -216,7 +248,7 @@ namespace BubbleDistortionPhysics
                     {
                         if (currentState.magnitude > 0.1)
                         {
-                            movement = movement + speed * Time.deltaTime * Vector3.ProjectOnPlane(direction, Vector3.up);
+                            movement = movement + speed * (!characterController.isGrounded ? 4f : 1f) * Time.deltaTime * Vector3.ProjectOnPlane(direction, Vector3.up);
                         }
                     }
 
@@ -225,10 +257,15 @@ namespace BubbleDistortionPhysics
             }           
         }
 
+        private void OnCollisionEnter(Collision collision)
+        {
+            _isAirbourne = false;
+        }
+
         private void OnTriggerEnter(Collider other)
         {
             if (other.gameObject.CompareTag("PhysicsObject"))
-            {
+            {                
                 if (other.gameObject.GetComponent<PhysicsObject>().Speed > 0)
                 {
                     OutputLogManager.OutputText("player hit " + other.gameObject.name);

@@ -18,7 +18,8 @@ namespace BubbleDistortionPhysics
         private Material _material;        
         private Color _emissiveColor;
         private float _lastBassLevelUsed;
-        private DateTime _lastEmission;        
+        private DateTime _lastEmission;
+        public bool IgnoreMusic;
 
         private bool _isSlowed;
 
@@ -121,9 +122,9 @@ namespace BubbleDistortionPhysics
 
         public void Reset()
         {
-            transform.position = _startPosition;
-            transform.rotation = _startRotation;
             RigidBody.velocity = Vector3.zero;
+            transform.position = _startPosition;
+            transform.rotation = _startRotation;            
             _currentPathIndex = 0;
             if (IsShrunk)
             {
@@ -185,7 +186,7 @@ namespace BubbleDistortionPhysics
             //    _lastBassLevelUsed = AudioManager.Instance.BassLevel / 2f;
             //}
 
-            if (_material != null)
+            if (!IgnoreMusic && _material != null)
             {
                 if (AudioManager.Instance.BassLevel == 2f)
                 {
