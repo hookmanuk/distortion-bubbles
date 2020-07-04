@@ -42,7 +42,7 @@ namespace BubbleDistortionPhysics
         Vector3 impact = Vector3.zero;
 
         private void Start()
-        {
+        {         
             characterController = GetComponent<CharacterController>();
             capsuleCollider = GetComponent<CapsuleCollider>();
             MainCamera = GameObject.FindGameObjectWithTag("MainCamera");

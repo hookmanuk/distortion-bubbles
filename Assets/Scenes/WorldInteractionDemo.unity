@@ -8,8 +8,9 @@ OcclusionCullingSettings:
     smallestOccluder: 5
     smallestHole: 0.25
     backfaceThreshold: 100
-  m_SceneGUID: 00000000000000000000000000000000
-  m_OcclusionCullingData: {fileID: 0}
+  m_SceneGUID: cd5458b6a8920b348b4fbd0dd1cd06f4
+  m_OcclusionCullingData: {fileID: 36300000, guid: fd7e44554b3c583409bb65b3b5b216e5,
+    type: 2}
 --- !u!104 &2
 RenderSettings:
   m_ObjectHideFlags: 0
@@ -97,7 +98,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 112000000, guid: 7578f0dfe247a4f47b1a446426d3684a,
+  m_LightingDataAsset: {fileID: 112000000, guid: f25fe63ddf2956848b857be9cf92f137,
     type: 2}
   m_UseShadowmask: 0
 --- !u!196 &4
@@ -3697,6 +3698,25 @@ CapsuleCollider:
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &699956507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 699956496}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b500695e43663d449970d66db52988b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  screenText: {fileID: 0}
+  maxResolutionWidthScale: 1
+  maxResolutionHeightScale: 1
+  minResolutionWidthScale: 0.5
+  minResolutionHeightScale: 0.5
+  scaleWidthIncrement: 0.1
+  scaleHeightIncrement: 0.1
 --- !u!1001 &719831288
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8318,7 +8338,7 @@ MonoBehaviour:
   SMAAQuality: 2
   dithering: 0
   stopNaNs: 0
-  taaSharpenStrength: 0.6
+  taaSharpenStrength: 2
   physicalParameters:
     m_Iso: 200
     m_ShutterSpeed: 0.005
@@ -8329,7 +8349,7 @@ MonoBehaviour:
     m_Anamorphism: 0
   flipYMode: 0
   fullscreenPassthrough: 0
-  allowDynamicResolution: 0
+  allowDynamicResolution: 1
   customRenderingSettings: 0
   invertFaceCulling: 0
   probeLayerMask:
@@ -9703,7 +9723,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9044b2b2f5d190041b1b7f59444b2d2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnableLog: 0
+  EnableLog: 1
 --- !u!1 &1999914834
 GameObject:
   m_ObjectHideFlags: 0
@@ -10793,6 +10813,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AllowMSAA
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1717954562053134905, guid: 3473a9ca2b6bef2458a4f52e10903b7d,
+        type: 3}
+      propertyPath: m_AllowDynamicResolution
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1717954562053134906, guid: 3473a9ca2b6bef2458a4f52e10903b7d,
         type: 3}

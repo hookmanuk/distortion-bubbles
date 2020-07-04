@@ -18,4 +18,4 @@ MonoBehaviour:
   IsLegacy: 1
   ActionManifestFileRelativeFilePath: C:/Unity Projects/source/distortion-bubbles/Assets/StreamingAssets\SteamVR\legacy_manifest.json
   MirrorViewMode: 3
-  HasCopiedDefaults: 0
+  HasCopiedDefaults: 1
