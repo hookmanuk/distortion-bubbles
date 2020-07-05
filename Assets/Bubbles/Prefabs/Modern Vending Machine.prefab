@@ -21725,6 +21725,7 @@ MonoBehaviour:
   ShrinkButton: {fileID: 8717611422041357149}
   GravityButton: {fileID: 4543832187458470386}
   LaunchButton: {fileID: 7338588527853453684}
+  PointLight: {fileID: 8753783714986361416}
   Order: 0
   MyPhysicsObjects:
   - {fileID: 0}
@@ -23325,6 +23326,7 @@ MonoBehaviour:
   ShrinkButton: {fileID: 0}
   GravityButton: {fileID: 0}
   LaunchButton: {fileID: 0}
+  PointLight: {fileID: 0}
   Order: 0
   MyPhysicsObjects: []
 --- !u!1 &5185264031841863228
@@ -47569,7 +47571,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4880012715514940730
 Transform:
   m_ObjectHideFlags: 0

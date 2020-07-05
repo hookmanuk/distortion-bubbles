@@ -24,7 +24,8 @@ namespace BubbleDistortionPhysics
         public VendingButton ShrinkButton;
         public VendingButton GravityButton;
         public VendingButton LaunchButton;
-        public int Order;
+        public Light PointLight;
+        public int Order;        
 
         public PhysicsDistorter BubbleSlow { get; set; }
         public PhysicsDistorter BubbleGrow { get; set; }
@@ -35,6 +36,7 @@ namespace BubbleDistortionPhysics
         public DateTime LastButtonPressed { get; set; }
 
         public List<GameObject> MyBubbles { get; set; }
+        
 
         public List<PhysicsObject> MyPhysicsObjects;
         private int _startStockSlowLevel;

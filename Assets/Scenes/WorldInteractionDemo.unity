@@ -1299,6 +1299,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4681562663164434691, guid: e93b6dfcad7febe46b3c928f7bc31f91,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4681562663164434701, guid: e93b6dfcad7febe46b3c928f7bc31f91,
         type: 3}
       propertyPath: m_BoundingSphereOverride.y
@@ -9723,7 +9728,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9044b2b2f5d190041b1b7f59444b2d2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnableLog: 1
+  EnableLog: 0
 --- !u!1 &1999914834
 GameObject:
   m_ObjectHideFlags: 0
@@ -10799,6 +10804,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1717954562053134886, guid: 3473a9ca2b6bef2458a4f52e10903b7d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1717954562053134905, guid: 3473a9ca2b6bef2458a4f52e10903b7d,
         type: 3}
       propertyPath: far clip plane
@@ -10818,6 +10828,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AllowDynamicResolution
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1717954562053134905, guid: 3473a9ca2b6bef2458a4f52e10903b7d,
+        type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 3221227319
       objectReference: {fileID: 0}
     - target: {fileID: 1717954562053134906, guid: 3473a9ca2b6bef2458a4f52e10903b7d,
         type: 3}

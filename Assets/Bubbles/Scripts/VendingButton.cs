@@ -150,6 +150,8 @@ namespace BubbleDistortionPhysics
                     bubbleClone.GetComponent<AudioSource>().Play();
 
                     _vendingMachine.MyBubbles.Add(bubbleClone);
+                    _vendingMachine.PointLight.gameObject.SetActive(true);
+                    bubbleClone.GetComponent<PhysicsDistorter>().SourceMachine = _vendingMachine;
                 }
             }
 

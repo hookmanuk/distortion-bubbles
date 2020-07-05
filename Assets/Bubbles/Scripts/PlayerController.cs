@@ -58,6 +58,18 @@ namespace BubbleDistortionPhysics
             if (impact.magnitude > 0.2F) characterController.Move(impact * Time.deltaTime);
             // consumes the impact energy each cycle:
             impact = Vector3.Lerp(impact, Vector3.zero, 2 * Time.deltaTime);
+
+            foreach (var item in PhysicsManager.Instance.LightStrips)
+            {
+                if (!item.gameObject.activeSelf && Vector3.Distance(characterController.transform.position, item.transform.position) < 10f)
+                {
+                    item.gameObject.SetActive(true);
+                }
+                else if (item.gameObject.activeSelf && Vector3.Distance(characterController.transform.position, item.transform.position) > 12f)
+                {
+                    item.gameObject.SetActive(false);
+                }
+            }
         }
 
         public void Reset()

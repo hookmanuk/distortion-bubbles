@@ -17,11 +17,16 @@ namespace BubbleDistortionPhysics
         public DistorterType DistorterType;
         public bool ExpandAsDisc;
         public bool Expanded { get; set; }
+        public VendingMachine SourceMachine { get; set; }
         
         public void Start()
         {
             PhysicsManager.Instance.PhysicsDistorters.Add(this);
             _grabInteractable = GetComponent<XRGrabInteractable>();
+
+            XRInteractableEvent grabEnterEvent = new XRInteractableEvent();
+            grabEnterEvent.AddListener(OnSelectEnter);
+            _grabInteractable.onSelectEnter = grabEnterEvent;
 
             XRInteractableEvent grabExitEvent = new XRInteractableEvent();
             grabExitEvent.AddListener(OnSelectExit);
@@ -30,6 +35,13 @@ namespace BubbleDistortionPhysics
             _rigidbody = GetComponent<Rigidbody>();
             _boxCollider = GetComponent<BoxCollider>();
             _sphereCollider = GetComponent<SphereCollider>();            
+        }
+
+        private void OnSelectEnter(XRBaseInteractor interactor)
+        {
+            SourceMachine.PointLight.gameObject.SetActive(false);
+            //OutputLogManager.OutputText(name + " select exit " + interactor.gameObject.name);
+            _thrown = true;
         }
 
         private void OnSelectExit(XRBaseInteractor interactor)

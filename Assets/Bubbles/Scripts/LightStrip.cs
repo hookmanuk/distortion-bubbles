@@ -13,8 +13,9 @@ namespace BubbleDistortionPhysics
         private MeshRenderer _meshRenderer;
         public bool Flickers = true;
 
-        public void Awake()
-        {            
+        public void Start()
+        {
+            PhysicsManager.Instance.LightStrips.Add(this);
             _random = new System.Random(Convert.ToInt32(DateTime.Now.Ticks.ToString().Substring(10)));
             _light = GetComponentInChildren<Light>();
             _lightIntensity = _light.intensity;
