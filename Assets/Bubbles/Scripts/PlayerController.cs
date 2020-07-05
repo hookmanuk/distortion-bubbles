@@ -32,6 +32,8 @@ namespace BubbleDistortionPhysics
         private DateTime _lastLaunch;
         private bool _isAirbourne;
 
+        public float LightsCount { get; set; } = 10f;
+
         public List<GameObject> HeldObjects { get; set; } = new List<GameObject>();
         private List<int> HeldObjectLayers { get; set; } = new List<int>();
 
@@ -61,11 +63,11 @@ namespace BubbleDistortionPhysics
 
             foreach (var item in PhysicsManager.Instance.LightStrips)
             {
-                if (!item.gameObject.activeSelf && Vector3.Distance(characterController.transform.position, item.transform.position) < 10f)
+                if (!item.gameObject.activeSelf && Vector3.Distance(characterController.transform.position, item.transform.position) < LightsCount)
                 {
                     item.gameObject.SetActive(true);
                 }
-                else if (item.gameObject.activeSelf && Vector3.Distance(characterController.transform.position, item.transform.position) > 12f)
+                else if (item.gameObject.activeSelf && Vector3.Distance(characterController.transform.position, item.transform.position) > (LightsCount * 1.2f))
                 {
                     item.gameObject.SetActive(false);
                 }
@@ -266,7 +268,7 @@ namespace BubbleDistortionPhysics
 
                     characterController.Move(movement);
                 }
-            }           
+            }                           
         }
 
         private void OnCollisionEnter(Collision collision)

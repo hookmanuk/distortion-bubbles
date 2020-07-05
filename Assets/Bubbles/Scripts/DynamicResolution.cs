@@ -27,8 +27,8 @@ public class DynamicResolution : MonoBehaviour
 
     const uint kNumFrameTimings = 2;
 
-    double m_gpuFrameTime;
-    double m_cpuFrameTime;
+    float m_gpuFrameTime;
+    float m_cpuFrameTime;
 
     // Use this for initialization
     void Start()
@@ -46,7 +46,7 @@ public class DynamicResolution : MonoBehaviour
 
     //    bool blnIncrease = false;
     //    bool blnDecrease = false;
-        
+
     //    //PlayerController.Instance.RightController?.inputDevice.TryGetFeatureValue(CommonUsages.secondaryButton, out blnIncrease);
     //    //PlayerController.Instance.RightController?.inputDevice.TryGetFeatureValue(CommonUsages.primaryButton, out blnDecrease);
 
@@ -88,25 +88,60 @@ public class DynamicResolution : MonoBehaviour
     //    int rezHeight = (int)Mathf.Ceil(ScalableBufferManager.heightScaleFactor * Screen.currentResolution.height);        
     //}
 
-    // Estimate the next frame time and update the resolution scale if necessary.
-    private void DetermineResolution()
+    private float _fpsUpdate;
+    private float _lastFps;
+    private float _targetFps = 90f;
+    private DateTime _lastChange;
+    private double _timeToIncrease = 200;
+    private int _currentFrame = 0;
+    private int _frameWindow = 30;
+
+    private void Update()
     {
-        ++m_frameCount;
-        if (m_frameCount <= kNumFrameTimings)
-        {
-            return;
-        }
-        FrameTimingManager.CaptureFrameTimings();
-        FrameTimingManager.GetLatestTimings(kNumFrameTimings, frameTimings);
-        if (frameTimings.Length < kNumFrameTimings)
-        {
-            Debug.LogFormat("Skipping frame {0}, didn't get enough frame timings.",
-                m_frameCount);
+        _currentFrame += 1;
 
-            return;
-        }
+        _lastFps += 1.0f / Time.deltaTime;        
 
-        m_gpuFrameTime = (double)frameTimings[0].gpuFrameTime;
-        m_cpuFrameTime = (double)frameTimings[0].cpuFrameTime;
+        if (_currentFrame == _frameWindow)
+        {
+            _lastFps = _lastFps / _frameWindow;
+            if (_lastFps > 0 && PlayerController.Instance.LightsCount >= 6f && _lastFps < _targetFps * 0.99f && (DateTime.Now - _lastChange).TotalMilliseconds > 200)
+            {
+                _timeToIncrease += 200;
+                _lastChange = DateTime.Now;
+                PlayerController.Instance.LightsCount -= 1;
+                OutputLogManager.UpdateLogPerformance("GPU " + _lastFps.ToString() + " Lights count " + PlayerController.Instance.LightsCount);
+            }
+            else if (_lastFps >= _targetFps && PlayerController.Instance.LightsCount < 20f && (DateTime.Now - _lastChange).TotalMilliseconds > _timeToIncrease)
+            {
+                _lastChange = DateTime.Now;
+                PlayerController.Instance.LightsCount += 1;
+                OutputLogManager.UpdateLogPerformance("GPU " + _lastFps.ToString() + " Lights count " + PlayerController.Instance.LightsCount);
+            }
+            _lastFps = 0;
+            _currentFrame = 0;
+        }        
     }
+
+    // Estimate the next frame time and update the resolution scale if necessary.
+    //private void DetermineResolution()
+    //{
+    //    ++m_frameCount;
+    //    if (m_frameCount <= kNumFrameTimings)
+    //    {
+    //        return;
+    //    }
+    //    FrameTimingManager.CaptureFrameTimings();
+    //    FrameTimingManager.GetLatestTimings(kNumFrameTimings, frameTimings);
+    //    if (frameTimings.Length < kNumFrameTimings)
+    //    {
+    //        Debug.LogFormat("Skipping frame {0}, didn't get enough frame timings.",
+    //            m_frameCount);
+
+    //        return;
+    //    }
+
+    //    m_gpuFrameTime = (double)frameTimings[0].gpuFrameTime;
+    //    m_cpuFrameTime = (double)frameTimings[0].cpuFrameTime;
+    //}
 }
