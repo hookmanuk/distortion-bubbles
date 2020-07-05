@@ -39,7 +39,7 @@ namespace BubbleDistortionPhysics
 
         private void OnSelectEnter(XRBaseInteractor interactor)
         {
-            SourceMachine.PointLight.gameObject.SetActive(false);
+            SourceMachine?.PointLight.gameObject.SetActive(false);
             //OutputLogManager.OutputText(name + " select exit " + interactor.gameObject.name);
             _thrown = true;
         }

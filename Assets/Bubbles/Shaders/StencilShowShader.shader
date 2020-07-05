@@ -128,79 +128,56 @@ Shader "Custom/StencilShowShader"
         // This tags allow to use the shader replacement features
         Tags{ "RenderPipeline" = "HDRenderPipeline" "RenderType" = "HDUnlitShader" }        
 
-        //Pass
-        //{
-        //    //Name "Default"
-        //    //Tags{ "RenderType" = "Transparent" "Queue" = "Transparent" }
-        //    //ZWrite On
-        //    ColorMask GBA
+        Pass
+        {
+            Cull Back
+            ZWrite Off
+            Blend One One
 
-        //    CGPROGRAM
-        //    #pragma vertex vert
-        //    #pragma fragment frag
+            HLSLPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
 
-        //    #include "UnityCG.cginc"
+            #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
+            #include "Packages/com.unity.render-pipelines.high-definition/Runtime/ShaderLibrary/ShaderVariables.hlsl"
 
-        //    struct appdata
-        //    {
-        //        float4 vertex : POSITION;
-        //        float2 uv : TEXCOORD0;
+            struct AttributesDefault
+            {
+                float3 positionOS : POSITION;
+                UNITY_VERTEX_INPUT_INSTANCE_ID
+            };
 
-        //        UNITY_VERTEX_INPUT_INSTANCE_ID //Insert
-        //    };
+            struct VaryingsDefault
+            {
+                float4 positionCS : SV_POSITION;
+                UNITY_VERTEX_OUTPUT_STEREO
+            };
 
-        //    struct v2f
-        //    {
-        //        float2 uv : TEXCOORD0;
-        //        float4 vertex : SV_POSITION;
+            float3 _Range;
+            float3 _Offset;
+            float4 _Color;
 
-        //        UNITY_VERTEX_OUTPUT_STEREO //Insert
-        //    };
+            VaryingsDefault vert(AttributesDefault att)
+            {
+                VaryingsDefault output;
+                UNITY_SETUP_INSTANCE_ID(att);
+                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
 
-        //    sampler2D _MainTex;
-        //    float4 _MainTex_ST;
-        //    float4 _TintColor;
-        //    float4 _UnlitColor;
-        //    float _Transparency;
-        //    float _CutoutThresh;
-        //    float _Distance;
-        //    float _Amplitude;
-        //    float _Speed;
-        //    float _Amount;            
+                //float3 positionRWS = TransformObjectToWorld(att.positionOS.xyz * _Range + _Offset);
+                output.positionCS = TransformWorldToHClip(TransformObjectToWorld(att.positionOS.xyz));
 
-        //    v2f vert(appdata v)
-        //    {
-        //        v2f o;
+                return output;
+            }
 
-        //        UNITY_SETUP_INSTANCE_ID(v); //Insert
-        //        UNITY_INITIALIZE_OUTPUT(v2f, o); //Insert
-        //        UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o); //Insert
+            void frag(VaryingsDefault varying, out float outLightCount : SV_Target0, out float4 outColorAccumulation : SV_Target1)
+            {
+                UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(varying);
+                outLightCount = 1.0f;
+                outColorAccumulation = _Color;
+            }
 
-        //        //v.vertex.x += sin(_Time.y * _Speed + v.vertex.y * _Amplitude) * _Distance * _Amount;
-        //        o.vertex = UnityObjectToClipPos(v.vertex);
-        //        o.uv = v.uv;
-        //        
-        //        return o;
-        //    }            
-
-        //    //UNITY_DECLARE_SCREENSPACE_TEXTURE(_MainTex); //Insert
-
-        //    fixed4 frag(v2f i) : SV_Target
-        //    {
-        //        //UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(i); //Insert
-        //        UNITY_SETUP_INSTANCE_ID(i);
-
-        //        // sample the texture
-        //        //fixed4 col = UNITY_SAMPLE_SCREENSPACE_TEXTURE(_MainTex, i.uv); //Insert
-        //        //fixed4 col = tex2D(_MainTex, i.uv) + _TintColor;
-        //        //col.a = 0;
-        //        //clip(col.r - _CutoutThresh);
-        //        return _UnlitColor;
-        //    }
-        //    ENDCG
-
-
-        //}
+            ENDHLSL
+        }
 
         // Caution: The outline selection in the editor use the vertex shader/hull/domain shader of the first pass declare. So it should not be the meta pass.        
 
