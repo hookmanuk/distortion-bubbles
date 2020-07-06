@@ -189,8 +189,7 @@ namespace BubbleDistortionPhysics
         Grow,
         Shrink,
         Gravity,
-        Launch,
-        CutOff,
+        Launch,        
         Show
     }
 

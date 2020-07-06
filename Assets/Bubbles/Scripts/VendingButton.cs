@@ -142,12 +142,7 @@ namespace BubbleDistortionPhysics
                     {
                         bubbleClone = Instantiate(_vendingMachine.BubbleLaunch.gameObject);
                         _vendingMachine.SetStockLaunchLevel(_vendingMachine.StockLaunchLevel - 1);
-                    }
-                    else if (Type == DistorterType.CutOff)
-                    {
-                        bubbleClone = Instantiate(_vendingMachine.BubbleCutOff.gameObject);
-                        _vendingMachine.SetStockLaunchLevel(_vendingMachine.StockCutOffLevel - 1);
-                    }
+                    }                    
                     else if (Type == DistorterType.Show)
                     {
                         bubbleClone = Instantiate(_vendingMachine.BubbleShow.gameObject);

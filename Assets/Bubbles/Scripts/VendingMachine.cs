@@ -12,16 +12,14 @@ namespace BubbleDistortionPhysics
         public int StockGrowLevel;
         public int StockShrinkLevel;
         public int StockGravityLevel;
-        public int StockLaunchLevel;
-        public int StockCutOffLevel;
+        public int StockLaunchLevel;        
         public int StockShowLevel;
         
         public VendingButton SlowButton;
         public VendingButton GrowButton;
         public VendingButton ShrinkButton;
         public VendingButton GravityButton;
-        public VendingButton LaunchButton;
-        public VendingButton CutOffButton;
+        public VendingButton LaunchButton;        
         public VendingButton ShowButton;
 
         public Light PointLight;
@@ -31,8 +29,7 @@ namespace BubbleDistortionPhysics
         public PhysicsDistorter BubbleGrow { get; set; }
         public PhysicsDistorter BubbleShrink { get; set; }
         public PhysicsDistorter BubbleGravity { get; set; }
-        public PhysicsDistorter BubbleLaunch { get; set; }
-        public PhysicsDistorter BubbleCutOff { get; set; }
+        public PhysicsDistorter BubbleLaunch { get; set; }        
         public PhysicsDistorter BubbleShow { get; set; }
 
         public DateTime LastButtonPressed { get; set; }
@@ -60,16 +57,14 @@ namespace BubbleDistortionPhysics
             BubbleGrow = GameObject.FindGameObjectWithTag("BubbleGrow").GetComponent<PhysicsDistorter>();
             BubbleShrink = GameObject.FindGameObjectWithTag("BubbleShrink").GetComponent<PhysicsDistorter>();
             BubbleGravity = GameObject.FindGameObjectWithTag("BubbleGravity").GetComponent<PhysicsDistorter>();
-            BubbleLaunch = GameObject.FindGameObjectWithTag("BubbleLaunch").GetComponent<PhysicsDistorter>();
-            BubbleCutOff = GameObject.FindGameObjectWithTag("BubbleCutOff").GetComponent<PhysicsDistorter>();
+            BubbleLaunch = GameObject.FindGameObjectWithTag("BubbleLaunch").GetComponent<PhysicsDistorter>();            
             BubbleShow = GameObject.FindGameObjectWithTag("BubbleShow").GetComponent<PhysicsDistorter>();
 
             SetStockSlowLevel(StockSlowLevel);
             SetStockGrowLevel(StockGrowLevel);
             SetStockShrinkLevel(StockShrinkLevel);
             SetStockGravityLevel(StockGravityLevel);
-            SetStockLaunchLevel(StockLaunchLevel);
-            SetStockCutOffLevel(StockCutOffLevel);
+            SetStockLaunchLevel(StockLaunchLevel);            
             SetStockShowLevel(StockShowLevel);
 
             LastButtonPressed = DateTime.Now;
@@ -79,8 +74,7 @@ namespace BubbleDistortionPhysics
             _startStockGrowLevel = StockGrowLevel;
             _startStockShrinkLevel = StockShrinkLevel;
             _startStockGravityLevel = StockGravityLevel;
-            _startStockLaunchLevel = StockLaunchLevel;
-            _startStockCutOffLevel = StockCutOffLevel;
+            _startStockLaunchLevel = StockLaunchLevel;           
             _startStockShowLevel = StockShowLevel;
         }
 
@@ -106,8 +100,7 @@ namespace BubbleDistortionPhysics
             SetStockGrowLevel(_startStockGrowLevel);
             SetStockShrinkLevel(_startStockShrinkLevel);
             SetStockGravityLevel(_startStockGravityLevel);
-            SetStockLaunchLevel(_startStockLaunchLevel);
-            SetStockCutOffLevel(_startStockCutOffLevel);
+            SetStockLaunchLevel(_startStockLaunchLevel);            
             SetStockShowLevel(_startStockShowLevel);
         }
 
@@ -139,13 +132,7 @@ namespace BubbleDistortionPhysics
         {
             StockLaunchLevel = stockLevel;
             LaunchButton.SetStockLevel(stockLevel);
-        }
-
-        public void SetStockCutOffLevel(int stockLevel)
-        {
-            StockCutOffLevel = stockLevel;
-            CutOffButton.SetStockLevel(stockLevel);
-        }
+        }       
 
         public void SetStockShowLevel(int stockLevel)
         {

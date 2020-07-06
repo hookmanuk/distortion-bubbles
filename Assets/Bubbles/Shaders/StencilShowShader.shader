@@ -126,13 +126,13 @@ Shader "Custom/StencilShowShader"
     SubShader
     {
         // This tags allow to use the shader replacement features
-        Tags{ "RenderPipeline" = "HDRenderPipeline" "RenderType" = "HDUnlitShader" }
+        Tags{ "Queue" = "Transparent+1" "RenderPipeline" = "HDRenderPipeline" "RenderType" = "HDUnlitShader" }
 
         Pass
         {
-            Cull Back
-            ZWrite Off
-            Blend One One
+            //Cull Back
+            //ZWrite Off
+            Blend OneMinusSrcColor One // keep the image behind it
 
             HLSLPROGRAM
             #pragma vertex vert
