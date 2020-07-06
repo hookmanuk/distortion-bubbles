@@ -7590,8 +7590,8 @@ Transform:
   - {fileID: 1190409692}
   - {fileID: 1591205214}
   - {fileID: 727189471}
-  - {fileID: 758145513}
   - {fileID: 2020692721}
+  - {fileID: 758145513}
   - {fileID: 519289782364661604}
   m_Father: {fileID: 1043076327}
   m_RootOrder: 0
@@ -9580,7 +9580,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 067bf557db0b8904db68178b94d12886, type: 2}
+  - {fileID: 2100000, guid: 1cbc56f67d4b7e54bbfe56cb73657891, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -11892,7 +11892,7 @@ Transform:
   m_LocalScale: {x: 2.6, y: 2.4, z: 0.1}
   m_Children: []
   m_Father: {fileID: 1035802786}
-  m_RootOrder: 82
+  m_RootOrder: 81
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2020692722
 MonoBehaviour:
@@ -13077,6 +13077,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_CullingMask.m_Bits
       value: 3221227319
+      objectReference: {fileID: 0}
+    - target: {fileID: 1717954562053134905, guid: 3473a9ca2b6bef2458a4f52e10903b7d,
+        type: 3}
+      propertyPath: m_OcclusionCulling
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1717954562053134906, guid: 3473a9ca2b6bef2458a4f52e10903b7d,
         type: 3}
