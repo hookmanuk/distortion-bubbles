@@ -105,18 +105,18 @@ public class DynamicResolution : MonoBehaviour
         if (_currentFrame == _frameWindow)
         {
             _lastFps = _lastFps / _frameWindow;
-            if (_lastFps > 0 && PlayerController.Instance.LightsCount >= 6f && _lastFps < _targetFps * 0.99f && (DateTime.Now - _lastChange).TotalMilliseconds > 200)
+            if (_lastFps > 0 && PlayerController.Instance.LightsDistance >= 10f && _lastFps < _targetFps * 0.99f && (DateTime.Now - _lastChange).TotalMilliseconds > 200)
             {
                 _timeToIncrease += 200;
                 _lastChange = DateTime.Now;
-                PlayerController.Instance.LightsCount -= 1;
-                OutputLogManager.UpdateLogPerformance("GPU " + _lastFps.ToString() + " Lights count " + PlayerController.Instance.LightsCount);
+                PlayerController.Instance.LightsDistance -= 1;
+                OutputLogManager.UpdateLogPerformance("GPU " + _lastFps.ToString() + " Lights distance " + PlayerController.Instance.LightsDistance);
             }
-            else if (_lastFps >= _targetFps && PlayerController.Instance.LightsCount < 20f && (DateTime.Now - _lastChange).TotalMilliseconds > _timeToIncrease)
+            else if (_lastFps >= _targetFps && PlayerController.Instance.LightsDistance < 20f && (DateTime.Now - _lastChange).TotalMilliseconds > _timeToIncrease)
             {
                 _lastChange = DateTime.Now;
-                PlayerController.Instance.LightsCount += 1;
-                OutputLogManager.UpdateLogPerformance("GPU " + _lastFps.ToString() + " Lights count " + PlayerController.Instance.LightsCount);
+                PlayerController.Instance.LightsDistance += 1;
+                OutputLogManager.UpdateLogPerformance("GPU " + _lastFps.ToString() + " Lights distance " + PlayerController.Instance.LightsDistance);
             }
             _lastFps = 0;
             _currentFrame = 0;

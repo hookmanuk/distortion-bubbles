@@ -13,17 +13,17 @@ namespace BubbleDistortionPhysics
         public int StockShrinkLevel;
         public int StockGravityLevel;
         public int StockLaunchLevel;
-
-        public SimpleHelvetica CountSlowText;
-        public SimpleHelvetica CountGrowText;
-        public SimpleHelvetica CountShrinkText;
-        public SimpleHelvetica CountGravityText;
-        public SimpleHelvetica CountLaunchText;
+        public int StockCutOffLevel;
+        public int StockShowLevel;
+        
         public VendingButton SlowButton;
         public VendingButton GrowButton;
         public VendingButton ShrinkButton;
         public VendingButton GravityButton;
         public VendingButton LaunchButton;
+        public VendingButton CutOffButton;
+        public VendingButton ShowButton;
+
         public Light PointLight;
         public int Order;        
 
@@ -32,6 +32,8 @@ namespace BubbleDistortionPhysics
         public PhysicsDistorter BubbleShrink { get; set; }
         public PhysicsDistorter BubbleGravity { get; set; }
         public PhysicsDistorter BubbleLaunch { get; set; }
+        public PhysicsDistorter BubbleCutOff { get; set; }
+        public PhysicsDistorter BubbleShow { get; set; }
 
         public DateTime LastButtonPressed { get; set; }
 
@@ -44,6 +46,8 @@ namespace BubbleDistortionPhysics
         private int _startStockShrinkLevel;
         private int _startStockGravityLevel;
         private int _startStockLaunchLevel;
+        private int _startStockCutOffLevel;
+        private int _startStockShowLevel;
 
         private void Start()
         {
@@ -57,12 +61,16 @@ namespace BubbleDistortionPhysics
             BubbleShrink = GameObject.FindGameObjectWithTag("BubbleShrink").GetComponent<PhysicsDistorter>();
             BubbleGravity = GameObject.FindGameObjectWithTag("BubbleGravity").GetComponent<PhysicsDistorter>();
             BubbleLaunch = GameObject.FindGameObjectWithTag("BubbleLaunch").GetComponent<PhysicsDistorter>();
+            BubbleCutOff = GameObject.FindGameObjectWithTag("BubbleCutOff").GetComponent<PhysicsDistorter>();
+            BubbleShow = GameObject.FindGameObjectWithTag("BubbleShow").GetComponent<PhysicsDistorter>();
 
             SetStockSlowLevel(StockSlowLevel);
             SetStockGrowLevel(StockGrowLevel);
             SetStockShrinkLevel(StockShrinkLevel);
             SetStockGravityLevel(StockGravityLevel);
             SetStockLaunchLevel(StockLaunchLevel);
+            SetStockCutOffLevel(StockCutOffLevel);
+            SetStockShowLevel(StockShowLevel);
 
             LastButtonPressed = DateTime.Now;
             
@@ -72,6 +80,8 @@ namespace BubbleDistortionPhysics
             _startStockShrinkLevel = StockShrinkLevel;
             _startStockGravityLevel = StockGravityLevel;
             _startStockLaunchLevel = StockLaunchLevel;
+            _startStockCutOffLevel = StockCutOffLevel;
+            _startStockShowLevel = StockShowLevel;
         }
 
         public void OnDestroy()
@@ -97,91 +107,50 @@ namespace BubbleDistortionPhysics
             SetStockShrinkLevel(_startStockShrinkLevel);
             SetStockGravityLevel(_startStockGravityLevel);
             SetStockLaunchLevel(_startStockLaunchLevel);
+            SetStockCutOffLevel(_startStockCutOffLevel);
+            SetStockShowLevel(_startStockShowLevel);
         }
 
         public void SetStockSlowLevel(int stockLevel)
         {
             StockSlowLevel = stockLevel;
-
-            CountSlowText.Text = StockSlowLevel.ToString();
-            CountSlowText.GenerateText();
-
-            if (stockLevel == 0)
-            {
-                SlowButton.ButtonEnabled = false;
-            }
-            else
-            {
-                SlowButton.ButtonEnabled = true;
-            }
+            SlowButton.SetStockLevel(stockLevel);            
         }
 
         public void SetStockGrowLevel(int stockLevel)
         {
             StockGrowLevel = stockLevel;
-
-            CountGrowText.Text = StockGrowLevel.ToString();
-            CountGrowText.GenerateText();
-
-            if (stockLevel == 0)
-            {
-                GrowButton.ButtonEnabled = false;
-            }
-            else
-            {
-                GrowButton.ButtonEnabled = true;
-            }
+            GrowButton.SetStockLevel(stockLevel);
         }
 
         public void SetStockShrinkLevel(int stockLevel)
         {
             StockShrinkLevel = stockLevel;
-
-            CountShrinkText.Text = StockShrinkLevel.ToString();
-            CountShrinkText.GenerateText();
-
-            if (stockLevel == 0)
-            {
-                ShrinkButton.ButtonEnabled = false;
-            }
-            else
-            {
-                ShrinkButton.ButtonEnabled = true;
-            }
+            ShrinkButton.SetStockLevel(stockLevel);
         }
 
         public void SetStockGravityLevel(int stockLevel)
         {
             StockGravityLevel = stockLevel;
-
-            CountGravityText.Text = StockGravityLevel.ToString();
-            CountGravityText.GenerateText();
-
-            if (stockLevel == 0)
-            {
-                GravityButton.ButtonEnabled = false;
-            }
-            else
-            {
-                GravityButton.ButtonEnabled = true;
-            }
+            GravityButton.SetStockLevel(stockLevel);
         }
 
         public void SetStockLaunchLevel(int stockLevel)
         {
             StockLaunchLevel = stockLevel;
+            LaunchButton.SetStockLevel(stockLevel);
+        }
 
-            CountLaunchText.Text = StockLaunchLevel.ToString();
-            CountLaunchText.GenerateText();
+        public void SetStockCutOffLevel(int stockLevel)
+        {
+            StockCutOffLevel = stockLevel;
+            CutOffButton.SetStockLevel(stockLevel);
+        }
 
-            if (stockLevel == 0)
-            {
-                LaunchButton.ButtonEnabled = false;
-            }
-            else
-            {
-                LaunchButton.ButtonEnabled = true;
-            }
+        public void SetStockShowLevel(int stockLevel)
+        {
+            StockLaunchLevel = stockLevel;
+            ShowButton.SetStockLevel(stockLevel);
         }
     }
 }

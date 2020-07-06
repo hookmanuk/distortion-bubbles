@@ -67,12 +67,12 @@ Shader "Custom/StencilShowShader"
         _EmissionColor("Color", Color) = (1, 1, 1)
 
         // HACK: GI Baking system relies on some properties existing in the shader ("_MainTex", "_Cutoff" and "_Color") for opacity handling, so we need to store our version of those parameters in the hard-coded name the GI baking system recognizes.
-        _MainTex("Albedo", 2D) = "red" {}
+        _MainTex("Albedo", 2D) = "green" {}
         _Color("Color", Color) = (1,1,1,1)
         _Cutoff("Alpha Cutoff", Range(0.0, 1.0)) = 1
 
         _Transparency("Transparency", Range(0.0,0.5)) = 0.5
-        _TintColor("Tint Color", Color) = (1,0,0,0)        
+        _TintColor("Tint Color", Color) = (0,0,0,0)        
         _CutoutThresh("Cutout Threshold", Range(0.0,1.0)) = 0.2
         _Distance("Distance", Float) = 1
         _Amplitude("Amplitude", Float) = 1
@@ -126,7 +126,7 @@ Shader "Custom/StencilShowShader"
     SubShader
     {
         // This tags allow to use the shader replacement features
-        Tags{ "RenderPipeline" = "HDRenderPipeline" "RenderType" = "HDUnlitShader" }        
+        Tags{ "RenderPipeline" = "HDRenderPipeline" "RenderType" = "HDUnlitShader" }
 
         Pass
         {
@@ -155,7 +155,7 @@ Shader "Custom/StencilShowShader"
 
             float3 _Range;
             float3 _Offset;
-            float4 _Color;
+            float4 _Color;        
 
             VaryingsDefault vert(AttributesDefault att)
             {
@@ -172,7 +172,7 @@ Shader "Custom/StencilShowShader"
             void frag(VaryingsDefault varying, out float outLightCount : SV_Target0, out float4 outColorAccumulation : SV_Target1)
             {
                 UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(varying);
-                outLightCount = 1.0f;
+                outLightCount = 0.5f;
                 outColorAccumulation = _Color;
             }
 

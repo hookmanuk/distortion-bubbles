@@ -16,6 +16,7 @@ namespace BubbleDistortionPhysics
         private VendingMachine _vendingMachine;
         public DistorterType Type;
         public bool ButtonEnabled;
+        public GameObject StockValueText;
         private float previousHandHeight;
         private XRBaseInteractor hoverInteractor;
 
@@ -142,6 +143,16 @@ namespace BubbleDistortionPhysics
                         bubbleClone = Instantiate(_vendingMachine.BubbleLaunch.gameObject);
                         _vendingMachine.SetStockLaunchLevel(_vendingMachine.StockLaunchLevel - 1);
                     }
+                    else if (Type == DistorterType.CutOff)
+                    {
+                        bubbleClone = Instantiate(_vendingMachine.BubbleCutOff.gameObject);
+                        _vendingMachine.SetStockLaunchLevel(_vendingMachine.StockCutOffLevel - 1);
+                    }
+                    else if (Type == DistorterType.Show)
+                    {
+                        bubbleClone = Instantiate(_vendingMachine.BubbleShow.gameObject);
+                        _vendingMachine.SetStockLaunchLevel(_vendingMachine.StockShowLevel - 1);
+                    }
 
                     bubbleClone.tag = "Untagged";
                     bubbleClone.transform.position = new Vector3(_vendingMachine.transform.position.x - 0.46f, _vendingMachine.transform.position.y + 0.505f, _vendingMachine.transform.position.z + 0.049f);
@@ -163,6 +174,20 @@ namespace BubbleDistortionPhysics
             float inRange = Mathf.Clamp(transform.localPosition.z, ymin, ymin + 0.01f);
 
             return transform.localPosition.z == inRange;
+        }
+
+        public void SetStockLevel(int stockLevel)
+        {
+            StockValueText.GetComponent<TextMesh>().text = stockLevel.ToString();
+
+            if (stockLevel == 0)
+            {
+                ButtonEnabled = false;
+            }
+            else
+            {
+                ButtonEnabled = true;
+            }
         }
     }    
 }

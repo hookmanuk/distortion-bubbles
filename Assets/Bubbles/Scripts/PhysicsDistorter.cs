@@ -14,8 +14,8 @@ namespace BubbleDistortionPhysics
         private Rigidbody _rigidbody;
         private BoxCollider _boxCollider;
         private SphereCollider _sphereCollider;
-        public DistorterType DistorterType;
-        public bool ExpandAsDisc;
+        public DistorterType DistorterType;        
+        public ExpandType ExpandType;
         public bool Expanded { get; set; }
         public VendingMachine SourceMachine { get; set; }
         
@@ -72,11 +72,11 @@ namespace BubbleDistortionPhysics
         {
             OutputLogManager.OutputText(name + " hit " + collision.gameObject.name);
 
-            if (_thrown && collision.gameObject.GetComponent<PhysicsSurface>() != null)
+            if (ExpandType != ExpandType.None && _thrown && collision.gameObject.GetComponent<PhysicsSurface>() != null)
             {
                 Expanded = true;
 
-                if (ExpandAsDisc)
+                if (ExpandType == ExpandType.Disc)
                 {
                     ExpandDisc();
                 }
@@ -189,6 +189,15 @@ namespace BubbleDistortionPhysics
         Grow,
         Shrink,
         Gravity,
-        Launch
+        Launch,
+        CutOff,
+        Show
+    }
+
+    public enum ExpandType
+    {
+        Bubble,
+        Disc,
+        None
     }
 }
