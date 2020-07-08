@@ -18,6 +18,7 @@ namespace BubbleDistortionPhysics
         public XRController LeftController;
         public XRController RightController;
         public GameObject MainCamera { get; set; }
+        public List<PuzzleArea> ActivePuzzleAreas { get; set; }
 
         private bool _preventCharacterMovement;
         private bool _resetting;
@@ -49,7 +50,10 @@ namespace BubbleDistortionPhysics
             capsuleCollider = GetComponent<CapsuleCollider>();
             MainCamera = GameObject.FindGameObjectWithTag("MainCamera");
             //_outOfBoundsFace = GameObject.FindGameObjectWithTag("OutOfBoundsFace").GetComponent<MeshRenderer>();
-            _instance = this;            
+            _instance = this;
+            ActivePuzzleAreas = new List<PuzzleArea>();
+
+            PhysicsManager.Instance.TurnOffLights();
         }
 
         private void Update()
@@ -61,17 +65,18 @@ namespace BubbleDistortionPhysics
             // consumes the impact energy each cycle:
             impact = Vector3.Lerp(impact, Vector3.zero, 2 * Time.deltaTime);
 
-            foreach (var item in PhysicsManager.Instance.LightStrips)
-            {
-                if (!item.gameObject.activeSelf && Vector3.Distance(characterController.transform.position, item.transform.position) < LightsDistance)
-                {
-                    item.gameObject.SetActive(true);
-                }
-                else if (item.gameObject.activeSelf && Vector3.Distance(characterController.transform.position, item.transform.position) > (LightsDistance * 1.2f))
-                {
-                    item.gameObject.SetActive(false);
-                }
-            }
+            //code to show and hide lights based on distance from player
+            //foreach (var item in PhysicsManager.Instance.LightStrips)
+            //{
+            //    if (!item.gameObject.activeSelf && Vector3.Distance(characterController.transform.position, item.transform.position) < LightsDistance)
+            //    {
+            //        item.gameObject.SetActive(true);
+            //    }
+            //    else if (item.gameObject.activeSelf && Vector3.Distance(characterController.transform.position, item.transform.position) > (LightsDistance * 1.2f))
+            //    {
+            //        item.gameObject.SetActive(false);
+            //    }
+            //}
         }
 
         public void Reset()
@@ -352,6 +357,36 @@ namespace BubbleDistortionPhysics
             {
                 HeldObjects[i].layer = HeldObjectLayers[i];
             }            
+        }
+
+        public void AddPuzzleArea(PuzzleArea puzzleArea)
+        {
+            ActivePuzzleAreas.Add(puzzleArea);
+            UpdateLights();
+        }
+
+        public void RemovePuzzleArea(PuzzleArea puzzleArea)
+        {
+            ActivePuzzleAreas.Remove(puzzleArea);
+            UpdateLights();
+        }
+
+        private void UpdateLights()
+        {            
+            foreach (LightStrip lightStrip in PhysicsManager.Instance.LightStrips)
+            {
+                bool blnLightState = false;
+
+                foreach (PuzzleArea puzzleArea in ActivePuzzleAreas)
+                {
+                    if (puzzleArea.Lights.Contains(lightStrip))
+                    {
+                        blnLightState = true;
+                    }
+                }
+
+                lightStrip.gameObject.SetActive(blnLightState);
+            }
         }
     }
 }

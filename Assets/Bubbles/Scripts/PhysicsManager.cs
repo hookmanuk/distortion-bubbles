@@ -28,16 +28,22 @@ namespace BubbleDistortionPhysics
             }            
         }
 
+        private bool _lightsOff = false;
+        public void TurnOffLights()
+        {
+            _lightsOff = true;
+
+            foreach (LightStrip light in LightStrips)
+            {
+                light.gameObject.SetActive(false);
+            }
+        }
+
         public List<PhysicsObject> PhysicsObjects { get; set; }
         public List<PhysicsDistorter> PhysicsDistorters { get; set; }
         public List<VendingMachine> VendingMachines { get; set; }
 
-        public List<LightStrip> LightStrips { get; set; }
-
-        private void FixedUpdate()
-        {
-
-        }
+        public List<LightStrip> LightStrips { get; set; }       
 
         public Vector3 Reset()
         {

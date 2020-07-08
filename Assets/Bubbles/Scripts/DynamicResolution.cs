@@ -31,11 +31,11 @@ public class DynamicResolution : MonoBehaviour
     float m_cpuFrameTime;
 
     // Use this for initialization
-    void Start()
-    {
-        int rezWidth = (int)Mathf.Ceil(ScalableBufferManager.widthScaleFactor * Screen.currentResolution.width);
-        int rezHeight = (int)Mathf.Ceil(ScalableBufferManager.heightScaleFactor * Screen.currentResolution.height);        
-    }
+    //void Start()
+    //{
+    //    int rezWidth = (int)Mathf.Ceil(ScalableBufferManager.widthScaleFactor * Screen.currentResolution.width);
+    //    int rezHeight = (int)Mathf.Ceil(ScalableBufferManager.heightScaleFactor * Screen.currentResolution.height);        
+    //}
 
     //Doesnt actually do anything!
     // Update is called once per frame
@@ -88,41 +88,6 @@ public class DynamicResolution : MonoBehaviour
     //    int rezHeight = (int)Mathf.Ceil(ScalableBufferManager.heightScaleFactor * Screen.currentResolution.height);        
     //}
 
-    private float _fpsUpdate;
-    private float _lastFps;
-    private float _targetFps = 90f;
-    private DateTime _lastChange;
-    private double _timeToIncrease = 200;
-    private int _currentFrame = 0;
-    private int _frameWindow = 30;
-
-    private void Update()
-    {
-        _currentFrame += 1;
-
-        _lastFps += 1.0f / Time.deltaTime;        
-
-        if (_currentFrame == _frameWindow)
-        {
-            _lastFps = _lastFps / _frameWindow;
-            if (_lastFps > 0 && PlayerController.Instance.LightsDistance >= 10f && _lastFps < _targetFps * 0.99f && (DateTime.Now - _lastChange).TotalMilliseconds > 200)
-            {
-                _timeToIncrease += 200;
-                _lastChange = DateTime.Now;
-                PlayerController.Instance.LightsDistance -= 1;
-                OutputLogManager.UpdateLogPerformance("GPU " + _lastFps.ToString() + " Lights distance " + PlayerController.Instance.LightsDistance);
-            }
-            else if (_lastFps >= _targetFps && PlayerController.Instance.LightsDistance < 20f && (DateTime.Now - _lastChange).TotalMilliseconds > _timeToIncrease)
-            {
-                _lastChange = DateTime.Now;
-                PlayerController.Instance.LightsDistance += 1;
-                OutputLogManager.UpdateLogPerformance("GPU " + _lastFps.ToString() + " Lights distance " + PlayerController.Instance.LightsDistance);
-            }
-            _lastFps = 0;
-            _currentFrame = 0;
-        }        
-    }
-
     // Estimate the next frame time and update the resolution scale if necessary.
     //private void DetermineResolution()
     //{
@@ -143,5 +108,42 @@ public class DynamicResolution : MonoBehaviour
 
     //    m_gpuFrameTime = (double)frameTimings[0].gpuFrameTime;
     //    m_cpuFrameTime = (double)frameTimings[0].cpuFrameTime;
+    //}
+
+
+    //MJH This is my code for only lighting a certain distance around the player
+    //private float _fpsUpdate;
+    //private float _lastFps;
+    //private float _targetFps = 90f;
+    //private DateTime _lastChange;
+    //private double _timeToIncrease = 200;
+    //private int _currentFrame = 0;
+    //private int _frameWindow = 30;
+
+    //private void Update()
+    //{
+    //    _currentFrame += 1;
+
+    //    _lastFps += 1.0f / Time.deltaTime;
+
+    //    if (_currentFrame == _frameWindow)
+    //    {
+    //        _lastFps = _lastFps / _frameWindow;
+    //        if (_lastFps > 0 && PlayerController.Instance.LightsDistance >= 10f && _lastFps < _targetFps * 0.99f && (DateTime.Now - _lastChange).TotalMilliseconds > 200)
+    //        {
+    //            _timeToIncrease += 200;
+    //            _lastChange = DateTime.Now;
+    //            PlayerController.Instance.LightsDistance -= 1;
+    //            OutputLogManager.UpdateLogPerformance("GPU " + _lastFps.ToString() + " Lights distance " + PlayerController.Instance.LightsDistance);
+    //        }
+    //        else if (_lastFps >= _targetFps && PlayerController.Instance.LightsDistance < 20f && (DateTime.Now - _lastChange).TotalMilliseconds > _timeToIncrease)
+    //        {
+    //            _lastChange = DateTime.Now;
+    //            PlayerController.Instance.LightsDistance += 1;
+    //            OutputLogManager.UpdateLogPerformance("GPU " + _lastFps.ToString() + " Lights distance " + PlayerController.Instance.LightsDistance);
+    //        }
+    //        _lastFps = 0;
+    //        _currentFrame = 0;
+    //    }
     //}
 }
