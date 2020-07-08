@@ -173,7 +173,8 @@ namespace BubbleDistortionPhysics
 
         public void SetStockLevel(int stockLevel)
         {
-            StockValueText.GetComponent<TextMesh>().text = stockLevel.ToString();
+            StockValueText.GetComponent<SimpleHelvetica>().Text = stockLevel.ToString();
+            StockValueText.GetComponent<SimpleHelvetica>().GenerateText();
 
             if (stockLevel == 0)
             {

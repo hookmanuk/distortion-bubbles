@@ -110,8 +110,9 @@ namespace BubbleDistortionPhysics
             _sphereCollider.enabled = true;
             _rigidbody.velocity = new Vector3(0, 0, 0);
             _rigidbody.freezeRotation = true;
-            transform.localScale = new Vector3(2, 2, 2);
-            transform.position = new Vector3(transform.position.x, transform.position.y + 0.33f, transform.position.z);
+            StartCoroutine(ScaleOverTime(0.2f, transform, new Vector3(2f, 2f, 2f)));
+            //transform.localScale = new Vector3(2, 2, 2);
+            //transform.position = new Vector3(transform.position.x, transform.position.y + 0.33f, transform.position.z);
             _grabInteractable.interactionLayerMask = LayerMask.GetMask("Nothing");
         }
 
@@ -180,6 +181,20 @@ namespace BubbleDistortionPhysics
         {
             yield return new WaitForSeconds(time);
             task(other);        
+        }
+
+        IEnumerator ScaleOverTime(float time, Transform transform, Vector3 newScale)
+        {
+            float currentTime = 0f;
+            Vector3 originalScale = transform.localScale;
+
+            while (currentTime < time)
+            {
+                transform.localScale = Vector3.Lerp(originalScale, newScale, currentTime / time);
+
+                currentTime += Time.deltaTime;
+                yield return null;
+            }
         }
     }
 

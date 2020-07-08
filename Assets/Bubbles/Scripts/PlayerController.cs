@@ -192,7 +192,7 @@ namespace BubbleDistortionPhysics
             bool blnDebugSkipClicked = false;
             int LastVend = -1;            
 
-            RightController?.inputDevice.TryGetFeatureValue(CommonUsages.secondaryButton, out blnDebugSkipClicked);
+            RightController?.inputDevice.TryGetFeatureValue(CommonUsages.secondary2DAxisClick, out blnDebugSkipClicked);
 
             if (blnDebugSkipClicked && _lastSkipTime < DateTime.Now.AddSeconds(-.5f))
             {
