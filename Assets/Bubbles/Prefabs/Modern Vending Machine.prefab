@@ -1252,7 +1252,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 04d5e2a57b166524d8858b1a1986144e, type: 2}
+      objectReference: {fileID: 2100000, guid: fec1740fa8883c1449cd7a33a87b3ae0, type: 2}
     - target: {fileID: 4543832187895068225, guid: 08748e626393d0c45ab906f40f569789,
         type: 3}
       propertyPath: Bubble

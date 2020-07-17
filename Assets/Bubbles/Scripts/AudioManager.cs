@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -28,6 +29,8 @@ namespace BubbleDistortionPhysics
         float[] number = new float[256];
         public float BassLevel;        
         bool isAboveMax = false;
+        public GameObject[] Level1Speakers;
+        public GameObject[] Level2Speakers;
 
         public DateTime LastBeat { get; set; }        
 
@@ -45,6 +48,55 @@ namespace BubbleDistortionPhysics
             else if (isAboveMax && BassLevel < 2)
             {
                 isAboveMax = false;
+            }
+        }
+
+        public void Level2Triggered()
+        {
+            foreach (var item in Level1Speakers)
+            {
+                StartCoroutine(VolumeOverTime(item.GetComponent<AudioSource>(), 4f, 0));                
+            }
+            foreach (var item in Level2Speakers)
+            {
+                StartCoroutine(VolumeOverTime(item.GetComponent<AudioSource>(), 4f, 0.2f));
+            }
+        }
+
+        public void Level1Triggered()
+        {
+            foreach (var item in Level2Speakers)
+            {
+                StartCoroutine(VolumeOverTime(item.GetComponent<AudioSource>(), 4f, 0));
+            }
+            foreach (var item in Level1Speakers)
+            {
+                StartCoroutine(VolumeOverTime(item.GetComponent<AudioSource>(), 4f, 0.2f));
+            }
+        }
+
+        IEnumerator VolumeOverTime(AudioSource source, float time, float volume)
+        {
+            float currentTime = 0f;
+            float originalVolume = source.volume;
+            float differenceVolume = (volume - originalVolume);
+
+            if (!source.isPlaying)
+            {
+                source.Play();
+            }
+
+            while (currentTime < time)
+            {
+                source.volume = originalVolume + (differenceVolume * currentTime / time);
+                
+                currentTime += Time.deltaTime;
+                yield return null;
+            }
+
+            if (source.volume == 0)
+            {
+                source.Stop();
             }
         }
     }
