@@ -70,21 +70,31 @@ namespace BubbleDistortionPhysics
 
         private void OnCollisionEnter(Collision collision)
         {
+            PhysicsSurface surface;
             OutputLogManager.OutputText(name + " hit " + collision.gameObject.name);
 
-            if (ExpandType != ExpandType.None && _thrown && collision.gameObject.GetComponent<PhysicsSurface>() != null)
+            if (ExpandType != ExpandType.None && _thrown)
             {
-                Expanded = true;
+                surface = collision.gameObject.GetComponent<PhysicsSurface>();
+                if (surface != null)
+                {
+                    if (surface.TargetDistorterType == DistorterType)
+                    {
+                        TriggerSuccess();
+                    }
 
-                if (ExpandType == ExpandType.Disc)
-                {
-                    ExpandDisc();
+                    Expanded = true;
+
+                    if (ExpandType == ExpandType.Disc)
+                    {
+                        ExpandDisc();
+                    }
+                    else
+                    {
+                        ExpandBubble();
+                    }
+                    this.gameObject.layer = 0;
                 }
-                else
-                {
-                    ExpandBubble();
-                }
-                this.gameObject.layer = 0;
             }
         }
 
@@ -114,6 +124,13 @@ namespace BubbleDistortionPhysics
             //transform.localScale = new Vector3(2, 2, 2);
             //transform.position = new Vector3(transform.position.x, transform.position.y + 0.33f, transform.position.z);
             _grabInteractable.interactionLayerMask = LayerMask.GetMask("Nothing");
+        }
+
+        public void TriggerSuccess()
+        {
+            //you did well!
+            GetComponents<AudioSource>()[1].Play();
+            GetComponent<ParticleSystem>()?.Play();
         }
 
         private void OnTriggerEnter(Collider other)

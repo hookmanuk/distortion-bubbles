@@ -123,6 +123,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65ec8dbd7b17b9a45971ac694ca4456c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TargetDistorterType: 0
 --- !u!1 &4681562663164434691
 GameObject:
   m_ObjectHideFlags: 0
@@ -168,7 +169,7 @@ Light:
   m_Shape: 0
   m_Color: {r: 0.8608079, g: 0, b: 1, a: 1}
   m_Intensity: 23.873241
-  m_Range: 10
+  m_Range: 8.9
   m_SpotAngle: 174
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -236,7 +237,7 @@ MonoBehaviour:
   m_PointlightHDType: 0
   m_SpotLightShape: 0
   m_AreaLightShape: 0
-  m_Intensity: 120
+  m_Intensity: 93.4
   m_EnableSpotReflector: 0
   m_LuxAtDistance: 2
   m_InnerSpotPercent: 48
@@ -291,8 +292,8 @@ MonoBehaviour:
   m_MaxDepthBias: 0.001
   m_ShadowResolution:
     m_Override: 512
-    m_UseOverride: 1
-    m_Level: 0
+    m_UseOverride: 0
+    m_Level: 3
   m_ShadowDimmer: 1
   m_VolumetricShadowDimmer: 1
   m_ShadowFadeDistance: 10000
