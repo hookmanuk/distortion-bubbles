@@ -146,14 +146,14 @@ namespace BubbleDistortionPhysics
                     else if (Type == DistorterType.Show)
                     {
                         bubbleClone = Instantiate(_vendingMachine.BubbleShow.gameObject);
-                        _vendingMachine.SetStockLaunchLevel(_vendingMachine.StockShowLevel - 1);
+                        _vendingMachine.SetStockShowLevel(_vendingMachine.StockShowLevel - 1);
                     }
 
                     bubbleClone.tag = "Untagged";
                     bubbleClone.transform.position = new Vector3(_vendingMachine.transform.position.x - 0.46f, _vendingMachine.transform.position.y + 0.505f, _vendingMachine.transform.position.z + 0.049f);
                     bubbleClone.transform.rotation = new Quaternion(120, 90, 0, 0);
                     bubbleClone.GetComponent<Rigidbody>().useGravity = true;
-                    bubbleClone.GetComponent<AudioSource>().Play();
+                    bubbleClone.GetComponents<AudioSource>()[0].Play();
 
                     _vendingMachine.MyBubbles.Add(bubbleClone);
                     _vendingMachine.PointLight.gameObject.SetActive(true);

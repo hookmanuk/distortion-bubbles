@@ -152,7 +152,7 @@ namespace BubbleDistortionPhysics
 
             if (Path?.Length > 0)
             {
-                if (_ticksSincePathChange > 10 && (RigidBody.transform.position - Path[_currentPathIndex]).magnitude < 0.05f)
+                if (_ticksSincePathChange > 10 && (RigidBody.transform.position - RigidBody.transform.parent.position - Path[_currentPathIndex]).magnitude < 0.05f)
                 {
                     _ticksSincePathChange = 0;
                     _currentPathIndex += _pathIncrement;
@@ -171,7 +171,7 @@ namespace BubbleDistortionPhysics
                     }
                 }
 
-                direction = (Path[_currentPathIndex] - RigidBody.transform.position);
+                direction = (Path[_currentPathIndex] - (RigidBody.transform.position - RigidBody.transform.parent.position));
                 direction.Normalize();
 
                 RigidBody.MovePosition(RigidBody.transform.position + direction * Speed * Time.deltaTime);
