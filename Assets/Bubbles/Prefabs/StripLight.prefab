@@ -237,7 +237,7 @@ MonoBehaviour:
   m_PointlightHDType: 0
   m_SpotLightShape: 0
   m_AreaLightShape: 0
-  m_Intensity: 93.4
+  m_Intensity: 26.4
   m_EnableSpotReflector: 0
   m_LuxAtDistance: 2
   m_InnerSpotPercent: 48
