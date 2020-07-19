@@ -11,12 +11,10 @@ namespace BubbleDistortionPhysics
         private Light _light;
         private float _lightIntensity;
         private MeshRenderer _meshRenderer;
-        public bool Flickers = true;        
+        public bool Flickers = true;
 
         public void Start()
         {
-            Color lightColor;
-
             PhysicsManager.Instance.LightStrips.Add(this);
             _random = new System.Random(Convert.ToInt32(DateTime.Now.Ticks.ToString().Substring(10)));
             _light = GetComponentInChildren<Light>();
@@ -27,7 +25,7 @@ namespace BubbleDistortionPhysics
             if (Flickers)
             {
                 StartCoroutine(FlickerLight());
-            }            
+            }
         }
     
 

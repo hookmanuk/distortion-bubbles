@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
@@ -33,14 +32,12 @@ namespace BubbleDistortionPhysics
         public PhysicsDistorter BubbleLaunch { get; set; }        
         public PhysicsDistorter BubbleShow { get; set; }
 
-        public DateTime LastButtonPressed { get; set; }        
+        public DateTime LastButtonPressed { get; set; }
 
         public List<GameObject> MyBubbles { get; set; }
         
 
         public List<PhysicsObject> MyPhysicsObjects;
-
-        public List<HintArea> MyHintAreas;
         private int _startStockSlowLevel;
         private int _startStockGrowLevel;
         private int _startStockShrinkLevel;
@@ -48,8 +45,6 @@ namespace BubbleDistortionPhysics
         private int _startStockLaunchLevel;
         private int _startStockCutOffLevel;
         private int _startStockShowLevel;
-
-        private bool _firstButtonPress = true;
 
         private void Start()
         {
@@ -65,32 +60,22 @@ namespace BubbleDistortionPhysics
             BubbleLaunch = GameObject.FindGameObjectWithTag("BubbleLaunch").GetComponent<PhysicsDistorter>();            
             BubbleShow = GameObject.FindGameObjectWithTag("BubbleShow").GetComponent<PhysicsDistorter>();
 
+            SetStockSlowLevel(StockSlowLevel);
+            SetStockGrowLevel(StockGrowLevel);
+            SetStockShrinkLevel(StockShrinkLevel);
+            SetStockGravityLevel(StockGravityLevel);
+            SetStockLaunchLevel(StockLaunchLevel);            
+            SetStockShowLevel(StockShowLevel);
+
+            LastButtonPressed = DateTime.Now;
+            
+            PhysicsManager.Instance.VendingMachines.Add(this);
             _startStockSlowLevel = StockSlowLevel;
             _startStockGrowLevel = StockGrowLevel;
             _startStockShrinkLevel = StockShrinkLevel;
             _startStockGravityLevel = StockGravityLevel;
-            _startStockLaunchLevel = StockLaunchLevel;
+            _startStockLaunchLevel = StockLaunchLevel;           
             _startStockShowLevel = StockShowLevel;
-
-            InitStockLevels();
-
-            LastButtonPressed = DateTime.Now;
-            
-            PhysicsManager.Instance.VendingMachines.Add(this);            
-        }
-
-        private void InitStockLevels()
-        {
-            _firstButtonPress = false;
-
-            SetStockSlowLevel(_startStockSlowLevel);
-            SetStockGrowLevel(_startStockGrowLevel);
-            SetStockShrinkLevel(_startStockShrinkLevel);
-            SetStockGravityLevel(_startStockGravityLevel);
-            SetStockLaunchLevel(_startStockLaunchLevel);
-            SetStockShowLevel(_startStockShowLevel);
-
-            _firstButtonPress = true;
         }
 
         public void OnDestroy()
@@ -111,74 +96,48 @@ namespace BubbleDistortionPhysics
                 physicsObject.Reset();
             }
 
-            foreach (HintArea area in MyHintAreas)
-            {
-                area.Reset();
-            }
-
-            InitStockLevels();
-
-            _firstButtonPress = true;
+            SetStockSlowLevel(_startStockSlowLevel);
+            SetStockGrowLevel(_startStockGrowLevel);
+            SetStockShrinkLevel(_startStockShrinkLevel);
+            SetStockGravityLevel(_startStockGravityLevel);
+            SetStockLaunchLevel(_startStockLaunchLevel);            
+            SetStockShowLevel(_startStockShowLevel);
         }
 
         public void SetStockSlowLevel(int stockLevel)
         {
             StockSlowLevel = stockLevel;
-            SlowButton.SetStockLevel(stockLevel);
-            CheckForKeyReset();
+            SlowButton.SetStockLevel(stockLevel);            
         }
 
         public void SetStockGrowLevel(int stockLevel)
         {
             StockGrowLevel = stockLevel;
             GrowButton.SetStockLevel(stockLevel);
-            CheckForKeyReset();
         }
 
         public void SetStockShrinkLevel(int stockLevel)
         {
             StockShrinkLevel = stockLevel;
             ShrinkButton.SetStockLevel(stockLevel);
-            CheckForKeyReset();
         }
 
         public void SetStockGravityLevel(int stockLevel)
         {
             StockGravityLevel = stockLevel;
             GravityButton.SetStockLevel(stockLevel);
-            CheckForKeyReset();
         }
 
         public void SetStockLaunchLevel(int stockLevel)
         {
             StockLaunchLevel = stockLevel;
             LaunchButton.SetStockLevel(stockLevel);
-            CheckForKeyReset();
         }       
 
         public void SetStockShowLevel(int stockLevel)
         {
-            StockShowLevel = stockLevel;
+            StockLaunchLevel = stockLevel;
             ShowButton.SetStockLevel(stockLevel);
-            CheckForKeyReset();
-        }
-
-        private void CheckForKeyReset()
-        {
-            if (_firstButtonPress)
-            {
-                foreach (PhysicsObject physicsObject in MyPhysicsObjects)
-                {
-                    KeyObject keyObject;
-                    if (physicsObject.TryGetComponent<KeyObject>(out keyObject))
-                    {
-                        OutputLogManager.OutputText("Resetting key " + keyObject.name);
-                        physicsObject.Reset();
-                    }                    
-                }
-
-                _firstButtonPress = false;
-            }
         }
     }
 }

@@ -41,7 +41,7 @@ namespace BubbleDistortionPhysics
         {
             SourceMachine?.PointLight.gameObject.SetActive(false);
             //OutputLogManager.OutputText(name + " select exit " + interactor.gameObject.name);
-            _thrown = false;
+            _thrown = true;
         }
 
         private void OnSelectExit(XRBaseInteractor interactor)
