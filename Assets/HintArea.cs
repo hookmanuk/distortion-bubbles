@@ -5,18 +5,17 @@ using UnityEngine;
 
 public class HintArea : MonoBehaviour
 {
-    public DistorterType DistorterType;
-    private PhysicsDistorter Distorter;
+    public DistorterType DistorterType;       
 
     private void OnTriggerEnter(Collider other)
     {
         PhysicsDistorter distorter;
         if (other.TryGetComponent(out distorter))
         {
-            if (distorter.DistorterType == DistorterType && !distorter.Expanded)
+            if (distorter.DistorterType == DistorterType)
             {
-                Distorter = distorter;
-                Distorter.TriggerSuccess();                
+                //you did well!
+                distorter.GetComponents<AudioSource>()[1].Play();
                 //_material.SetFloat("GLOW_ALPHA", 0f);
                 gameObject.SetActive(false);
             }

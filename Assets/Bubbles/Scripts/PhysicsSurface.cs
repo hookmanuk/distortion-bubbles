@@ -6,9 +6,7 @@ using UnityEngine;
 namespace BubbleDistortionPhysics
 {
     public class PhysicsSurface : MonoBehaviour
-    {
-        public DistorterType TargetDistorterType;
-
+    {       
         public void Start()
         {            
         }

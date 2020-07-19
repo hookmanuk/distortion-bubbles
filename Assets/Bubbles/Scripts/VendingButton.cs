@@ -19,7 +19,6 @@ namespace BubbleDistortionPhysics
         public GameObject StockValueText;
         private float previousHandHeight;
         private XRBaseInteractor hoverInteractor;
-        public GameObject DisabledQuad;
 
         protected override void Awake()
         {
@@ -179,12 +178,10 @@ namespace BubbleDistortionPhysics
 
             if (stockLevel == 0)
             {
-                DisabledQuad.SetActive(true);
                 ButtonEnabled = false;
             }
             else
             {
-                DisabledQuad.SetActive(false);
                 ButtonEnabled = true;
             }
         }
