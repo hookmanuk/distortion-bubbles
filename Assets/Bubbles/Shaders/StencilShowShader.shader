@@ -64,7 +64,7 @@ Shader "Custom/StencilShowShader"
         // value that exist to identify if the GI emission need to be enabled.
         // In our case we don't use such a mechanism but need to keep the code quiet. We declare the value and always enable it.
         // TODO: Fix the code in legacy unity so we can customize the beahvior for GI
-        _EmissionColor("Color", Color) = (1, 1, 1)
+        _EmissionColor("EmissiveColor", Color) = (1, 1, 1)
 
         // HACK: GI Baking system relies on some properties existing in the shader ("_MainTex", "_Cutoff" and "_Color") for opacity handling, so we need to store our version of those parameters in the hard-coded name the GI baking system recognizes.
         _MainTex("Albedo", 2D) = "green" {}
@@ -132,7 +132,7 @@ Shader "Custom/StencilShowShader"
         {
             //Cull Back
             //ZWrite Off
-            Blend OneMinusSrcColor One // keep the image behind it
+            Blend One OneMinusSrcAlpha  // keep the image behind it
 
             HLSLPROGRAM
             #pragma vertex vert
@@ -169,11 +169,18 @@ Shader "Custom/StencilShowShader"
                 return output;
             }
 
-            void frag(VaryingsDefault varying, out float outLightCount : SV_Target0, out float4 outColorAccumulation : SV_Target1)
+            /*void frag(VaryingsDefault varying, out float outLightCount : SV_Target0, out float4 outColorAccumulation : SV_Target1)
             {
                 UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(varying);
                 outLightCount = 0.5f;
                 outColorAccumulation = _Color;
+            }*/
+
+            float4 frag(VaryingsDefault i) : COLOR
+            {
+                float4 col = _Color;
+                UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(i);
+                return col;
             }
 
             ENDHLSL
