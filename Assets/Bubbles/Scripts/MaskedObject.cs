@@ -11,7 +11,7 @@ namespace BubbleDistortionPhysics
         {
             foreach (var item in GetComponentsInChildren<Renderer>())
             {
-                item.material.renderQueue = 3002;
+                item.material.renderQueue = 3002;                
             }
             
         }            

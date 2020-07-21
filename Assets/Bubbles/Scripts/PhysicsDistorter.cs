@@ -16,6 +16,8 @@ namespace BubbleDistortionPhysics
         private SphereCollider _sphereCollider;
         public DistorterType DistorterType;        
         public ExpandType ExpandType;
+        public bool DisolvedByForcefield = false;
+
         public bool Expanded { get; set; }
         public VendingMachine SourceMachine { get; set; }
         
@@ -136,6 +138,12 @@ namespace BubbleDistortionPhysics
         private void OnTriggerEnter(Collider other)
         {
             OutputLogManager.OutputText(name + " triggered " + other.gameObject.name);
+
+            if (DisolvedByForcefield && other.gameObject.CompareTag("Forcefield"))
+            {
+                gameObject.SetActive(false);
+            }
+
             if (_thrown)
             {
                 if (other.gameObject.CompareTag("PhysicsObject"))
@@ -165,7 +173,7 @@ namespace BubbleDistortionPhysics
                         other.gameObject.GetComponent<PlayerController>().LaunchPlayer();
                     }
                 }
-            }
+            }            
         }
 
         private void OnTriggerExit(Collider other)
