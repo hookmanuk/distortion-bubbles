@@ -62,11 +62,12 @@ namespace BubbleDistortionPhysics
             return newPlayerPosition;
         }
 
+       
         public void GravityInverse()
         {
             foreach (var item in PhysicsDistorters)
             {
-                if (!item.Expanded)
+                if (item.ExpandType == ExpandType.Disc && !item.Expanded)
                 {
                     item.GetComponent<Rigidbody>().useGravity = false;
                 }
@@ -77,7 +78,7 @@ namespace BubbleDistortionPhysics
         {
             foreach (var item in PhysicsDistorters)
             {
-                if (!item.Expanded)
+                if (item.ExpandType == ExpandType.Disc && !item.Expanded)
                 {
                     item.GetComponent<Rigidbody>().useGravity = true;
                 }

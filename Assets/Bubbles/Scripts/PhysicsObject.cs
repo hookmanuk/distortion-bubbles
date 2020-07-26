@@ -20,6 +20,8 @@ namespace BubbleDistortionPhysics
         private float _lastBassLevelUsed;
         private DateTime _lastEmission;
         public bool IgnoreMusic;
+        public bool OnCeiling;
+        private int intCeilingMultiplier = 1;
 
         private bool _isSlowed;
 
@@ -73,11 +75,11 @@ namespace BubbleDistortionPhysics
                 if (_isGrown)
                 {
                     transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y * 3, transform.localScale.z);
-                    transform.position = new Vector3(transform.position.x, transform.position.y + (transform.localScale.y / 2), transform.position.z);
+                    transform.position = new Vector3(transform.position.x, transform.position.y + intCeilingMultiplier * (transform.localScale.y / 2), transform.position.z);
                 }
                 else
                 {
-                    transform.position = new Vector3(transform.position.x, transform.position.y - (transform.localScale.y / 2), transform.position.z);
+                    transform.position = new Vector3(transform.position.x, transform.position.y - intCeilingMultiplier * (transform.localScale.y / 2), transform.position.z);
                     transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y / 3, transform.localScale.z);
                 }                
             }
@@ -94,13 +96,13 @@ namespace BubbleDistortionPhysics
 
                 if (_isShrunk)
                 {
-                    transform.position = new Vector3(transform.position.x, transform.position.y - (transform.localScale.y / 3), transform.position.z);
+                    transform.position = new Vector3(transform.position.x, transform.position.y - intCeilingMultiplier * (transform.localScale.y / 3), transform.position.z);
                     transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y / 4, transform.localScale.z);                    
                 }
                 else
                 {                    
                     transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y * 4, transform.localScale.z);
-                    transform.position = new Vector3(transform.position.x, transform.position.y + (transform.localScale.y / 3), transform.position.z);
+                    transform.position = new Vector3(transform.position.x, transform.position.y + intCeilingMultiplier * (transform.localScale.y / 3), transform.position.z);
                 }
             }
         }
@@ -118,6 +120,11 @@ namespace BubbleDistortionPhysics
             _material = GetComponent<MeshRenderer>()?.material;
 
             _emissiveColor = new Color(0.2f, 0, 0);
+
+            if (OnCeiling)
+            {
+                intCeilingMultiplier = -1;
+            }
         }
 
         public void Reset()

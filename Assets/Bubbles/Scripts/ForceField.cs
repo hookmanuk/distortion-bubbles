@@ -9,7 +9,8 @@ public class ForceField : MonoBehaviour
     {
         foreach (var item in GetComponentsInChildren<Renderer>())
         {
-            item.material.renderQueue = 3003;
+            item.materials[0].renderQueue = 3003;
+            //item.materials[1].renderQueue = 3000;
         }
 
     }

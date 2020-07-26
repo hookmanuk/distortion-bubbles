@@ -22,6 +22,7 @@ namespace BubbleDistortionPhysics
 
         private bool _preventCharacterMovement;
         private bool _resetting;
+        private bool _disolving;
         private DateTime _lastSkipTime = DateTime.Now;
         private bool _flipping;
         private static PlayerController _instance;
@@ -49,7 +50,7 @@ namespace BubbleDistortionPhysics
             characterController = GetComponent<CharacterController>();
             capsuleCollider = GetComponent<CapsuleCollider>();
             MainCamera = GameObject.FindGameObjectWithTag("MainCamera");
-            //_outOfBoundsFace = GameObject.FindGameObjectWithTag("OutOfBoundsFace").GetComponent<MeshRenderer>();
+            _outOfBoundsFace = GameObject.FindGameObjectWithTag("OutOfBoundsFace").GetComponent<MeshRenderer>();
             _instance = this;
             ActivePuzzleAreas = new List<PuzzleArea>();
 
@@ -81,7 +82,7 @@ namespace BubbleDistortionPhysics
 
         public void Reset()
         {
-            _resetting = true;            
+            _disolving = true;                        
         }
 
         private bool _blnReversingGravity = false;
@@ -224,6 +225,12 @@ namespace BubbleDistortionPhysics
             if (blnResetClicked)
             {
                 Reset();
+            }
+
+            if (_disolving)
+            {
+                _disolving = false;
+                StartCoroutine(DissolveFace());
             }
 
             if (_resetting)
@@ -387,6 +394,39 @@ namespace BubbleDistortionPhysics
 
                 lightStrip.gameObject.SetActive(blnLightState);
             }
+        }
+
+        IEnumerator DissolveFace()
+        {
+            float currentTime = 0f;
+            float totalTime = 0.5f;                        
+
+            while (currentTime < totalTime)
+            {
+                _outOfBoundsFace.material.SetFloat("HIDDEN_RATIO", totalTime - currentTime*2);
+                
+                currentTime += Time.deltaTime;
+                yield return null;
+            }
+
+            _resetting = true;
+            StartCoroutine(UnDissolveFace());
+        }
+
+        IEnumerator UnDissolveFace()
+        {
+            float currentTime = 0f;
+            float totalTime = 0.5f;
+
+            while (currentTime < totalTime)
+            {
+                _outOfBoundsFace.material.SetFloat("HIDDEN_RATIO", currentTime*2);
+
+                currentTime += Time.deltaTime;
+                yield return null;
+            }
+
+            _resetting = true;
         }
     }
 }
