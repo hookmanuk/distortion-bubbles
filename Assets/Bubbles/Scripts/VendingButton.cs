@@ -114,51 +114,59 @@ namespace BubbleDistortionPhysics
             {
                 if (ButtonEnabled && (DateTime.Now - _vendingMachine.LastButtonPressed).TotalMilliseconds > 500)
                 {
-                    _vendingMachine.LastButtonPressed = DateTime.Now;
-                    GameObject bubbleClone;
+                    _vendingMachine.ButtonPressed();
 
-                    bubbleClone = null;
+                    if (Type == DistorterType.Hint)
+                    {
+                        _vendingMachine.ActivateNextHint();
+                    }
+                    else
+                    {
+                        GameObject bubbleClone;
 
-                    if (Type == DistorterType.Slow)
-                    {
-                        bubbleClone = Instantiate(_vendingMachine.BubbleSlow.gameObject);
-                        _vendingMachine.SetStockSlowLevel(_vendingMachine.StockSlowLevel - 1);
-                    }
-                    else if (Type == DistorterType.Grow)
-                    {
-                        bubbleClone = Instantiate(_vendingMachine.BubbleGrow.gameObject);
-                        _vendingMachine.SetStockGrowLevel(_vendingMachine.StockGrowLevel - 1);
-                    }
-                    else if (Type == DistorterType.Shrink)
-                    {
-                        bubbleClone = Instantiate(_vendingMachine.BubbleShrink.gameObject);
-                        _vendingMachine.SetStockShrinkLevel(_vendingMachine.StockShrinkLevel - 1);
-                    }
-                    else if (Type == DistorterType.Gravity)
-                    {
-                        bubbleClone = Instantiate(_vendingMachine.BubbleGravity.gameObject);
-                        _vendingMachine.SetStockGravityLevel(_vendingMachine.StockGravityLevel - 1);
-                    }
-                    else if (Type == DistorterType.Launch)
-                    {
-                        bubbleClone = Instantiate(_vendingMachine.BubbleLaunch.gameObject);
-                        _vendingMachine.SetStockLaunchLevel(_vendingMachine.StockLaunchLevel - 1);
-                    }                    
-                    else if (Type == DistorterType.Show)
-                    {
-                        bubbleClone = Instantiate(_vendingMachine.BubbleShow.gameObject);
-                        _vendingMachine.SetStockShowLevel(_vendingMachine.StockShowLevel - 1);
-                    }
+                        bubbleClone = null;
 
-                    bubbleClone.tag = "Untagged";
-                    bubbleClone.transform.position = new Vector3(_vendingMachine.transform.position.x - 0.46f, _vendingMachine.transform.position.y + 0.505f, _vendingMachine.transform.position.z + 0.049f);
-                    bubbleClone.transform.rotation = new Quaternion(120, 90, 0, 0);
-                    bubbleClone.GetComponent<Rigidbody>().useGravity = true;
-                    bubbleClone.GetComponents<AudioSource>()[0].Play();
+                        if (Type == DistorterType.Slow)
+                        {
+                            bubbleClone = Instantiate(_vendingMachine.BubbleSlow.gameObject);
+                            _vendingMachine.SetStockSlowLevel(_vendingMachine.StockSlowLevel - 1);
+                        }
+                        else if (Type == DistorterType.Grow)
+                        {
+                            bubbleClone = Instantiate(_vendingMachine.BubbleGrow.gameObject);
+                            _vendingMachine.SetStockGrowLevel(_vendingMachine.StockGrowLevel - 1);
+                        }
+                        else if (Type == DistorterType.Shrink)
+                        {
+                            bubbleClone = Instantiate(_vendingMachine.BubbleShrink.gameObject);
+                            _vendingMachine.SetStockShrinkLevel(_vendingMachine.StockShrinkLevel - 1);
+                        }
+                        else if (Type == DistorterType.Gravity)
+                        {
+                            bubbleClone = Instantiate(_vendingMachine.BubbleGravity.gameObject);
+                            _vendingMachine.SetStockGravityLevel(_vendingMachine.StockGravityLevel - 1);
+                        }
+                        else if (Type == DistorterType.Launch)
+                        {
+                            bubbleClone = Instantiate(_vendingMachine.BubbleLaunch.gameObject);
+                            _vendingMachine.SetStockLaunchLevel(_vendingMachine.StockLaunchLevel - 1);
+                        }
+                        else if (Type == DistorterType.Show)
+                        {
+                            bubbleClone = Instantiate(_vendingMachine.BubbleShow.gameObject);
+                            _vendingMachine.SetStockShowLevel(_vendingMachine.StockShowLevel - 1);
+                        }
 
-                    _vendingMachine.MyBubbles.Add(bubbleClone);
-                    _vendingMachine.PointLight.gameObject.SetActive(true);
-                    bubbleClone.GetComponent<PhysicsDistorter>().SourceMachine = _vendingMachine;
+                        bubbleClone.tag = "Untagged";
+                        bubbleClone.transform.position = new Vector3(_vendingMachine.transform.position.x - 0.46f, _vendingMachine.transform.position.y + 0.505f, _vendingMachine.transform.position.z + 0.049f);
+                        bubbleClone.transform.rotation = new Quaternion(120, 90, 0, 0);
+                        bubbleClone.GetComponent<Rigidbody>().useGravity = true;
+                        bubbleClone.GetComponents<AudioSource>()[0].Play();
+
+                        _vendingMachine.MyBubbles.Add(bubbleClone);
+                        _vendingMachine.PointLight.gameObject.SetActive(true);
+                        bubbleClone.GetComponent<PhysicsDistorter>().SourceMachine = _vendingMachine;
+                    }
 
                     if (_vendingMachine.Order >= 11)
                     {

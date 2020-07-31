@@ -15,16 +15,21 @@ namespace BubbleDistortionPhysics
         public int StockGravityLevel;
         public int StockLaunchLevel;        
         public int StockShowLevel;
-        
+        public int StockShowHintLevel;
+
         public VendingButton SlowButton;
         public VendingButton GrowButton;
         public VendingButton ShrinkButton;
         public VendingButton GravityButton;
         public VendingButton LaunchButton;        
         public VendingButton ShowButton;
+        public VendingButton ShowHintButton;
 
         public Light PointLight;
-        public int Order;        
+        public int Order;
+
+        public List<HintArea> HintAreas;
+        public List<PhysicsObject> HintObjects;
 
         public PhysicsDistorter BubbleSlow { get; set; }
         public PhysicsDistorter BubbleGrow { get; set; }
@@ -40,7 +45,8 @@ namespace BubbleDistortionPhysics
 
         public List<PhysicsObject> MyPhysicsObjects;
 
-        public List<HintArea> MyHintAreas;
+        public GameObject ShowHintGlowQuad;
+
         private int _startStockSlowLevel;
         private int _startStockGrowLevel;
         private int _startStockShrinkLevel;
@@ -48,8 +54,13 @@ namespace BubbleDistortionPhysics
         private int _startStockLaunchLevel;
         private int _startStockCutOffLevel;
         private int _startStockShowLevel;
+        private int _startStockShowHintLevel;
 
         private bool _firstButtonPress = true;
+        private bool _showHints = false;
+        private int _intSecondsSincePressed = 0;
+        private int _totalHints;
+        private int _nextHint;
 
         private void Start()
         {
@@ -71,12 +82,66 @@ namespace BubbleDistortionPhysics
             _startStockGravityLevel = StockGravityLevel;
             _startStockLaunchLevel = StockLaunchLevel;
             _startStockShowLevel = StockShowLevel;
+            _startStockShowHintLevel = 0;
+
+            SetStockShowHintLevel(_startStockShowHintLevel);
+
+            bool blnHintFound = false;
+            foreach (var HintArea in HintAreas)
+            {                
+                if (!blnHintFound)
+                {
+                    blnHintFound = true;
+                    _totalHints++;
+                }
+                if (HintArea == null) //using null entry as divider between hints
+                {
+                    blnHintFound = false;
+                }
+            }
+            _nextHint = _totalHints;            
 
             InitStockLevels();
 
             LastButtonPressed = DateTime.Now;
             
             PhysicsManager.Instance.VendingMachines.Add(this);            
+        }
+
+        public void ButtonPressed()
+        {
+            LastButtonPressed = DateTime.Now;
+
+            //set counter going to then show hint
+            if (_intSecondsSincePressed == 0)
+            {
+                StartCoroutine(CountSincePressed());
+            }
+        }
+
+        public IEnumerator CountSincePressed()
+        {
+            if (_totalHints > 0)
+            {
+                while (!_showHints)
+                {
+                    yield return new WaitForSeconds(1);
+                    _intSecondsSincePressed++;
+
+                    if (_intSecondsSincePressed >= 30)
+                    {
+                        VendingMachine vendingMachine = PhysicsManager.Instance.VendingMachines.OrderByDescending(vm => vm.LastButtonPressed).FirstOrDefault();
+                        if (vendingMachine == this)
+                        {
+                            _intSecondsSincePressed = 0;
+                            _showHints = true;
+                            ShowHintButton.GetComponent<AudioSource>().Play();
+                            //ShowHintGlowQuad.GetComponent<MeshRenderer>().material.SetFloat("GLOW_ALPHA", 0.1f); Doesn't work :(
+                            SetStockShowHintLevel(_totalHints);
+                        }
+                    }
+                }
+            }
         }
 
         private void InitStockLevels()
@@ -88,7 +153,7 @@ namespace BubbleDistortionPhysics
             SetStockShrinkLevel(_startStockShrinkLevel);
             SetStockGravityLevel(_startStockGravityLevel);
             SetStockLaunchLevel(_startStockLaunchLevel);
-            SetStockShowLevel(_startStockShowLevel);
+            SetStockShowLevel(_startStockShowLevel);            
 
             _firstButtonPress = true;
         }
@@ -109,12 +174,7 @@ namespace BubbleDistortionPhysics
             foreach (PhysicsObject physicsObject in MyPhysicsObjects)
             {
                 physicsObject.Reset();
-            }
-
-            foreach (HintArea area in MyHintAreas)
-            {
-                area.Reset();
-            }
+            }            
 
             InitStockLevels();
 
@@ -163,6 +223,13 @@ namespace BubbleDistortionPhysics
             CheckForKeyReset();
         }
 
+        public void SetStockShowHintLevel(int stockLevel)
+        {
+            StockShowHintLevel = stockLevel;
+            ShowHintButton.SetStockLevel(stockLevel);
+            CheckForKeyReset();
+        }
+
         private void CheckForKeyReset()
         {
             if (_firstButtonPress)
@@ -178,6 +245,69 @@ namespace BubbleDistortionPhysics
                 }
 
                 _firstButtonPress = false;
+            }
+        }
+
+        public void ActivateNextHint()
+        {
+            if (_nextHint > 0 && _nextHint <= _totalHints)
+            {
+                int intCurrentHintLoop = 0;
+                bool blnHintFound = false;
+                foreach (var HintArea in HintAreas)
+                {
+                    if (!blnHintFound)
+                    {
+                        intCurrentHintLoop++;
+                        if (intCurrentHintLoop == _nextHint)
+                        {
+                            HintArea.EnableGlow();
+                            HintArea.GetComponent<AudioSource>().Play();
+                        }                        
+                        blnHintFound = true;                        
+                    }
+                    if (intCurrentHintLoop > _nextHint)
+                    {
+                        break;
+                    }
+                    if (intCurrentHintLoop == _nextHint)
+                    {
+                        HintArea.EnableGlow();
+                    }
+                    if (HintArea == null) //using null entry as divider between hints
+                    {
+                        blnHintFound = false;
+                    }
+                }
+
+                intCurrentHintLoop = 0;
+                blnHintFound = false;
+                foreach (var HintObject in HintObjects)
+                {
+                    if (!blnHintFound)
+                    {
+                        blnHintFound = true;
+                        intCurrentHintLoop++;
+                    }
+                    if (intCurrentHintLoop > _nextHint)
+                    {
+                        break;
+                    }
+                    if (intCurrentHintLoop == _nextHint)
+                    {
+                        //TODO
+                        //HintObject.MakeItGlow();
+                    }
+                    if (HintObject == null) //using null entry as divider between hints
+                    {
+                        blnHintFound = false;
+                    }
+                }
+                // Hints[_nextHint - 1].ShowHint();
+
+                StockShowHintLevel--;
+                SetStockShowHintLevel(StockShowHintLevel);
+                _nextHint++;
             }
         }
     }

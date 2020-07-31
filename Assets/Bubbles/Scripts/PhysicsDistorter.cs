@@ -73,6 +73,7 @@ namespace BubbleDistortionPhysics
         private void OnCollisionEnter(Collision collision)
         {
             PhysicsSurface surface;
+            HintArea hintArea;
             OutputLogManager.OutputText(name + " hit " + collision.gameObject.name);
 
             if (ExpandType != ExpandType.None && _thrown)
@@ -84,7 +85,6 @@ namespace BubbleDistortionPhysics
                     {
                         TriggerSuccess();
                     }
-
                     Expanded = true;
 
                     if (ExpandType == ExpandType.Disc)
@@ -96,7 +96,7 @@ namespace BubbleDistortionPhysics
                         ExpandBubble();
                     }
                     this.gameObject.layer = 0;
-                }
+                }                
             }
         }
 
@@ -173,6 +173,19 @@ namespace BubbleDistortionPhysics
                         other.gameObject.GetComponent<PlayerController>().LaunchPlayer();
                     }
                 }
+
+                if (!Expanded)
+                {
+                    HintArea hintArea;
+                    hintArea = other.gameObject.GetComponent<HintArea>();
+                    if (hintArea != null)
+                    {
+                        if (hintArea.DistorterType == DistorterType)
+                        {
+                            TriggerSuccess();
+                        }
+                    }
+                }
             }            
         }
 
@@ -230,7 +243,9 @@ namespace BubbleDistortionPhysics
         Shrink,
         Gravity,
         Launch,        
-        Show
+        Show,
+        Hint,
+        None
     }
 
     public enum ExpandType

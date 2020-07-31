@@ -17,8 +17,8 @@ namespace BubbleDistortionPhysics
         {
             Color lightColor;
 
-            PhysicsManager.Instance.LightStrips.Add(this);
-            _random = new System.Random(Convert.ToInt32(DateTime.Now.Ticks.ToString().Substring(10)));
+            PhysicsManager.Instance.LightStrips.Add(this);           
+            _random = new System.Random(Convert.ToInt32(BitConverter.ToInt32(Guid.NewGuid().ToByteArray(), 0)));
             _light = GetComponentInChildren<Light>();
             _lightIntensity = _light.intensity;
             _meshRenderer = GetComponent<MeshRenderer>();

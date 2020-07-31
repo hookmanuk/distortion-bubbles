@@ -214,7 +214,7 @@ MonoBehaviour:
     customBufferFormat: 12
     supportedLitShaderMode: 1
     supportDecals: 1
-    msaaSampleCount: 2
+    msaaSampleCount: 1
     supportMotionVectors: 1
     supportRuntimeDebugDisplay: 1
     supportDitheringCrossFade: 1
@@ -248,7 +248,7 @@ MonoBehaviour:
       directionalShadowsDepthBits: 32
       shadowFilteringQuality: 1
       punctualLightShadowAtlas:
-        shadowAtlasResolution: 4096
+        shadowAtlasResolution: 16384
         shadowAtlasDepthBits: 32
         useDynamicViewportRescale: 1
       areaLightShadowAtlas:
@@ -283,7 +283,7 @@ MonoBehaviour:
       lutFormat: 48
       bufferFormat: 74
     dynamicResolutionSettings:
-      enabled: 1
+      enabled: 0
       maxPercentage: 100
       minPercentage: 50
       dynResType: 0

@@ -379,10 +379,10 @@ namespace BubbleDistortionPhysics
         }
 
         private void UpdateLights()
-        {            
+        {
             foreach (LightStrip lightStrip in PhysicsManager.Instance.LightStrips)
             {
-                bool blnLightState = false;
+                bool blnLightState = true; //enabled all lights!
 
                 foreach (PuzzleArea puzzleArea in ActivePuzzleAreas)
                 {
@@ -399,17 +399,20 @@ namespace BubbleDistortionPhysics
         IEnumerator DissolveFace()
         {
             float currentTime = 0f;
-            float totalTime = 0.5f;                        
+            float totalTime = 1f;                        
 
             while (currentTime < totalTime)
             {
-                _outOfBoundsFace.material.SetFloat("HIDDEN_RATIO", totalTime - currentTime*2);
+                _outOfBoundsFace.material.SetFloat("HIDDEN_RATIO", totalTime - currentTime);
                 
                 currentTime += Time.deltaTime;
                 yield return null;
             }
 
             _resetting = true;
+
+            yield return new WaitForSeconds(0.5f);
+
             StartCoroutine(UnDissolveFace());
         }
 
