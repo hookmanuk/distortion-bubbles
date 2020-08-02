@@ -50,14 +50,25 @@ namespace BubbleDistortionPhysics
             OutputLogManager.OutputText(this.name + " triggered with " + other.gameObject.name);
             if (other.gameObject.CompareTag("Forcefield"))
             {
-                StartCoroutine(Dissolve());
+                StartDissolve();
             }
         }
 
-        private IEnumerator Dissolve()
+        public void StartDissolve(float delay = 0)
+        {
+            StartCoroutine(Dissolve(delay));
+        }
+
+        private IEnumerator Dissolve(float delay)
         {
             var t = 0f;
             var intTimeToOpen = 1f;
+
+            if (delay > 0)
+            {
+                yield return new WaitForSeconds(delay);
+            }
+
             while (t < 1)
             {
                 t += Time.deltaTime / intTimeToOpen;

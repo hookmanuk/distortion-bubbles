@@ -125,7 +125,7 @@ namespace BubbleDistortionPhysics
                     yield return new WaitForSeconds(1);
                     _intSecondsSincePressed++;
 
-                    if (_intSecondsSincePressed >= 5)
+                    if (_intSecondsSincePressed >= 60)
                     {
                         VendingMachine vendingMachine = PhysicsManager.Instance.VendingMachines.OrderByDescending(vm => vm.LastButtonPressed).FirstOrDefault();
                         if (vendingMachine == this)

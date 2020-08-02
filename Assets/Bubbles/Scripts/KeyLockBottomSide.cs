@@ -20,6 +20,7 @@ namespace BubbleDistortionPhysics
             {
                 //OutputLogManager.OutputText("Opening door");
                 StartCoroutine(_door.OpenDoor());
+                collision.gameObject.GetComponent<KeyObject>().StartDissolve(1f);
             }
         }
     }    
