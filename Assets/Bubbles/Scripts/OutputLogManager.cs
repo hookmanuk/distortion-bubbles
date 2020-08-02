@@ -83,7 +83,7 @@ namespace BubbleDistortionPhysics
 
         public static void OutputText(string text)
         {
-            if (Instance.EnableLogText)
+            if (Convert.ToBoolean(Instance?.EnableLogText))
             {
                 if (_LogText.Length > 1000)
                 {
@@ -101,7 +101,7 @@ namespace BubbleDistortionPhysics
 
         public static void UpdateLogPerformance(string text)
         {
-            if (Instance.EnableLogPerformance)
+            if (Convert.ToBoolean(Instance?.EnableLogPerformance))
             {
                 _LogPerformance = text;
                 HMDLog.Text = _LogPerformance + Environment.NewLine + _LogText;

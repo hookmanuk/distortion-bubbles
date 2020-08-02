@@ -12,6 +12,8 @@ namespace BubbleDistortionPhysics
         private float ymin;
         private float ymax;
         private bool previousPress = false;
+        private Material _normal_background;
+        private Material _hint_background;
 
         private VendingMachine _vendingMachine;
         public DistorterType Type;
@@ -192,11 +194,29 @@ namespace BubbleDistortionPhysics
 
             if (stockLevel == 0)
             {
+                if (Type == DistorterType.Hint)
+                {
+
+                    MeshRenderer meshRenderer;
+                    meshRenderer = GetComponent<MeshRenderer>();
+                    if (_hint_background == null)
+                    {
+                        _normal_background = meshRenderer.materials[0];
+                        _hint_background = meshRenderer.materials[1];
+                    }
+                    meshRenderer.material = _normal_background;
+                }
                 DisabledQuad.SetActive(true);
                 ButtonEnabled = false;
             }
             else
             {
+                if (Type == DistorterType.Hint && _hint_background != null)
+                {
+                    MeshRenderer meshRenderer;
+                    meshRenderer = GetComponent<MeshRenderer>();
+                    meshRenderer.material= _hint_background;
+                }
                 DisabledQuad.SetActive(false);
                 ButtonEnabled = true;
             }

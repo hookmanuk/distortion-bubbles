@@ -60,7 +60,7 @@ namespace BubbleDistortionPhysics
         private bool _showHints = false;
         private int _intSecondsSincePressed = 0;
         private int _totalHints;
-        private int _nextHint;
+        private int _nextHint = 1;
 
         private void Start()
         {
@@ -82,9 +82,7 @@ namespace BubbleDistortionPhysics
             _startStockGravityLevel = StockGravityLevel;
             _startStockLaunchLevel = StockLaunchLevel;
             _startStockShowLevel = StockShowLevel;
-            _startStockShowHintLevel = 0;
-
-            SetStockShowHintLevel(_startStockShowHintLevel);
+            _startStockShowHintLevel = 0;            
 
             bool blnHintFound = false;
             foreach (var HintArea in HintAreas)
@@ -98,10 +96,9 @@ namespace BubbleDistortionPhysics
                 {
                     blnHintFound = false;
                 }
-            }
-            _nextHint = _totalHints;            
+            }                        
 
-            InitStockLevels();
+            InitStockLevels(true);
 
             LastButtonPressed = DateTime.Now;
             
@@ -128,7 +125,7 @@ namespace BubbleDistortionPhysics
                     yield return new WaitForSeconds(1);
                     _intSecondsSincePressed++;
 
-                    if (_intSecondsSincePressed >= 30)
+                    if (_intSecondsSincePressed >= 5)
                     {
                         VendingMachine vendingMachine = PhysicsManager.Instance.VendingMachines.OrderByDescending(vm => vm.LastButtonPressed).FirstOrDefault();
                         if (vendingMachine == this)
@@ -144,7 +141,7 @@ namespace BubbleDistortionPhysics
             }
         }
 
-        private void InitStockLevels()
+        private void InitStockLevels(bool blnInitialSetup)
         {
             _firstButtonPress = false;
 
@@ -154,6 +151,11 @@ namespace BubbleDistortionPhysics
             SetStockGravityLevel(_startStockGravityLevel);
             SetStockLaunchLevel(_startStockLaunchLevel);
             SetStockShowLevel(_startStockShowLevel);            
+
+            if (blnInitialSetup)
+            {
+                SetStockShowHintLevel(_startStockShowHintLevel);
+            }
 
             _firstButtonPress = true;
         }
@@ -176,7 +178,7 @@ namespace BubbleDistortionPhysics
                 physicsObject.Reset();
             }            
 
-            InitStockLevels();
+            InitStockLevels(false);
 
             _firstButtonPress = true;
         }
@@ -269,14 +271,17 @@ namespace BubbleDistortionPhysics
                     if (intCurrentHintLoop > _nextHint)
                     {
                         break;
-                    }
-                    if (intCurrentHintLoop == _nextHint)
-                    {
-                        HintArea.EnableGlow();
-                    }
+                    }                    
                     if (HintArea == null) //using null entry as divider between hints
                     {
                         blnHintFound = false;
+                    }
+                    else
+                    {
+                        if (intCurrentHintLoop == _nextHint)
+                        {
+                            HintArea.EnableGlow();
+                        }
                     }
                 }
 

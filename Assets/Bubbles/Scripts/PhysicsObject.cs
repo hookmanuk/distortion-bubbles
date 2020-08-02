@@ -117,7 +117,11 @@ namespace BubbleDistortionPhysics
             _startPosition = transform.position;
             _startRotation = transform.rotation;
 
-            _material = GetComponent<MeshRenderer>()?.material;
+            MeshRenderer meshRenderer;
+            if (TryGetComponent(out meshRenderer))
+            {
+                _material = meshRenderer.material;
+            }                            
 
             _emissiveColor = new Color(0.2f, 0, 0);
 
@@ -129,7 +133,10 @@ namespace BubbleDistortionPhysics
 
         public void Reset()
         {
-            RigidBody.velocity = Vector3.zero;
+            if (RigidBody != null)
+            {
+                RigidBody.velocity = Vector3.zero;
+            }
             transform.position = _startPosition;
             transform.rotation = _startRotation;            
             _currentPathIndex = 0;
