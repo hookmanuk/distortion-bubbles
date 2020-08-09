@@ -158,6 +158,11 @@ namespace BubbleDistortionPhysics
                             bubbleClone = Instantiate(_vendingMachine.BubbleShow.gameObject);
                             _vendingMachine.SetStockShowLevel(_vendingMachine.StockShowLevel - 1);
                         }
+                        else if (Type == DistorterType.BlackHole)
+                        {
+                            bubbleClone = Instantiate(_vendingMachine.BubbleBlackHole.gameObject);
+                            _vendingMachine.SetStockBlackHoleLevel(_vendingMachine.StockBlackHoleLevel - 1);
+                        }
 
                         bubbleClone.tag = "Untagged";
                         bubbleClone.transform.position = new Vector3(_vendingMachine.transform.position.x - 0.46f, _vendingMachine.transform.position.y + 0.505f, _vendingMachine.transform.position.z + 0.049f);

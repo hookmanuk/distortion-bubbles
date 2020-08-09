@@ -133,6 +133,10 @@ namespace BubbleDistortionPhysics
 
         public void Reset()
         {
+            if(!gameObject.activeSelf)
+            {
+                gameObject.SetActive(true);
+            }
             if (RigidBody != null)
             {
                 RigidBody.velocity = Vector3.zero;
@@ -248,7 +252,9 @@ namespace BubbleDistortionPhysics
         private void OnCollisionEnter(Collision collision)
         {
             //OutputLogManager.OutputText(this.name + " collided with " + collision.gameObject.name);
-            if (Path.Length > 0 && collision.gameObject.GetComponent<PhysicsObject>() != null)
+            if (Path.Length > 0 && collision.gameObject.GetComponent<PhysicsObject>() != null &&
+                collision.gameObject.GetComponent<PhysicsObject>().Path != null &&
+                collision.gameObject.GetComponent<PhysicsObject>().Path.Length > 0)
             {
                 //OutputLogManager.OutputText(this.name + " collided with " + collision.gameObject.name);
                 //OutputLogManager.OutputText(this.name + " reversed direction");

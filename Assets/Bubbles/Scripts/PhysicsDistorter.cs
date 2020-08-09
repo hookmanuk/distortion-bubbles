@@ -17,6 +17,7 @@ namespace BubbleDistortionPhysics
         public DistorterType DistorterType;        
         public ExpandType ExpandType;
         public bool DisolvedByForcefield = false;
+        private GameObject _blackHoleExplodeObject;
 
         public bool Expanded { get; set; }
         public VendingMachine SourceMachine { get; set; }
@@ -36,7 +37,9 @@ namespace BubbleDistortionPhysics
 
             _rigidbody = GetComponent<Rigidbody>();
             _boxCollider = GetComponent<BoxCollider>();
-            _sphereCollider = GetComponent<SphereCollider>();            
+            _sphereCollider = GetComponent<SphereCollider>();
+
+            _blackHoleExplodeObject = GameObject.FindGameObjectWithTag("BlackHoleExplodeObject");
         }
 
         private void OnSelectEnter(XRBaseInteractor interactor)
@@ -59,11 +62,45 @@ namespace BubbleDistortionPhysics
 
        
         public void FixedUpdate()
-        {            
+        {
             //if (PlayerController.Instance.ReverseGravity)
             //{
-               // _rigidbody.AddForce(Vector3.up * 9.81f * Time.deltaTime);
+            // _rigidbody.AddForce(Vector3.up * 9.81f * Time.deltaTime);
             //}
+
+            if (Expanded && DistorterType == DistorterType.BlackHole)
+            {
+                //draw all objects nearby in
+                Collider[] hitObjects = Physics.OverlapSphere(transform.position, 10f);
+
+                foreach (Collider item in hitObjects)
+                {
+                    PhysicsObject physicsObject = item.GetComponent<PhysicsObject>();
+                    if (physicsObject != null)
+                    {                        
+                        if (physicsObject.Path?.Length > 0)
+                        {
+                            physicsObject.Path = null;
+                        }
+                        Vector3 diff = transform.position - item.transform.position;
+                        if (diff.magnitude <= 0.15f)
+                        {
+                            item.gameObject.SetActive(false);
+                            GameObject blackHoleExplode = UnityEngine.Object.Instantiate(_blackHoleExplodeObject);
+                            blackHoleExplode.transform.position = item.gameObject.transform.position;
+                            blackHoleExplode.GetComponent<BlackHoleExplode>().Explode();
+                        }
+                        else
+                        {
+                            item.attachedRigidbody.AddForce(diff * (20f/ ((float)(Math.Pow(diff.magnitude,3)))), ForceMode.Acceleration);
+                            if (item.attachedRigidbody.useGravity)
+                            {
+                                item.attachedRigidbody.AddForce(-Physics.gravity, ForceMode.Acceleration); //counteract gravity
+                            }
+                        }                        
+                    }
+                }
+            }
         }
 
         private void Update()
@@ -91,8 +128,12 @@ namespace BubbleDistortionPhysics
                     {
                         ExpandDisc();
                     }
-                    else
+                    else if (ExpandType == ExpandType.Sphere)
                     {
+                        ExpandSphere();
+                    }
+                    else if (ExpandType == ExpandType.Bubble)
+                    { 
                         ExpandBubble();
                     }
                     this.gameObject.layer = 0;
@@ -125,6 +166,19 @@ namespace BubbleDistortionPhysics
             StartCoroutine(ScaleOverTime(0.2f, transform, new Vector3(2f, 2f, 2f)));
             //transform.localScale = new Vector3(2, 2, 2);
             //transform.position = new Vector3(transform.position.x, transform.position.y + 0.33f, transform.position.z);
+            _grabInteractable.interactionLayerMask = LayerMask.GetMask("Nothing");
+        }
+
+        private void ExpandSphere()
+        {            
+            _rigidbody.useGravity = false;         
+            _boxCollider.enabled = false;
+            _sphereCollider.enabled = true;
+            _rigidbody.velocity = new Vector3(0, 0, 0);
+            _rigidbody.freezeRotation = true;
+            StartCoroutine(ScaleOverTime(0.2f, transform, new Vector3(0.4f, 0.4f, 0.4f)));
+            //transform.localScale = new Vector3(2, 2, 2);
+            transform.position = new Vector3(transform.position.x, transform.position.y + 1.2f, transform.position.z);
             _grabInteractable.interactionLayerMask = LayerMask.GetMask("Nothing");
         }
 
@@ -245,13 +299,15 @@ namespace BubbleDistortionPhysics
         Launch,        
         Show,
         Hint,
-        None
+        None,
+        BlackHole
     }
 
     public enum ExpandType
     {
         Bubble,
         Disc,
-        None
+        None,
+        Sphere
     }
 }

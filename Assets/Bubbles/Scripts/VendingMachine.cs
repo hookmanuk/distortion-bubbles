@@ -16,6 +16,7 @@ namespace BubbleDistortionPhysics
         public int StockLaunchLevel;        
         public int StockShowLevel;
         public int StockShowHintLevel;
+        public int StockBlackHoleLevel;
 
         public VendingButton SlowButton;
         public VendingButton GrowButton;
@@ -24,6 +25,7 @@ namespace BubbleDistortionPhysics
         public VendingButton LaunchButton;        
         public VendingButton ShowButton;
         public VendingButton ShowHintButton;
+        public VendingButton BlackHoleButton;
 
         public Light PointLight;
         public int Order;
@@ -37,6 +39,7 @@ namespace BubbleDistortionPhysics
         public PhysicsDistorter BubbleGravity { get; set; }
         public PhysicsDistorter BubbleLaunch { get; set; }        
         public PhysicsDistorter BubbleShow { get; set; }
+        public PhysicsDistorter BubbleBlackHole { get; set; }
 
         public DateTime LastButtonPressed { get; set; }        
 
@@ -55,6 +58,7 @@ namespace BubbleDistortionPhysics
         private int _startStockCutOffLevel;
         private int _startStockShowLevel;
         private int _startStockShowHintLevel;
+        private int _startStockBlackHoleLevel;
 
         private bool _firstButtonPress = true;
         private bool _showHints = false;
@@ -75,6 +79,7 @@ namespace BubbleDistortionPhysics
             BubbleGravity = GameObject.FindGameObjectWithTag("BubbleGravity").GetComponent<PhysicsDistorter>();
             BubbleLaunch = GameObject.FindGameObjectWithTag("BubbleLaunch").GetComponent<PhysicsDistorter>();            
             BubbleShow = GameObject.FindGameObjectWithTag("BubbleShow").GetComponent<PhysicsDistorter>();
+            BubbleBlackHole = GameObject.FindGameObjectWithTag("BubbleBlackHole").GetComponent<PhysicsDistorter>();
 
             _startStockSlowLevel = StockSlowLevel;
             _startStockGrowLevel = StockGrowLevel;
@@ -82,6 +87,7 @@ namespace BubbleDistortionPhysics
             _startStockGravityLevel = StockGravityLevel;
             _startStockLaunchLevel = StockLaunchLevel;
             _startStockShowLevel = StockShowLevel;
+            _startStockBlackHoleLevel = StockBlackHoleLevel;
             _startStockShowHintLevel = 0;            
 
             bool blnHintFound = false;
@@ -150,7 +156,8 @@ namespace BubbleDistortionPhysics
             SetStockShrinkLevel(_startStockShrinkLevel);
             SetStockGravityLevel(_startStockGravityLevel);
             SetStockLaunchLevel(_startStockLaunchLevel);
-            SetStockShowLevel(_startStockShowLevel);            
+            SetStockShowLevel(_startStockShowLevel);
+            SetStockBlackHoleLevel(_startStockBlackHoleLevel);
 
             if (blnInitialSetup)
             {
@@ -222,6 +229,13 @@ namespace BubbleDistortionPhysics
         {
             StockShowLevel = stockLevel;
             ShowButton.SetStockLevel(stockLevel);
+            CheckForKeyReset();
+        }
+
+        public void SetStockBlackHoleLevel(int stockLevel)
+        {
+            StockBlackHoleLevel = stockLevel;
+            BlackHoleButton.SetStockLevel(stockLevel);
             CheckForKeyReset();
         }
 

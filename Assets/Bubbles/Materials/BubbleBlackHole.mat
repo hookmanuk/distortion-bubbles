@@ -7,16 +7,17 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: BubbleSlowDown
-  m_Shader: {fileID: 4800000, guid: 6e4ae4064600d784cac1e41a9e6f2e59, type: 3}
+  m_Name: BubbleBlackHole
+  m_Shader: {fileID: -6465566751694194690, guid: 496aeefb7931a75408e34a6c7b172f85,
+    type: 3}
   m_ShaderKeywords: _BLENDMODE_ALPHA _DISABLE_DECALS _DOUBLESIDED_ON _NORMALMAP_TANGENT_SPACE
     _REFRACTION_SPHERE _SURFACE_TYPE_TRANSPARENT
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 1
-  m_CustomRenderQueue: 3100
+  m_CustomRenderQueue: -1
   stringTagMap:
-    RenderType: Transparent
+    MotionVector: User
   disabledShaderPasses:
   - DistortionVectors
   - MOTIONVECTORS
@@ -141,6 +142,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - Vector1_1CF6BE7F: 0.19
+    - Vector1_A19E22B8: 0.97
+    - Vector1_DEF2C626: 1.55
+    - Vector1_DF8E1863: 5.44
     - _AORemapMax: 1
     - _AORemapMin: 0
     - _ATDistance: 0
