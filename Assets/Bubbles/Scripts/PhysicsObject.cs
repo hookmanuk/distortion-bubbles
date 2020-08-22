@@ -9,6 +9,7 @@ namespace BubbleDistortionPhysics
     {
         public float Speed;        
         public Vector3[] Path;
+        public bool FollowsLight;
         private int _currentPathIndex = 0;
         public Rigidbody RigidBody { get; set; }
         private int _pathIncrement = 1;
@@ -21,7 +22,7 @@ namespace BubbleDistortionPhysics
         private DateTime _lastEmission;
         public bool IgnoreMusic;
         public bool OnCeiling;
-        private int intCeilingMultiplier = 1;
+        private int intCeilingMultiplier = 1;      
 
         private bool _isSlowed;
 
@@ -129,7 +130,7 @@ namespace BubbleDistortionPhysics
             {
                 intCeilingMultiplier = -1;
             }
-        }
+        }        
 
         public void Reset()
         {
@@ -242,6 +243,18 @@ namespace BubbleDistortionPhysics
             //    _isEmitting = false;
             //    Color color = new Color(0, 0, 0);
             //    _material.SetColor("_Color", color);
+            //}
+
+            //if (IsVoiceActivated)
+            //{                
+            //    float micLevel = MicInput.MicLoudness;
+            //    if (micLevel > 0.0001)
+            //    {                    
+            //        //Debug.Log(micLevel.ToString());
+            //        Vector3 diff = transform.position - PlayerController.Instance.MainCamera.transform.position;                                     
+                    
+            //        GetComponent<Rigidbody>().AddForce(diff.normalized * micLevel * -diff.magnitude, ForceMode.Impulse);
+            //    }
             //}
         }
 

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Experimental.XR;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.HighDefinition;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 
@@ -20,6 +22,10 @@ namespace BubbleDistortionPhysics
         public GameObject MainCamera { get; set; }
         public List<PuzzleArea> ActivePuzzleAreas { get; set; }
 
+        public Volume SkyVolume;
+        public List<Color> SkyColours;
+        public List<float> SkyBoundaries;
+
         private bool _preventCharacterMovement;
         private bool _resetting;
         private bool _disolving;
@@ -33,6 +39,8 @@ namespace BubbleDistortionPhysics
         private float GravityMultiplier = 1f;
         private DateTime _lastLaunch;
         private bool _isAirbourne;
+        private GradientSky _sky;
+        public float TriggerPercentage;
 
         public float LightsDistance { get; set; } = 10f;
 
@@ -55,6 +63,8 @@ namespace BubbleDistortionPhysics
             ActivePuzzleAreas = new List<PuzzleArea>();
 
             PhysicsManager.Instance.TurnOffLights();
+                     
+            SkyVolume.profile.TryGet(out _sky);            
         }
 
         private void Update()
@@ -195,6 +205,8 @@ namespace BubbleDistortionPhysics
 
             RightController?.inputDevice.TryGetFeatureValue(CommonUsages.secondary2DAxisClick, out blnDebugSkipClicked);
 
+            RightController?.inputDevice.TryGetFeatureValue(CommonUsages.trigger, out TriggerPercentage);
+
             if (blnDebugSkipClicked && _lastSkipTime < DateTime.Now.AddSeconds(-.5f))
             {
                 _lastSkipTime = DateTime.Now;
@@ -280,7 +292,49 @@ namespace BubbleDistortionPhysics
 
                     characterController.Move(movement);
                 }
-            }                           
+            }
+
+            Color? colourBelow = null;
+            Color? colourAbove = null;
+            float? boundaryBelow = null;
+            float? boundaryAbove = null;
+
+            float charPosition = characterController.transform.position.y;
+            for (int i = 0; i < SkyBoundaries.Count; i++)
+            {
+                if (SkyBoundaries[i] < charPosition)
+                {
+                    boundaryBelow = SkyBoundaries[i];
+                    colourBelow = SkyColours[i];
+                }
+                else
+                {
+                    if (colourAbove == null)
+                    {
+                        boundaryAbove = SkyBoundaries[i];
+                        colourAbove = SkyColours[i];
+                    }
+                }
+            }
+           
+            if (colourAbove.HasValue && colourBelow.HasValue && colourAbove != colourBelow)
+            {
+                Color skyColour;
+                float skyTopRatio;
+
+                skyTopRatio = (charPosition - boundaryBelow.Value) / (boundaryAbove.Value - boundaryBelow.Value);
+
+                skyColour = colourBelow.Value * (1 - skyTopRatio) + colourAbove.Value * skyTopRatio;
+                _sky.top.value = skyColour;
+            }
+            else if (!colourAbove.HasValue && colourBelow.HasValue && (_sky.top.value != colourBelow))
+            {
+                _sky.top.value = colourBelow.Value;
+            }
+            else if (!colourBelow.HasValue && colourAbove.HasValue && (_sky.top.value != colourAbove))
+            {
+                _sky.top.value = colourAbove.Value;
+            }
         }
 
         private void OnCollisionEnter(Collision collision)

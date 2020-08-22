@@ -126,27 +126,27 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 20
   curveMap:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: -10
-        value: -10
-        inSlope: 0
-        outSlope: 1
-        tangentMode: 0
+        time: -9.5
+        value: -2.32547
+        inSlope: 0.11369128
+        outSlope: 0.11369128
+        tangentMode: 34
         weightedMode: 0
         inWeight: 0
-        outWeight: 0
+        outWeight: 0.33333334
       - serializedVersion: 3
-        time: 20
-        value: 20
-        inSlope: 1
-        outSlope: 0
+        time: 19.75
+        value: 1
+        inSlope: -1.3238993
+        outSlope: -1.3238993
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0
+        inWeight: 0.6075949
         outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
@@ -403,7 +403,7 @@ MonoBehaviour:
     m_Value: 0
   exposure:
     m_OverrideState: 0
-    m_Value: 0
+    m_Value: 0.75
   multiplier:
     m_OverrideState: 0
     m_Value: 1
@@ -430,7 +430,7 @@ MonoBehaviour:
     m_Value: 0
   top:
     m_OverrideState: 1
-    m_Value: {r: 0.05660379, g: 0.05660379, b: 0.05660379, a: 1}
+    m_Value: {r: 0.3207547, g: 0, b: 0.28111094, a: 1}
     hdr: 1
     showAlpha: 0
     showEyeDropper: 1
@@ -442,10 +442,10 @@ MonoBehaviour:
     showEyeDropper: 1
   bottom:
     m_OverrideState: 1
-    m_Value: {r: 0.6603774, g: 0, b: 0, a: 1}
+    m_Value: {r: 0.14150941, g: 0.007901099, b: 0, a: 1}
     hdr: 1
     showAlpha: 0
     showEyeDropper: 1
   gradientDiffusion:
     m_OverrideState: 0
-    m_Value: 1
+    m_Value: 2.21
