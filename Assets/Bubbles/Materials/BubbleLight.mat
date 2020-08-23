@@ -272,13 +272,13 @@ Material:
     - _ZTestTransparent: 4
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0.9427508, g: 1, b: 0, a: 0.7764706}
+    - _BaseColor: {r: 0.97653294, g: 1, b: 0.7411765, a: 0.7764706}
     - _BaseColorMap_MipInfo: {r: 0, g: 0, b: 0, a: 0}
-    - _Color: {r: 0.9427508, g: 1, b: 0, a: 0.7764706}
+    - _Color: {r: 0.9765329, g: 1, b: 0.7411765, a: 0.7764706}
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _DoubleSidedConstants: {r: -1, g: -1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _EmissiveColor: {r: 23.341177, g: 23.968628, b: 0, a: 1}
+    - _EmissiveColor: {r: 10.393153, g: 13.149394, b: 0, a: 1}
     - _EmissiveColorLDR: {r: 0.96815306, g: 1, b: 0, a: 1}
     - _InvPrimScale: {r: 1, g: 1, b: 0, a: 0}
     - _IridescenceThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
@@ -288,6 +288,7 @@ Material:
     - _UVDetailsMappingMask: {r: 1, g: 0, b: 0, a: 0}
     - _UVMappingMask: {r: 1, g: 0, b: 0, a: 0}
     - _UVMappingMaskEmissive: {r: 1, g: 0, b: 0, a: 0}
+  m_BuildTextureStacks: []
 --- !u!114 &4460340155504208661
 MonoBehaviour:
   m_ObjectHideFlags: 11
