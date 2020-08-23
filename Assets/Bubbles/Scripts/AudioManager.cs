@@ -31,6 +31,7 @@ namespace BubbleDistortionPhysics
         bool isAboveMax = false;
         public GameObject[] Level1Speakers;
         public GameObject[] Level2Speakers;
+        public GameObject[] Level3Speakers;
 
         public DateTime LastBeat { get; set; }        
 
@@ -51,6 +52,22 @@ namespace BubbleDistortionPhysics
             }
         }
 
+        public void Level3Triggered()
+        {
+            foreach (var item in Level1Speakers)
+            {
+                StartCoroutine(VolumeOverTime(item.GetComponent<AudioSource>(), 4f, 0));
+            }
+            foreach (var item in Level2Speakers)
+            {
+                StartCoroutine(VolumeOverTime(item.GetComponent<AudioSource>(), 4f, 0));
+            }
+            foreach (var item in Level3Speakers)
+            {
+                StartCoroutine(VolumeOverTime(item.GetComponent<AudioSource>(), 4f, 0.2f));
+            }
+        }
+
         public void Level2Triggered()
         {
             foreach (var item in Level1Speakers)
@@ -61,17 +78,25 @@ namespace BubbleDistortionPhysics
             {
                 StartCoroutine(VolumeOverTime(item.GetComponent<AudioSource>(), 4f, 0.2f));
             }
+            foreach (var item in Level3Speakers)
+            {
+                StartCoroutine(VolumeOverTime(item.GetComponent<AudioSource>(), 4f, 0));
+            }
         }
 
         public void Level1Triggered()
         {
-            foreach (var item in Level2Speakers)
-            {
-                StartCoroutine(VolumeOverTime(item.GetComponent<AudioSource>(), 4f, 0));
-            }
             foreach (var item in Level1Speakers)
             {
                 StartCoroutine(VolumeOverTime(item.GetComponent<AudioSource>(), 4f, 0.2f));
+            }
+            foreach (var item in Level2Speakers)
+            {
+                StartCoroutine(VolumeOverTime(item.GetComponent<AudioSource>(), 4f, 0));
+            }            
+            foreach (var item in Level3Speakers)
+            {
+                StartCoroutine(VolumeOverTime(item.GetComponent<AudioSource>(), 4f, 0));
             }
         }
 

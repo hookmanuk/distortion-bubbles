@@ -96,7 +96,7 @@ namespace BubbleDistortionPhysics
                 HMDLog.GenerateText();
             }
 
-            Debug.Log(text);
+            //Debug.Log(text);
         }
 
         public static void UpdateLogPerformance(string text)

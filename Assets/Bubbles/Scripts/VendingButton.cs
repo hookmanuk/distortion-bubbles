@@ -163,6 +163,12 @@ namespace BubbleDistortionPhysics
                             bubbleClone = Instantiate(_vendingMachine.BubbleBlackHole.gameObject);
                             _vendingMachine.SetStockBlackHoleLevel(_vendingMachine.StockBlackHoleLevel - 1);
                         }
+                        else if (Type == DistorterType.Light)
+                        {
+                            bubbleClone = Instantiate(_vendingMachine.BubbleLight.gameObject);
+                            _vendingMachine.SetStockLightLevel(_vendingMachine.StockLightLevel - 1);
+                            bubbleClone.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);                            
+                        }
 
                         bubbleClone.tag = "Untagged";
                         bubbleClone.transform.position = new Vector3(_vendingMachine.transform.position.x - 0.46f, _vendingMachine.transform.position.y + 0.505f, _vendingMachine.transform.position.z + 0.049f);
@@ -175,7 +181,11 @@ namespace BubbleDistortionPhysics
                         bubbleClone.GetComponent<PhysicsDistorter>().SourceMachine = _vendingMachine;
                     }
 
-                    if (_vendingMachine.Order >= 11)
+                    if (_vendingMachine.Order >= 16)
+                    {
+                        Level3Start.Instance.StartLevel3();
+                    }
+                    else if (_vendingMachine.Order >= 11)
                     {
                         Level2Start.Instance.StartLevel2();
                     }

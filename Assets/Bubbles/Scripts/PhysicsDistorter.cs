@@ -123,11 +123,8 @@ namespace BubbleDistortionPhysics
                 if (_grabbed)
                 {
                     if (PlayerController.Instance.TriggerPercentage > 0)
-                    {
-                        if (_material.GetColor("_EmissiveColor") != _emissiveColor)
-                        {
-                            _material.SetColor("_EmissiveColor", _emissiveColor);
-                        }
+                    {                                                
+                        _material.SetColor("_EmissiveColor", _emissiveColor * PlayerController.Instance.TriggerPercentage * 2f);                        
                     }
                     else
                     {
@@ -166,7 +163,7 @@ namespace BubbleDistortionPhysics
                                 }
                             }
                             
-                            if (_r.Next(1, 90 * 5) == 1) //~every 5 secs
+                            if (_r.Next(1, 90 * 10) == 1) //~every 10 secs
                             {
                                 item.attachedRigidbody.AddForce((Vector3.up + Vector3.right * _r.Next(-100,100) / 300 + Vector3.forward * _r.Next(-100, 100) / 300) / 40f, ForceMode.Impulse);
                                 item.GetComponents<AudioSource>()[0].Play();

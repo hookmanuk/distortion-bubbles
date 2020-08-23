@@ -69,7 +69,11 @@ namespace BubbleDistortionPhysics
             {
                 if (item.ExpandType == ExpandType.Disc && !item.Expanded)
                 {
-                    item.GetComponent<Rigidbody>().useGravity = false;
+                    PhysicsObject physicsObject;
+                    if (!(item.TryGetComponent(out physicsObject) && physicsObject.IgnoresGravityFlip))
+                    {
+                        item.GetComponent<Rigidbody>().useGravity = false;
+                    }                    
                 }
             }
         }
@@ -80,7 +84,11 @@ namespace BubbleDistortionPhysics
             {
                 if (item.ExpandType == ExpandType.Disc && !item.Expanded)
                 {
-                    item.GetComponent<Rigidbody>().useGravity = true;
+                    PhysicsObject physicsObject;
+                    if (!(item.TryGetComponent(out physicsObject) && physicsObject.IgnoresGravityFlip))
+                    {
+                        item.GetComponent<Rigidbody>().useGravity = true;
+                    }                    
                 }
             }
         }

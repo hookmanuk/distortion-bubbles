@@ -206,9 +206,9 @@ public class SimpleHelvetica : MonoBehaviour {
 			if (childTransform.name != "_Alphabets" && childTransform.name != transform.name && childTransform.parent.name != "_Alphabets"){
 				//Debug.Log("previous letter: "+childTransform.name);
 				//running game need to use destroy, editor should use destroyimmediate
-				//DestroyImmediate(childTransform.gameObject);	
+				DestroyImmediate(childTransform.gameObject);	
 				//childTransform.gameObject.SetActive(false);
-				Destroy(childTransform.gameObject);
+				//Destroy(childTransform.gameObject);
 			}
 			
 		}

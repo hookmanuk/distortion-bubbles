@@ -22,7 +22,8 @@ namespace BubbleDistortionPhysics
         private DateTime _lastEmission;
         public bool IgnoreMusic;
         public bool OnCeiling;
-        private int intCeilingMultiplier = 1;      
+        private int intCeilingMultiplier = 1;
+        public bool IgnoresGravityFlip;
 
         private bool _isSlowed;
 
@@ -256,6 +257,11 @@ namespace BubbleDistortionPhysics
             //        GetComponent<Rigidbody>().AddForce(diff.normalized * micLevel * -diff.magnitude, ForceMode.Impulse);
             //    }
             //}
+
+            if (IgnoresGravityFlip && PlayerController.Instance.ReverseGravity)
+            {
+                RigidBody.AddForce(-Physics.gravity * 2, ForceMode.Acceleration); //reverse flipped gravity back to normal
+            }
         }
 
         private void Update()

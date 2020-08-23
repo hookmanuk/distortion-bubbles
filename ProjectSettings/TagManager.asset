@@ -17,6 +17,7 @@ TagManager:
   - BubbleCutOff
   - BubbleBlackHole
   - BlackHoleExplodeObject
+  - BubbleLight
   layers:
   - Default
   - TransparentFX
