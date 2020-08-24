@@ -18,6 +18,8 @@ TagManager:
   - BubbleBlackHole
   - BlackHoleExplodeObject
   - BubbleLight
+  - CutOffPlane
+  - Level1
   layers:
   - Default
   - TransparentFX

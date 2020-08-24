@@ -7,10 +7,10 @@ namespace BubbleDistortionPhysics
 {
     public class PhysicsSurface : MonoBehaviour
     {
-        public DistorterType TargetDistorterType = DistorterType.None;
+        public DistorterType TargetDistorterType = DistorterType.None;        
 
         public void Start()
-        {            
+        {           
         }
 
         public void OnDestroy()
@@ -19,7 +19,7 @@ namespace BubbleDistortionPhysics
 
        
         public void FixedUpdate()
-        {            
+        {                        
         }
 
         private void Update()

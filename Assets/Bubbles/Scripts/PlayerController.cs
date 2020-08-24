@@ -52,6 +52,7 @@ namespace BubbleDistortionPhysics
 
         float mass = 1.0F; // defines the character mass
         Vector3 impact = Vector3.zero;
+        private GameObject _level1;
 
         private void Start()
         {         
@@ -64,7 +65,8 @@ namespace BubbleDistortionPhysics
 
             PhysicsManager.Instance.TurnOffLights();
                      
-            SkyVolume.profile.TryGet(out _sky);            
+            SkyVolume.profile.TryGet(out _sky);
+            _level1 = GameObject.FindGameObjectWithTag("Level1");
         }
 
         private void Update()
@@ -291,6 +293,7 @@ namespace BubbleDistortionPhysics
                     }
 
                     characterController.Move(movement);
+                    
                 }
             }
 
@@ -334,6 +337,18 @@ namespace BubbleDistortionPhysics
             else if (!colourBelow.HasValue && colourAbove.HasValue && (_sky.top.value != colourAbove))
             {
                 _sky.top.value = colourAbove.Value;
+            }
+
+            if (MainCamera.transform.position.y > 50)
+            {
+                if (_level1.activeSelf)
+                {
+                    _level1.SetActive(false);
+                }
+            }
+            else if (!_level1.activeSelf)
+            {
+                _level1.SetActive(true);
             }
         }
 
