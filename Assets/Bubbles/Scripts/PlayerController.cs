@@ -352,7 +352,7 @@ namespace BubbleDistortionPhysics
             //    }
             //}
 
-            for (int i = 0; i < Levels.Length - 1; i++)
+            for (int i = 0; i < Levels.Length; i++)
             {
                 if (LowerCutOff.transform.position.y - 3 > LevelCeilings[i] || gameObject.transform.position.y + 15 < LevelFloors[i])
                 {

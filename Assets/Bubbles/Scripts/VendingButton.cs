@@ -167,13 +167,15 @@ namespace BubbleDistortionPhysics
                         {
                             bubbleClone = Instantiate(_vendingMachine.BubbleLight.gameObject);
                             _vendingMachine.SetStockLightLevel(_vendingMachine.StockLightLevel - 1);
-                            bubbleClone.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);                            
+                            bubbleClone.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+                            bubbleClone.GetComponentInChildren<Light>().enabled = true;
                         }
 
                         bubbleClone.tag = "Untagged";
                         bubbleClone.transform.position = new Vector3(_vendingMachine.transform.position.x - 0.46f, _vendingMachine.transform.position.y + 0.505f, _vendingMachine.transform.position.z + 0.049f);
                         bubbleClone.transform.rotation = new Quaternion(120, 90, 0, 0);
                         bubbleClone.GetComponent<Rigidbody>().useGravity = true;
+                        bubbleClone.GetComponent<Rigidbody>().isKinematic = false;
                         bubbleClone.GetComponents<AudioSource>()[0].Play();
 
                         _vendingMachine.MyBubbles.Add(bubbleClone);
