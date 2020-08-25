@@ -25,6 +25,11 @@ namespace BubbleDistortionPhysics
         public Volume SkyVolume;
         public List<Color> SkyColours;
         public List<float> SkyBoundaries;
+        public GameObject LowerCutOff;
+        public GameObject UpperCutOff;
+        public GameObject[] Levels;
+        public int[] LevelCeilings;
+        public int[] LevelFloors;
 
         private bool _preventCharacterMovement;
         private bool _resetting;
@@ -51,8 +56,7 @@ namespace BubbleDistortionPhysics
         Vector3 direction;
 
         float mass = 1.0F; // defines the character mass
-        Vector3 impact = Vector3.zero;
-        private GameObject _level1;
+        Vector3 impact = Vector3.zero;        
 
         private void Start()
         {         
@@ -65,8 +69,7 @@ namespace BubbleDistortionPhysics
 
             PhysicsManager.Instance.TurnOffLights();
                      
-            SkyVolume.profile.TryGet(out _sky);
-            _level1 = GameObject.FindGameObjectWithTag("Level1");
+            SkyVolume.profile.TryGet(out _sky);            
         }
 
         private void Update()
@@ -339,17 +342,51 @@ namespace BubbleDistortionPhysics
                 _sky.top.value = colourAbove.Value;
             }
 
-            if (MainCamera.transform.position.y > 50)
+            //doesnt really work for ceiling, too claustrophobic
+            //Color cutOffSkyColor = new Color(_sky.top.value.r, _sky.top.value.g, _sky.top.value.b, 0.1f);
+            //foreach (var item in UpperCutOff.GetComponentsInChildren<MeshRenderer>())
+            //{
+            //    if (item.material.color != cutOffSkyColor)
+            //    {
+            //        item.material.color = cutOffSkyColor;
+            //    }
+            //}
+
+            for (int i = 0; i < Levels.Length - 1; i++)
             {
-                if (_level1.activeSelf)
+                if (LowerCutOff.transform.position.y - 3 > LevelCeilings[i] || gameObject.transform.position.y + 15 < LevelFloors[i])
                 {
-                    _level1.SetActive(false);
+                    if (Levels[i].activeSelf)
+                    {
+                        Levels[i].SetActive(false);
+                    }
+                }
+                else
+                {
+                    if (!Levels[i].activeSelf)
+                    {
+                        Levels[i].SetActive(true);
+                    }
                 }
             }
-            else if (!_level1.activeSelf)
-            {
-                _level1.SetActive(true);
-            }
+
+            //for (int i = 0; i < Levels.Length - 1; i++)
+            //{
+            //    if (gameObject.transform.position.y + 20 < LevelFloors[i])
+            //    {
+            //        if (Levels[i].activeSelf)
+            //        {
+            //            Levels[i].SetActive(false);
+            //        }
+            //    }
+            //    else
+            //    {
+            //        if (!Levels[i].activeSelf)
+            //        {
+            //            Levels[i].SetActive(true);
+            //        }
+            //    }
+            //}
         }
 
         private void OnCollisionEnter(Collision collision)
