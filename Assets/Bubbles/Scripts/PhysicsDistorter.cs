@@ -22,7 +22,7 @@ namespace BubbleDistortionPhysics
         private GameObject _blackHoleExplodeObject;
         private Material _material;
         private Color _emissiveColor;
-        private Random _r;
+        private Random _r;        
 
         public bool Expanded { get; set; }
         public VendingMachine SourceMachine { get; set; }
@@ -256,11 +256,17 @@ namespace BubbleDistortionPhysics
             _sphereCollider.enabled = true;
             _rigidbody.velocity = new Vector3(0, 0, 0);
             _rigidbody.freezeRotation = true;
-            StartCoroutine(ScaleOverTime(0.2f, transform, new Vector3(0.4f, 0.4f, 0.4f)));
+            IEnumerator callback = null;
+
+            if (DistorterType == DistorterType.BlackHole)
+            {
+                callback = BlackHoleDies();
+            }
+            StartCoroutine(ScaleOverTime(0.2f, transform, new Vector3(0.4f, 0.4f, 0.4f), callback));
             //transform.localScale = new Vector3(2, 2, 2);
             transform.position = new Vector3(transform.position.x, transform.position.y + 1.2f, transform.position.z);
             _grabInteractable.interactionLayerMask = LayerMask.GetMask("Nothing");
-        }
+        }        
 
         public void TriggerSuccess()
         {
@@ -355,7 +361,7 @@ namespace BubbleDistortionPhysics
             task(other);        
         }
 
-        IEnumerator ScaleOverTime(float time, Transform transform, Vector3 newScale)
+        IEnumerator ScaleOverTime(float time, Transform transform, Vector3 newScale, IEnumerator callback = null)
         {
             float currentTime = 0f;
             Vector3 originalScale = transform.localScale;
@@ -367,6 +373,18 @@ namespace BubbleDistortionPhysics
                 currentTime += Time.deltaTime;
                 yield return null;
             }
+
+            if (callback != null)
+            {
+                StartCoroutine(callback);
+            }
+        }
+
+        IEnumerator BlackHoleDies()
+        {
+            StartCoroutine(ScaleOverTime(10f, transform, new Vector3(0f, 0f, 0f)));
+            yield return new WaitForSeconds(10f);
+            gameObject.SetActive(false);
         }
     }
 
