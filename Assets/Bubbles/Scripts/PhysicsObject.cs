@@ -24,8 +24,10 @@ namespace BubbleDistortionPhysics
         public bool OnCeiling;
         private int intCeilingMultiplier = 1;
         public bool IgnoresGravityFlip;
-        public int SpawnClones;
-        public int CloneSpread = 1;
+        public int SpawnClones;        
+        public int CloneSpread = 1;        
+        private PhysicsObject[] _clonedCubits;
+        public bool Destroyed { get; set; }
 
         private bool _isSlowed;
         private System.Random _r;
@@ -136,11 +138,18 @@ namespace BubbleDistortionPhysics
             }
 
             _r = new System.Random(Convert.ToInt32(BitConverter.ToInt32(Guid.NewGuid().ToByteArray(), 0)));
+
+            if (SpawnClones > 0)
+            {
+                _clonedCubits = new PhysicsObject[SpawnClones];
+                SpawnClones = 0;
+                StartCoroutine(SpawnClonesOnTimer());
+            }
         }        
 
         public void Reset()
         {
-            if(!gameObject.activeSelf)
+            if(!Destroyed && !gameObject.activeSelf)
             {
                 gameObject.SetActive(true);
             }
@@ -163,6 +172,19 @@ namespace BubbleDistortionPhysics
             {
                 IsSlowed = false;
             }
+            if (_clonedCubits != null && _clonedCubits.Length > 0)
+            {                
+                for (int i = 0; i < _clonedCubits.Length; i++)
+                {
+                    if (_clonedCubits[i] != null)
+                    {
+                        _clonedCubits[i].Destroyed = true;
+                        _clonedCubits[i].gameObject.SetActive(false);
+                    }                    
+                }                
+                _clonedCubits = new PhysicsObject[_clonedCubits.Length];                
+                StartCoroutine(SpawnClonesOnTimer());
+            }
         }
 
         public void OnDestroy()
@@ -170,27 +192,23 @@ namespace BubbleDistortionPhysics
             PhysicsManager.Instance.PhysicsObjects.Remove(this);
         }
 
-        IEnumerator SpawnClonesOnTimer(int intClones)
-        {            
-            for (int i = 0; i < intClones; i++)
+        IEnumerator SpawnClonesOnTimer()
+        {
+            PhysicsObject[] localClones = (PhysicsObject[])_clonedCubits.Clone();
+            _clonedCubits = null;
+            for (int i = 0; i < localClones.Length; i++)
             {
                 Vector3 pos = gameObject.transform.position + (Vector3.left * ((float)_r.Next(-100, 100) / 500f * CloneSpread)) + (Vector3.forward * ((float)_r.Next(-100, 100) / 500f * CloneSpread));
-                Instantiate(gameObject, pos, gameObject.transform.rotation, gameObject.transform.parent);
+                PhysicsObject clone = Instantiate(this, pos, gameObject.transform.rotation, gameObject.transform.parent);                
+                localClones[i] = clone;
                 yield return new WaitForSeconds(0.05f);
-            }            
-        }
-
+            }
+            _clonedCubits = localClones;
+        }        
 
         public void FixedUpdate()
         {
-            Vector3 direction;
-
-            if (SpawnClones > 0)
-            {
-                int intClones = SpawnClones;
-                SpawnClones = 0;
-                StartCoroutine(SpawnClonesOnTimer(intClones));
-            }
+            Vector3 direction;            
 
             if (Path?.Length > 0)
             {

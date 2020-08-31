@@ -42,6 +42,8 @@ namespace BubbleDistortionPhysics
 
                 yield return null;
             }
+
+            Destroy(gameObject);
         }
 
         
