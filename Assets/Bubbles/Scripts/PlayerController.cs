@@ -352,23 +352,23 @@ namespace BubbleDistortionPhysics
             //    }
             //}
 
-            for (int i = 0; i < Levels.Length; i++)
-            {
-                if (LowerCutOff.transform.position.y - 3 > LevelCeilings[i] || gameObject.transform.position.y + 15 < LevelFloors[i])
-                {
-                    if (Levels[i].activeSelf)
-                    {
-                        Levels[i].SetActive(false);
-                    }
-                }
-                else
-                {
-                    if (!Levels[i].activeSelf)
-                    {
-                        Levels[i].SetActive(true);
-                    }
-                }
-            }
+            //for (int i = 0; i < Levels.Length; i++)
+            //{
+            //    if (LowerCutOff.transform.position.y - 3 > LevelCeilings[i] || gameObject.transform.position.y + 15 < LevelFloors[i])
+            //    {
+            //        if (Levels[i].activeSelf)
+            //        {
+            //            Levels[i].SetActive(false);
+            //        }
+            //    }
+            //    else
+            //    {
+            //        if (!Levels[i].activeSelf)
+            //        {
+            //            Levels[i].SetActive(true);
+            //        }
+            //    }
+            //}
 
             //for (int i = 0; i < Levels.Length - 1; i++)
             //{
