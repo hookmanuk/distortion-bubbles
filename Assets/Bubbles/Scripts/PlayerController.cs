@@ -22,7 +22,8 @@ namespace BubbleDistortionPhysics
         public GameObject MainCamera { get; set; }
         public List<PuzzleArea> ActivePuzzleAreas { get; set; }
 
-        public Volume SkyVolume;
+        public Volume SkyVolume;        
+        public Light SkyLight;
         public List<Color> SkyColours;
         public List<float> SkyBoundaries;
         public GameObject LowerCutOff;
@@ -332,14 +333,17 @@ namespace BubbleDistortionPhysics
 
                 skyColour = colourBelow.Value * (1 - skyTopRatio) + colourAbove.Value * skyTopRatio;
                 _sky.top.value = skyColour;
+                SkyLight.color = skyColour;
             }
             else if (!colourAbove.HasValue && colourBelow.HasValue && (_sky.top.value != colourBelow))
             {
                 _sky.top.value = colourBelow.Value;
+                SkyLight.color = colourBelow.Value;
             }
             else if (!colourBelow.HasValue && colourAbove.HasValue && (_sky.top.value != colourAbove))
             {
                 _sky.top.value = colourAbove.Value;
+                SkyLight.color = colourAbove.Value;
             }
 
             //doesnt really work for ceiling, too claustrophobic
@@ -352,23 +356,23 @@ namespace BubbleDistortionPhysics
             //    }
             //}
 
-            //for (int i = 0; i < Levels.Length; i++)
-            //{
-            //    if (LowerCutOff.transform.position.y - 3 > LevelCeilings[i] || gameObject.transform.position.y + 15 < LevelFloors[i])
-            //    {
-            //        if (Levels[i].activeSelf)
-            //        {
-            //            Levels[i].SetActive(false);
-            //        }
-            //    }
-            //    else
-            //    {
-            //        if (!Levels[i].activeSelf)
-            //        {
-            //            Levels[i].SetActive(true);
-            //        }
-            //    }
-            //}
+            for (int i = 0; i < Levels.Length; i++)
+            {
+                if (gameObject.transform.position.y - 12 > LevelCeilings[i] || gameObject.transform.position.y + 10 < LevelFloors[i])
+                {
+                    if (Levels[i].activeSelf)
+                    {
+                        Levels[i].SetActive(false);
+                    }
+                }
+                else
+                {
+                    if (!Levels[i].activeSelf)
+                    {
+                        Levels[i].SetActive(true);
+                    }
+                }
+            }
 
             //for (int i = 0; i < Levels.Length - 1; i++)
             //{
