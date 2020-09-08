@@ -31,11 +31,14 @@ namespace BubbleDistortionPhysics
         public GameObject[] Levels;
         public int[] LevelCeilings;
         public int[] LevelFloors;
+        public VendingMachine CurrentVendingMachine { get; set; }
+        public List<PhysicsDistorter> Bubbles { get; set; } = new List<PhysicsDistorter>();
 
         private bool _preventCharacterMovement;
         private bool _resetting;
         private bool _disolving;
         private DateTime _lastSkipTime = DateTime.Now;
+        private DateTime _lastQualityChange = DateTime.Now;
         private bool _flipping;
         private static PlayerController _instance;
         public static PlayerController Instance { get { return _instance; } }
@@ -53,6 +56,8 @@ namespace BubbleDistortionPhysics
         public List<GameObject> HeldObjects { get; set; } = new List<GameObject>();
         private List<int> HeldObjectLayers { get; set; } = new List<int>();
 
+        public QualitySetting GraphicsQuality { get; set; }
+
         Vector2 currentState;
         Vector3 direction;
 
@@ -60,7 +65,9 @@ namespace BubbleDistortionPhysics
         Vector3 impact = Vector3.zero;        
 
         private void Start()
-        {         
+        {            
+            GraphicsQuality = QualitySettings.Instance.QualityMedium;
+            
             characterController = GetComponent<CharacterController>();
             capsuleCollider = GetComponent<CapsuleCollider>();
             MainCamera = GameObject.FindGameObjectWithTag("MainCamera");
@@ -80,25 +87,42 @@ namespace BubbleDistortionPhysics
             // apply the impact force:
             if (impact.magnitude > 0.2F) characterController.Move(impact * Time.deltaTime);
             // consumes the impact energy each cycle:
-            impact = Vector3.Lerp(impact, Vector3.zero, 2 * Time.deltaTime);
-
-            //code to show and hide lights based on distance from player
-            //foreach (var item in PhysicsManager.Instance.LightStrips)
-            //{
-            //    if (!item.gameObject.activeSelf && Vector3.Distance(characterController.transform.position, item.transform.position) < LightsDistance)
-            //    {
-            //        item.gameObject.SetActive(true);
-            //    }
-            //    else if (item.gameObject.activeSelf && Vector3.Distance(characterController.transform.position, item.transform.position) > (LightsDistance * 1.2f))
-            //    {
-            //        item.gameObject.SetActive(false);
-            //    }
-            //}
+            impact = Vector3.Lerp(impact, Vector3.zero, 2 * Time.deltaTime);           
         }
 
         public void Reset()
         {
             _disolving = true;                        
+        }
+
+        private void CycleGraphicsQuality()
+        {
+            switch (GraphicsQuality.Name)
+            {
+                case "Low":
+                    GraphicsQuality = QualitySettings.Instance.QualityMedium;
+                    break;
+                case "Medium":
+                    GraphicsQuality = QualitySettings.Instance.QualityHigh;
+                    break;
+                case "High":
+                    GraphicsQuality = QualitySettings.Instance.QualityLow;
+                    break;
+                default:
+                    break;
+            }
+            //if (GraphicsQuality == QualitySettings.Instance.QualityLow)
+            //{
+            //    GraphicsQuality = QualitySettings.Instance.QualityMedium;
+            //}
+            //else if (GraphicsQuality == QualitySettings.Instance.QualityMedium)
+            //{
+            //    GraphicsQuality = QualitySettings.Instance.QualityHigh;
+            //}
+            //else if (GraphicsQuality == QualitySettings.Instance.QualityHigh)
+            //{
+            //    GraphicsQuality = QualitySettings.Instance.QualityLow;
+            //}
         }
 
         private bool _blnReversingGravity = false;
@@ -207,7 +231,16 @@ namespace BubbleDistortionPhysics
         {
             bool blnResetClicked = false;
             bool blnDebugSkipClicked = false;
-            int LastVend = -1;            
+            bool blnCycleQualityClicked = false;
+            int LastVend = -1;
+
+            RightController?.inputDevice.TryGetFeatureValue(CommonUsages.secondaryButton, out blnCycleQualityClicked);
+
+            if (blnCycleQualityClicked && _lastQualityChange < DateTime.Now.AddSeconds(-.5f))
+            {
+                _lastQualityChange = DateTime.Now;
+                CycleGraphicsQuality();
+            }
 
             RightController?.inputDevice.TryGetFeatureValue(CommonUsages.secondary2DAxisClick, out blnDebugSkipClicked);
 
@@ -354,11 +387,11 @@ namespace BubbleDistortionPhysics
             //    {
             //        item.material.color = cutOffSkyColor;
             //    }
-            //}
+            //}            
 
             for (int i = 0; i < Levels.Length; i++)
             {
-                if (gameObject.transform.position.y - 12 > LevelCeilings[i] || gameObject.transform.position.y + 10 < LevelFloors[i])
+                if (gameObject.transform.position.y - GraphicsQuality.DrawDistanceBelow > LevelCeilings[i] || gameObject.transform.position.y + GraphicsQuality.DrawDistanceAbove < LevelFloors[i])
                 {
                     if (Levels[i].activeSelf)
                     {
@@ -373,6 +406,37 @@ namespace BubbleDistortionPhysics
                     }
                 }
             }
+
+            for (int i = 0; i < PhysicsManager.Instance.LightStrips.Count; i++)
+            {
+                if (PhysicsManager.Instance.LightStrips[i].transform.position.y - gameObject.transform.position.y > GraphicsQuality.LightsDistanceAbove ||
+                    gameObject.transform.position.y - PhysicsManager.Instance.LightStrips[i].transform.position.y > GraphicsQuality.LightsDistanceBelow ||
+                    Vector3.Distance(gameObject.transform.position, PhysicsManager.Instance.LightStrips[i].transform.position) > GraphicsQuality.LightsDistanceHorizontal)
+                {                        
+                    if (PhysicsManager.Instance.LightStrips[i].gameObject.activeSelf)
+                    {
+                        PhysicsManager.Instance.LightStrips[i].gameObject.SetActive(false);
+                    }
+                }
+                else
+                {
+                    if (!PhysicsManager.Instance.LightStrips[i].gameObject.activeSelf)
+                    {
+                        PhysicsManager.Instance.LightStrips[i].gameObject.SetActive(true);
+                    }
+                }            
+            }
+
+            if (GraphicsQuality.Effects == Effects.Medium)
+            {
+                foreach (PhysicsDistorter item in Bubbles)
+                {
+                    if (item.SourceMachine != CurrentVendingMachine)
+                    {
+                        item.GetComponent<ParticleSystem>().Stop();
+                    }
+                }
+            }            
 
             //for (int i = 0; i < Levels.Length - 1; i++)
             //{

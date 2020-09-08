@@ -178,6 +178,7 @@ namespace BubbleDistortionPhysics
                         bubbleClone.GetComponent<Rigidbody>().isKinematic = false;
                         bubbleClone.GetComponents<AudioSource>()[0].Play();
 
+                        PlayerController.Instance.Bubbles.Add(bubbleClone.GetComponent<PhysicsDistorter>());
                         _vendingMachine.MyBubbles.Add(bubbleClone);
                         _vendingMachine.PointLight.gameObject.SetActive(true);
                         bubbleClone.GetComponent<PhysicsDistorter>().SourceMachine = _vendingMachine;

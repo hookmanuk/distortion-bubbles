@@ -120,6 +120,7 @@ namespace BubbleDistortionPhysics
         public void ButtonPressed()
         {
             LastButtonPressed = DateTime.Now;
+            PlayerController.Instance.CurrentVendingMachine = this;
 
             //set counter going to then show hint
             if (_intSecondsSincePressed == 0)
