@@ -125,13 +125,15 @@ namespace BubbleDistortionPhysics
                     if (PlayerController.Instance.TriggerPercentage > 0)
                     {                                                
                         _material.SetColor("_EmissiveColor", _emissiveColor * PlayerController.Instance.TriggerPercentage * 2f);
-                        GetComponentInChildren<Light>().intensity = 20f + 250f * PlayerController.Instance.TriggerPercentage/5f;
+                        //GetComponentInChildren<Light>().intensity = 20f + 250f * PlayerController.Instance.TriggerPercentage/5f;
+                        GetComponentInChildren<Light>().intensity = 2f + 25f * PlayerController.Instance.TriggerPercentage / 5f;
                         Debug.Log(PlayerController.Instance.TriggerPercentage);
                         Debug.Log(GetComponentInChildren<Light>().intensity);
                     }
                     else
                     {
-                        GetComponentInChildren<Light>().intensity = 20f;
+                        //GetComponentInChildren<Light>().intensity = 20f;
+                        GetComponentInChildren<Light>().intensity = 2f;
                         if (_material.GetColor("_EmissiveColor") != _emissiveColor * 0.1f)
                         {
                             _material.SetColor("_EmissiveColor", _emissiveColor * 0.1f);
