@@ -28,6 +28,7 @@ namespace BubbleDistortionPhysics
         public int CloneSpread = 1;        
         private PhysicsObject[] _clonedCubits;
         public bool Destroyed { get; set; }
+        public Vector3 LocalPosition { get; set; }
 
         private bool _isSlowed;
         private System.Random _r;
@@ -123,6 +124,7 @@ namespace BubbleDistortionPhysics
 
             _startPosition = transform.position;
             _startRotation = transform.rotation;
+            LocalPosition = transform.localPosition;
 
             MeshRenderer meshRenderer;
             if (TryGetComponent(out meshRenderer))
@@ -147,7 +149,9 @@ namespace BubbleDistortionPhysics
             }
         }        
 
-        public void Reset()
+        
+
+        public virtual void Reset()
         {
             if(!Destroyed && !gameObject.activeSelf)
             {

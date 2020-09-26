@@ -8,10 +8,11 @@ namespace BubbleDistortionPhysics
     public class TeleportDRoom : MonoBehaviour
     {
         public Vector3 StartPosition { get; set; }
+        public List<PhysicsObject> MyPhysicsObjects;
 
         private void Start()
         {
             StartPosition = transform.position;    
-        }
+        }       
     }
 }

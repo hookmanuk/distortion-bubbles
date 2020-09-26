@@ -37,6 +37,19 @@ namespace BubbleDistortionPhysics
             }
         }
 
+        public override void Reset()
+        {
+            _currentDRoom = 0;
+            UpdateDRooms();
+            foreach (var room in DRooms)
+            {
+                foreach (var item in room.MyPhysicsObjects)
+                {
+                    item.transform.localPosition = item.LocalPosition;
+                }
+            }
+        }
+
         public void Trigger1()
         {
             if (!_is1Triggered && !_is2Triggered)
@@ -94,10 +107,10 @@ namespace BubbleDistortionPhysics
             for (int i = 1; i <= DRooms.Count; i++)
             {
                 TeleportDRoom dRoom = DRooms[i-1];
-                dRoom.transform.position = new Vector3(dRoom.StartPosition.x, dRoom.StartPosition.y, dRoom.StartPosition.z + (i * 1000));
+                dRoom.transform.position = new Vector3(dRoom.StartPosition.x, dRoom.StartPosition.y, dRoom.StartPosition.z + (i * 1000));                
             }
             
-            DRooms[_currentDRoom].transform.position = new Vector3(DRooms[_currentDRoom].StartPosition.x, DRooms[_currentDRoom].StartPosition.y, DRooms[_currentDRoom].StartPosition.z);
+            DRooms[_currentDRoom].transform.position = new Vector3(DRooms[_currentDRoom].StartPosition.x, DRooms[_currentDRoom].StartPosition.y, DRooms[_currentDRoom].StartPosition.z);            
         }
     }
 }
