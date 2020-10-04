@@ -14,6 +14,7 @@ namespace BubbleDistortionPhysics
         public GameObject TopOpen;
         public GameObject TopClose;
         public GameObject Stand;
+        public GameObject[] Walls;
         public int TargetCubits;
 
         private int _currentCubits;
@@ -57,6 +58,52 @@ namespace BubbleDistortionPhysics
             strText = CurrentCubits.ToString() + "/" + TargetCubits.ToString();
             TargetText.Text = strText;
             TargetText.GenerateText();
+
+            Color[] colors;
+
+            colors = new Color[4];
+
+            if (CurrentCubits == 0)
+            {
+                colors[0] = Color.red;
+                colors[1] = Color.red;
+                colors[2] = Color.red;
+                colors[3] = Color.red;
+            }
+            else if (CurrentCubits == TargetCubits || _lockOpened)
+            {
+                colors[0] = Color.green;
+                colors[1] = Color.green;
+                colors[2] = Color.green;
+                colors[3] = Color.green;
+            }
+            else
+            {
+                colors[0] = Color.green;
+                colors[1] = Color.green;
+                colors[2] = Color.red;
+                colors[3] = Color.red;
+            }            
+
+            float[] steps;
+
+            float progress = (float)CurrentCubits / (float)TargetCubits;
+
+            steps = new float[4];
+            steps[0] = 0f;
+            steps[1] = Math.Min(0.98f, Math.Max(0.01f, progress - 0.1f));
+            steps[2] = Math.Min(0.99f, Math.Max(0.02f, progress + 0.1f));
+            steps[3] = 1f;
+            
+            //RearClose.GetComponent<MeshRenderer>().material.EnableKeyword("_EMISSION");
+
+            foreach (var wall in Walls)
+            {                
+                wall.GetComponent<MeshRenderer>().material.SetTexture("_EmissiveColorMap", CreateGradientTexture(colors, steps));                
+            }
+            
+            //RearClose.GetComponent<MeshRenderer>().material.EnableKeyword("_EMISSIONMAP");
+            //RearClose.GetComponent<MeshRenderer>().material.EnableKeyword("_EMISSION");
         }
         
         private void OpenLock()
@@ -141,6 +188,59 @@ namespace BubbleDistortionPhysics
             {
                 CloseLock();
             }
-        }
+        }       
+
+        public Texture2D CreateGradientTexture(Color[] colors, float[] stepsArray, TextureWrapMode textureWrapMode = TextureWrapMode.Clamp, FilterMode filterMode = FilterMode.Point, bool isLinear = false, bool hasMipMap = false)
+        {
+            int width = 1;
+            int height = 256;
+
+            if (colors == null || colors.Length == 0)
+            {
+                Debug.LogError("No colors assigned");
+                return null;
+            }
+
+            int length = colors.Length;
+            if (colors.Length > 8)
+            {
+                Debug.LogWarning("Too many colors! maximum is 8, assigned: " + colors.Length);
+                length = 8;
+            }
+
+            // build gradient from colors
+            var colorKeys = new GradientColorKey[length];
+            var alphaKeys = new GradientAlphaKey[length];
+
+            float steps = length - 1f;
+            for (int i = 0; i < length; i++)
+            {
+                float step = i / steps;
+                colorKeys[i].color = colors[i];
+                colorKeys[i].time = stepsArray[i];
+                alphaKeys[i].alpha = colors[i].a;
+                alphaKeys[i].time = stepsArray[i];
+            }
+
+            // create gradient
+            Gradient gradient = new Gradient();
+            gradient.SetKeys(colorKeys, alphaKeys);
+
+            // create texture
+            Texture2D outputTex = new Texture2D(width, height, TextureFormat.ARGB32, false, isLinear);
+            outputTex.wrapMode = textureWrapMode;
+            outputTex.filterMode = filterMode;            
+
+            // draw texture
+            for (int i = 0; i < height; i++)
+            {
+                outputTex.SetPixel(0, i, gradient.Evaluate((float)i / (float)height));
+            }
+            outputTex.Apply(false);
+
+            return outputTex;
+        } // BuildGradientTexture
     }
 }
+
+
