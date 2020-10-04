@@ -24,7 +24,8 @@ namespace BubbleDistortionPhysics
         public bool OnCeiling;
         private int intCeilingMultiplier = 1;
         public bool IgnoresGravityFlip;
-        public int SpawnClones;        
+        public int SpawnClones;
+        public bool IsCubit;
         public int CloneSpread = 1;        
         private PhysicsObject[] _clonedCubits;
         public bool Destroyed { get; set; }
@@ -116,7 +117,7 @@ namespace BubbleDistortionPhysics
         }
 
 
-        public void Start()
+        public virtual void Start()
         {
             PhysicsManager.Instance.PhysicsObjects.Add(this);
             RigidBody = GetComponent<Rigidbody>();

@@ -18,6 +18,7 @@ TagManager:
   - BubbleBlackHole
   - BlackHoleExplodeObject
   - BubbleLight
+  - Cubit
   layers:
   - Default
   - TransparentFX
