@@ -61,6 +61,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -85,6 +86,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!65 &5818682025818055634
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -128,8 +130,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 6
   Path: []
+  FollowsLight: 0
   IgnoreMusic: 0
   OnCeiling: 0
+  IgnoresGravityFlip: 0
+  SpawnClones: 0
+  IsCubit: 0
+  CloneSpread: 1
 --- !u!114 &5818682025818055647
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -153,7 +160,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: dd014c7a18a979a4c81116703fd605dd, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 9010e639b46fd2545adcd1fb85d2d9d8, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.107
   m_Pitch: 1
