@@ -13,6 +13,7 @@ namespace BubbleDistortionPhysics
         public XRInteractionManager InteractionManager;
         public GameObject KeyCentre;
         private Material _keyCentreMaterial;
+        private bool _isUsed;
 
         public void Start()
         {            
@@ -33,11 +34,11 @@ namespace BubbleDistortionPhysics
         void OnReleased(XRBaseInteractor obj)
         {
             PlayerController.RemoveGrabbedObject(gameObject);
-            if (gameObject.activeSelf == false)
+            if (gameObject.activeSelf == false && !_isUsed)
             {
-                //gameObject.SetActive(true);
-                //GetComponent<PhysicsObject>().Reset();
-                //_keyCentreMaterial.SetFloat("HIDDEN_RATIO", 0);
+                gameObject.SetActive(true);
+                GetComponent<PhysicsObject>().Reset();
+                _keyCentreMaterial.SetFloat("HIDDEN_RATIO", 0);
             }
         }
 
@@ -54,8 +55,9 @@ namespace BubbleDistortionPhysics
             }
         }
 
-        public void StartDissolve(float delay = 0)
+        public void StartDissolve(float delay = 0, bool isUsed = false)
         {
+            _isUsed = isUsed;
             StartCoroutine(Dissolve(delay));
         }
 
