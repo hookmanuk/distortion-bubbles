@@ -35,9 +35,9 @@ namespace BubbleDistortionPhysics
             PlayerController.RemoveGrabbedObject(gameObject);
             if (gameObject.activeSelf == false)
             {
-                gameObject.SetActive(true);
-                GetComponent<PhysicsObject>().Reset();
-                _keyCentreMaterial.SetFloat("HIDDEN_RATIO", 0);
+                //gameObject.SetActive(true);
+                //GetComponent<PhysicsObject>().Reset();
+                //_keyCentreMaterial.SetFloat("HIDDEN_RATIO", 0);
             }
         }
 
@@ -81,7 +81,7 @@ namespace BubbleDistortionPhysics
             if (PlayerController.Instance.HeldObjects.Contains(gameObject))
             {
                 gameObject.SetActive(false);
-                GetComponent<XRGrabInteractable>().throwOnDetach = false;
+                GetComponent<XRGrabInteractable>().throwOnDetach = false;                
             }
             else
             {

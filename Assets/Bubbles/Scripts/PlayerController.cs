@@ -431,7 +431,7 @@ namespace BubbleDistortionPhysics
             {
                 foreach (PhysicsDistorter item in Bubbles)
                 {
-                    if (item.SourceMachine != CurrentVendingMachine)
+                    if (item.SourceMachine != CurrentVendingMachine && item.GetComponent<ParticleSystem>() != null)
                     {
                         item.GetComponent<ParticleSystem>().Stop();
                     }
@@ -459,7 +459,7 @@ namespace BubbleDistortionPhysics
 
         private void OnCollisionEnter(Collision collision)
         {
-            _isAirbourne = false;
+            _isAirbourne = false;            
         }
 
         private void OnTriggerEnter(Collider other)
@@ -605,5 +605,7 @@ namespace BubbleDistortionPhysics
 
             _resetting = true;
         }
+
+        
     }
 }

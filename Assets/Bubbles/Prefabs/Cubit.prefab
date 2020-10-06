@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 2273650237357664316}
   - component: {fileID: 2273650237357664317}
   - component: {fileID: 2273650237357664318}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Cubit
   m_TagString: Cubit
   m_Icon: {fileID: 0}
@@ -117,9 +117,9 @@ MonoBehaviour:
   IgnoreMusic: 1
   OnCeiling: 0
   IgnoresGravityFlip: 1
-  SpawnClones: 30
+  SpawnClones: 22
   IsCubit: 1
-  CloneSpread: 10
+  CloneSpread: 1
 --- !u!54 &2273650237357664316
 Rigidbody:
   m_ObjectHideFlags: 0

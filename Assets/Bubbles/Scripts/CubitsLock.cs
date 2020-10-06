@@ -63,7 +63,7 @@ namespace BubbleDistortionPhysics
 
             colors = new Color[4];
 
-            if (CurrentCubits == 0)
+            if (CurrentCubits == 0 && !_lockOpened)
             {
                 colors[0] = Color.red;
                 colors[1] = Color.red;
@@ -108,6 +108,8 @@ namespace BubbleDistortionPhysics
         
         private void OpenLock()
         {
+            GetComponent<AudioSource>().Play();
+
             RearClose.SetActive(false);
             TopClose.SetActive(false);
             RearOpen1.SetActive(true);
@@ -117,18 +119,25 @@ namespace BubbleDistortionPhysics
             _lockedGrab.interactionLayerMask = _lockedMask;
 
             _lockOpened = true;
-
+            
             StartCoroutine(RaiseStand());
         }
 
         public IEnumerator RaiseStand()
-        {
+        {            
             var currentPos = Stand.transform.localPosition;
             var currentScale = Stand.transform.localScale;            
             var t = 0f;
-            while (t < 1)
+            var soundDone = false;
+
+            while (t < 2.5f)
             {
-                t += Time.deltaTime / 1;
+                if (!soundDone && t >= 0.1f)
+                {
+                    soundDone = true;
+                    Stand.GetComponent<AudioSource>().Play();
+                }
+                t += Time.deltaTime / 2.5f;
                 Stand.transform.localPosition = Vector3.Lerp(currentPos, new Vector3(currentPos.x, 0, currentPos.z), t);
                 Stand.transform.localScale = Vector3.Lerp(currentScale, new Vector3(currentScale.x, 0.5f, currentScale.z), t);
 
