@@ -97,7 +97,7 @@ namespace BubbleDistortionPhysics
                     case LightsDistance.Low:
                         return 8;
                     case LightsDistance.Medium:
-                        return 15;
+                        return 20;
                     case LightsDistance.High:
                         return 50;
                     default:

@@ -50,6 +50,9 @@ namespace BubbleDistortionPhysics
         private bool _isAirbourne;
         private GradientSky _sky;
         public float TriggerPercentage;
+        public bool IntroStart;
+        private bool _introRunning;
+        private float triggerHeldTime = 0;
 
         public float LightsDistance { get; set; } = 10f;
 
@@ -78,6 +81,13 @@ namespace BubbleDistortionPhysics
             PhysicsManager.Instance.TurnOffLights();
                      
             SkyVolume.profile.TryGet(out _sky);            
+
+            if (IntroStart)
+            {
+                transform.position = new Vector3(-2.5f, 70, -1);
+
+                _preventCharacterMovement = true;                
+            }
         }
 
         private void Update()
@@ -246,6 +256,17 @@ namespace BubbleDistortionPhysics
 
             RightController?.inputDevice.TryGetFeatureValue(CommonUsages.trigger, out TriggerPercentage);
 
+            if (IntroStart && TriggerPercentage > 0.1f && !_introRunning)
+            {
+                triggerHeldTime += Time.deltaTime;
+
+                if (triggerHeldTime > 1f)
+                {
+                    _introRunning = true;
+                    StartCoroutine(IntroMovement());
+                }
+            }            
+
             if (blnDebugSkipClicked && _lastSkipTime < DateTime.Now.AddSeconds(-.5f))
             {
                 _lastSkipTime = DateTime.Now;
@@ -411,7 +432,7 @@ namespace BubbleDistortionPhysics
             {
                 if (PhysicsManager.Instance.LightStrips[i].transform.position.y - gameObject.transform.position.y > GraphicsQuality.LightsDistanceAbove ||
                     gameObject.transform.position.y - PhysicsManager.Instance.LightStrips[i].transform.position.y > GraphicsQuality.LightsDistanceBelow ||
-                    Vector3.Distance(gameObject.transform.position, PhysicsManager.Instance.LightStrips[i].transform.position) > GraphicsQuality.LightsDistanceHorizontal)
+                    (Vector3.Distance(gameObject.transform.position, PhysicsManager.Instance.LightStrips[i].transform.position) > GraphicsQuality.LightsDistanceHorizontal && !IntroStart))
                 {                        
                     if (PhysicsManager.Instance.LightStrips[i].gameObject.activeSelf)
                     {
@@ -606,6 +627,22 @@ namespace BubbleDistortionPhysics
             _resetting = true;
         }
 
-        
+        public IEnumerator IntroMovement()
+        {
+            var currentPos = transform.localPosition;            
+            var t = 0f;            
+
+            while (t < 1)
+            {                
+                t += Time.deltaTime / 25f;
+                transform.localPosition = Vector3.Lerp(currentPos, new Vector3(-2.5f, 0.2f, -1), t);             
+
+                yield return null;
+            }
+
+            _preventCharacterMovement = false;
+
+            IntroStart = false;
+        }
     }
 }

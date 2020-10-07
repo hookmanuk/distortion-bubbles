@@ -34,8 +34,11 @@ public class Level3Start : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            OutputLogManager.OutputText("Level 3 triggered by " + other.name);
-            StartLevel3();
+            if (!PlayerController.Instance.IntroStart)
+            {
+                OutputLogManager.OutputText("Level 3 triggered by " + other.name);
+                StartLevel3();
+            }
         }
     }
 

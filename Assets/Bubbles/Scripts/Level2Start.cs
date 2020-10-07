@@ -34,8 +34,11 @@ public class Level2Start : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            OutputLogManager.OutputText("Level 2 triggered by " + other.name);
-            StartLevel2();
+            if (!PlayerController.Instance.IntroStart)
+            {
+                OutputLogManager.OutputText("Level 2 triggered by " + other.name);
+                StartLevel2();
+            }
         }
     }
 
