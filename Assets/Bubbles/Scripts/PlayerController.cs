@@ -33,6 +33,7 @@ namespace BubbleDistortionPhysics
         public int[] LevelFloors;
         public VendingMachine CurrentVendingMachine { get; set; }
         public List<PhysicsDistorter> Bubbles { get; set; } = new List<PhysicsDistorter>();
+        public GameObject ElevatorFloor;
 
         private bool _preventCharacterMovement;
         private bool _resetting;
@@ -53,6 +54,7 @@ namespace BubbleDistortionPhysics
         public bool IntroStart;
         private bool _introRunning;
         private float triggerHeldTime = 0;
+        private Vector3 _startElevatorPos;
 
         public float LightsDistance { get; set; } = 10f;
 
@@ -84,9 +86,10 @@ namespace BubbleDistortionPhysics
 
             if (IntroStart)
             {
-                transform.position = new Vector3(-2.5f, 70, -1);
+                _startElevatorPos = ElevatorFloor.transform.position;
+                
 
-                _preventCharacterMovement = true;                
+                //_preventCharacterMovement = true;                
             }
         }
 
@@ -256,6 +259,7 @@ namespace BubbleDistortionPhysics
 
             RightController?.inputDevice.TryGetFeatureValue(CommonUsages.trigger, out TriggerPercentage);
 
+            //intro replaced by elevator
             if (IntroStart && TriggerPercentage > 0.1f && !_introRunning)
             {
                 triggerHeldTime += Time.deltaTime;
@@ -265,7 +269,7 @@ namespace BubbleDistortionPhysics
                     _introRunning = true;
                     StartCoroutine(IntroMovement());
                 }
-            }            
+            }
 
             if (blnDebugSkipClicked && _lastSkipTime < DateTime.Now.AddSeconds(-.5f))
             {
@@ -629,13 +633,14 @@ namespace BubbleDistortionPhysics
 
         public IEnumerator IntroMovement()
         {
-            var currentPos = transform.localPosition;            
-            var t = 0f;            
+            var currentPos = ElevatorFloor.transform.position;            
+            var t = 0f;
+            var endElevatorPosition = new Vector3(_startElevatorPos.x, 1f, _startElevatorPos.z);
 
             while (t < 1)
             {                
                 t += Time.deltaTime / 25f;
-                transform.localPosition = Vector3.Lerp(currentPos, new Vector3(-2.5f, 0.2f, -1), t);             
+                ElevatorFloor.transform.position = Vector3.Lerp(currentPos, endElevatorPosition, t);             
 
                 yield return null;
             }
