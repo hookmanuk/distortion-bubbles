@@ -34,6 +34,7 @@ namespace BubbleDistortionPhysics
         public VendingMachine CurrentVendingMachine { get; set; }
         public List<PhysicsDistorter> Bubbles { get; set; } = new List<PhysicsDistorter>();
         public GameObject ElevatorFloor;
+        public Elevator Elevator;
 
         private bool _preventCharacterMovement;
         private bool _resetting;
@@ -642,12 +643,14 @@ namespace BubbleDistortionPhysics
                 t += Time.deltaTime / 25f;
                 ElevatorFloor.transform.position = Vector3.Lerp(currentPos, endElevatorPosition, t);             
 
-                yield return null;
+                yield return new WaitForFixedUpdate();
             }
 
             _preventCharacterMovement = false;
 
             IntroStart = false;
+
+            StartCoroutine(Elevator.OpenDoorAnimate());
         }
     }
 }

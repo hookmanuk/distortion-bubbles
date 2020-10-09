@@ -22,6 +22,8 @@ namespace BubbleDistortionPhysics
         private float previousHandHeight;
         private XRBaseInteractor hoverInteractor;
         public GameObject DisabledQuad;
+        public int Direction;
+        private bool _lastClosed = false;
 
         protected override void Awake()
         {
@@ -49,8 +51,16 @@ namespace BubbleDistortionPhysics
         {
             Collider collider = GetComponent<Collider>();
 
-            ymin = transform.localPosition.z - (collider.bounds.size.x * 0.8f);
-            ymax = transform.localPosition.z;
+            if (Direction == 2)
+            {
+                ymin = transform.localPosition.x - ((Direction == 1 ? collider.bounds.size.z : collider.bounds.size.x) * 0.8f);
+                ymax = transform.localPosition.x;
+            }
+            else
+            {
+                ymin = transform.localPosition.z - ((Direction == 1 ? collider.bounds.size.z : collider.bounds.size.x) * 0.8f);
+                ymax = transform.localPosition.z;
+            }
         }
 
         private void OnTriggerEnter(Collider other)
@@ -86,7 +96,16 @@ namespace BubbleDistortionPhysics
                 
                 previousHandHeight = newHandHeight;
 
-                float newPosition = transform.localPosition.z - handDifference;                
+                float newPosition;
+                if (Direction == 2)
+                {
+                    newPosition = transform.localPosition.x - handDifference;
+                }
+                else
+                {
+                    newPosition = transform.localPosition.z - handDifference;
+                }
+                    
                 SetYPosition(newPosition);
 
                 CheckPress();
@@ -97,14 +116,22 @@ namespace BubbleDistortionPhysics
         {
             Vector3 localPosition = transform.root.InverseTransformPoint(position);
 
-            return -localPosition.x;
+            return (Direction == 1 ? localPosition.z : localPosition.x);
         }
 
         private void SetYPosition(float position)
         {
             Vector3 newPosition = transform.localPosition;
 
-            newPosition.z = Mathf.Clamp(position, ymin, ymax);
+            if (Direction == 2)
+            {
+                newPosition.x = Mathf.Clamp(position, ymin, ymax);
+            }
+            else
+            {
+                newPosition.z = Mathf.Clamp(position, ymin, ymax);
+            }
+            
             transform.localPosition = newPosition;
         }
 
@@ -114,84 +141,100 @@ namespace BubbleDistortionPhysics
 
             if (blnInPosition && blnInPosition != previousPress)
             {
-                if (ButtonEnabled && (DateTime.Now - _vendingMachine.LastButtonPressed).TotalMilliseconds > 500)
+                if (_vendingMachine != null)
                 {
-                    _vendingMachine.ButtonPressed();
-
-                    if (Type == DistorterType.Hint)
+                    if (ButtonEnabled && (DateTime.Now - _vendingMachine.LastButtonPressed).TotalMilliseconds > 500)
                     {
-                        _vendingMachine.ActivateNextHint();
+                        _vendingMachine.ButtonPressed();
+
+                        if (Type == DistorterType.Hint)
+                        {
+                            _vendingMachine.ActivateNextHint();
+                        }
+                        else
+                        {
+                            GameObject bubbleClone;
+
+                            bubbleClone = null;
+
+                            if (Type == DistorterType.Slow)
+                            {
+                                bubbleClone = Instantiate(_vendingMachine.BubbleSlow.gameObject);
+                                _vendingMachine.SetStockSlowLevel(_vendingMachine.StockSlowLevel - 1);
+                            }
+                            else if (Type == DistorterType.Grow)
+                            {
+                                bubbleClone = Instantiate(_vendingMachine.BubbleGrow.gameObject);
+                                _vendingMachine.SetStockGrowLevel(_vendingMachine.StockGrowLevel - 1);
+                            }
+                            else if (Type == DistorterType.Shrink)
+                            {
+                                bubbleClone = Instantiate(_vendingMachine.BubbleShrink.gameObject);
+                                _vendingMachine.SetStockShrinkLevel(_vendingMachine.StockShrinkLevel - 1);
+                            }
+                            else if (Type == DistorterType.Gravity)
+                            {
+                                bubbleClone = Instantiate(_vendingMachine.BubbleGravity.gameObject);
+                                _vendingMachine.SetStockGravityLevel(_vendingMachine.StockGravityLevel - 1);
+                            }
+                            else if (Type == DistorterType.Launch)
+                            {
+                                bubbleClone = Instantiate(_vendingMachine.BubbleLaunch.gameObject);
+                                _vendingMachine.SetStockLaunchLevel(_vendingMachine.StockLaunchLevel - 1);
+                            }
+                            else if (Type == DistorterType.Show)
+                            {
+                                bubbleClone = Instantiate(_vendingMachine.BubbleShow.gameObject);
+                                _vendingMachine.SetStockShowLevel(_vendingMachine.StockShowLevel - 1);
+                            }
+                            else if (Type == DistorterType.BlackHole)
+                            {
+                                bubbleClone = Instantiate(_vendingMachine.BubbleBlackHole.gameObject);
+                                _vendingMachine.SetStockBlackHoleLevel(_vendingMachine.StockBlackHoleLevel - 1);
+                            }
+                            else if (Type == DistorterType.Light)
+                            {
+                                bubbleClone = Instantiate(_vendingMachine.BubbleLight.gameObject);
+                                _vendingMachine.SetStockLightLevel(_vendingMachine.StockLightLevel - 1);
+                                bubbleClone.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+                                bubbleClone.GetComponentInChildren<Light>().enabled = true;
+                            }
+
+                            bubbleClone.tag = "Untagged";
+                            bubbleClone.transform.position = new Vector3(_vendingMachine.transform.position.x - 0.46f, _vendingMachine.transform.position.y + 0.505f, _vendingMachine.transform.position.z + 0.049f);
+                            bubbleClone.transform.rotation = new Quaternion(120, 90, 0, 0);
+                            bubbleClone.GetComponent<Rigidbody>().useGravity = true;
+                            bubbleClone.GetComponent<Rigidbody>().isKinematic = false;
+                            bubbleClone.GetComponents<AudioSource>()[0].Play();
+
+                            PlayerController.Instance.Bubbles.Add(bubbleClone.GetComponent<PhysicsDistorter>());
+                            _vendingMachine.MyBubbles.Add(bubbleClone);
+                            _vendingMachine.PointLight.gameObject.SetActive(true);
+                            bubbleClone.GetComponent<PhysicsDistorter>().SourceMachine = _vendingMachine;
+                        }
+
+                        if (_vendingMachine.Order >= 16)
+                        {
+                            Level3Start.Instance.StartLevel3();
+                        }
+                        else if (_vendingMachine.Order >= 11)
+                        {
+                            Level2Start.Instance.StartLevel2();
+                        }
                     }
-                    else
+                }
+
+                if (Type == DistorterType.OpenElevator)
+                {
+                    PlayerController.Instance.Elevator.OpenDoor();
+                }
+                if (Type == DistorterType.CloseElevator)
+                {
+                    if (!_lastClosed)
                     {
-                        GameObject bubbleClone;
-
-                        bubbleClone = null;
-
-                        if (Type == DistorterType.Slow)
-                        {
-                            bubbleClone = Instantiate(_vendingMachine.BubbleSlow.gameObject);
-                            _vendingMachine.SetStockSlowLevel(_vendingMachine.StockSlowLevel - 1);
-                        }
-                        else if (Type == DistorterType.Grow)
-                        {
-                            bubbleClone = Instantiate(_vendingMachine.BubbleGrow.gameObject);
-                            _vendingMachine.SetStockGrowLevel(_vendingMachine.StockGrowLevel - 1);
-                        }
-                        else if (Type == DistorterType.Shrink)
-                        {
-                            bubbleClone = Instantiate(_vendingMachine.BubbleShrink.gameObject);
-                            _vendingMachine.SetStockShrinkLevel(_vendingMachine.StockShrinkLevel - 1);
-                        }
-                        else if (Type == DistorterType.Gravity)
-                        {
-                            bubbleClone = Instantiate(_vendingMachine.BubbleGravity.gameObject);
-                            _vendingMachine.SetStockGravityLevel(_vendingMachine.StockGravityLevel - 1);
-                        }
-                        else if (Type == DistorterType.Launch)
-                        {
-                            bubbleClone = Instantiate(_vendingMachine.BubbleLaunch.gameObject);
-                            _vendingMachine.SetStockLaunchLevel(_vendingMachine.StockLaunchLevel - 1);
-                        }
-                        else if (Type == DistorterType.Show)
-                        {
-                            bubbleClone = Instantiate(_vendingMachine.BubbleShow.gameObject);
-                            _vendingMachine.SetStockShowLevel(_vendingMachine.StockShowLevel - 1);
-                        }
-                        else if (Type == DistorterType.BlackHole)
-                        {
-                            bubbleClone = Instantiate(_vendingMachine.BubbleBlackHole.gameObject);
-                            _vendingMachine.SetStockBlackHoleLevel(_vendingMachine.StockBlackHoleLevel - 1);
-                        }
-                        else if (Type == DistorterType.Light)
-                        {
-                            bubbleClone = Instantiate(_vendingMachine.BubbleLight.gameObject);
-                            _vendingMachine.SetStockLightLevel(_vendingMachine.StockLightLevel - 1);
-                            bubbleClone.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
-                            bubbleClone.GetComponentInChildren<Light>().enabled = true;
-                        }
-
-                        bubbleClone.tag = "Untagged";
-                        bubbleClone.transform.position = new Vector3(_vendingMachine.transform.position.x - 0.46f, _vendingMachine.transform.position.y + 0.505f, _vendingMachine.transform.position.z + 0.049f);
-                        bubbleClone.transform.rotation = new Quaternion(120, 90, 0, 0);
-                        bubbleClone.GetComponent<Rigidbody>().useGravity = true;
-                        bubbleClone.GetComponent<Rigidbody>().isKinematic = false;
-                        bubbleClone.GetComponents<AudioSource>()[0].Play();
-
-                        PlayerController.Instance.Bubbles.Add(bubbleClone.GetComponent<PhysicsDistorter>());
-                        _vendingMachine.MyBubbles.Add(bubbleClone);
-                        _vendingMachine.PointLight.gameObject.SetActive(true);
-                        bubbleClone.GetComponent<PhysicsDistorter>().SourceMachine = _vendingMachine;
-                    }
-
-                    if (_vendingMachine.Order >= 16)
-                    {
-                        Level3Start.Instance.StartLevel3();
-                    }
-                    else if (_vendingMachine.Order >= 11)
-                    {
-                        Level2Start.Instance.StartLevel2();
-                    }
+                        PlayerController.Instance.Elevator.CloseDoor();
+                        _lastClosed = true;
+                    }                    
                 }
             }
 
@@ -200,9 +243,20 @@ namespace BubbleDistortionPhysics
 
         private bool inPosition()
         {
-            float inRange = Mathf.Clamp(transform.localPosition.z, ymin, ymin + 0.01f);
+            float inRange;
+            
+            if (Direction == 2)
+            {
+                inRange = Mathf.Clamp(transform.localPosition.x, ymin, ymin + 0.01f);
 
-            return transform.localPosition.z == inRange;
+                return transform.localPosition.x == inRange;
+            }
+            else
+            {
+                inRange = Mathf.Clamp(transform.localPosition.z, ymin, ymin + 0.01f);
+
+                return transform.localPosition.z == inRange;
+            }
         }
 
         public void SetStockLevel(int stockLevel)

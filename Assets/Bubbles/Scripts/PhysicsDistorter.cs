@@ -405,7 +405,9 @@ namespace BubbleDistortionPhysics
         Hint,
         None,
         BlackHole,
-        Light
+        Light,
+        OpenElevator,
+        CloseElevator,
     }
 
     public enum ExpandType
