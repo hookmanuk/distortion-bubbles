@@ -13,6 +13,6 @@ namespace BubbleDistortionPhysics
         private void Start()
         {
             StartPosition = transform.position;    
-        }       
+        }
     }
 }

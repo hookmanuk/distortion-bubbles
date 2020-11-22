@@ -14,6 +14,7 @@ namespace BubbleDistortionPhysics
         public AudioSource ClosedDoorButtonClip;
         public AudioSource OpenDoorClip;
         public AudioSource CloseDoorClip;
+        public AudioSource StartDescentClip;
 
         public void Start()
         {            
@@ -79,7 +80,15 @@ namespace BubbleDistortionPhysics
                 yield return null;
             }
 
+            foreach (var item in AudioManager.Instance.Level1Speakers)
+            {
+                item.GetComponent<AudioSource>().Play();
+            }
+
+            StartDescentClip.Play();
             StartCoroutine(PlayerController.Instance.IntroMovement());
+
+            yield return null;
         }
 
         public IEnumerator SplitMesh()

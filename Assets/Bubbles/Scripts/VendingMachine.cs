@@ -28,6 +28,9 @@ namespace BubbleDistortionPhysics
         public VendingButton ShowHintButton;
         public VendingButton BlackHoleButton;
         public VendingButton LightButton;
+        public VendingButton SettingsButton;
+        public VendingButton ResetButton;
+        public SimpleHelvetica Info;
 
         public Light PointLight;
         public int Order;
@@ -278,6 +281,13 @@ namespace BubbleDistortionPhysics
                 _firstButtonPress = false;
             }
         }
+
+        public void CycleSettings()
+        {
+            PlayerController.Instance.CycleGraphicsQuality();
+            Info.Text = PlayerController.Instance.GraphicsQuality.Name + " Quality Set";
+            Info.GenerateText();
+        }        
 
         public void ActivateNextHint()
         {

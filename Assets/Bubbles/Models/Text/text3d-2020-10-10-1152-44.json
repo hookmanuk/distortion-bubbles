@@ -1,0 +1,63 @@
+{
+    "Font": {
+        "weight": 900,
+        "chamfer": 525,
+        "aspect": 1.35,
+        "smallCaps": 0.65,
+        "italic": -0.15000000000000002,
+        "skew": -0.30000000000000004,
+        "letterSpacing": 0.05,
+        "wordSpacing": 1.3906987588047834,
+        "lineSpacing": 1.3737302021310784,
+        "extrusion": 0.24648413109783684,
+        "alignX": 2,
+        "alignY": 2,
+        "outline": true
+    },
+    "Location": {
+        "latitude": -24.15197,
+        "longitude": -4.48524,
+        "timezone": 0,
+        "northOffset": 0
+    },
+    "DateTime": {
+        "clockTime": 14,
+        "dayOfMonth": 21,
+        "monthOfYear": 2,
+        "year": 2020
+    },
+    "Display": {
+        "surfaceOpacity": 1,
+        "outlineOpacity": 0.75,
+        "surfaceShininess": 75,
+        "ambientFactor": 0.75
+    },
+    "Model": {
+        "units": 1,
+        "shadowsShow": false,
+        "dimensionsShow": true,
+        "dimensionSize": 0.65,
+        "snapActive": true,
+        "snapAlignBounds": true,
+        "snapAlignCenter": false,
+        "snapAlignGrid": true,
+        "snapToAdjacent": true,
+        "snapToSelected": true,
+        "snapToAll": false,
+        "snapGrid": 50
+    },
+    "Animation": {
+        "animateTime": true,
+        "animateDate": true,
+        "animateLatitude": false,
+        "animateLongitude": false,
+        "daylightOnly": true,
+        "speed": 10
+    },
+    "Slider": {
+        "show": false,
+        "wrap": false,
+        "detail": false,
+        "index": 2
+    }
+}

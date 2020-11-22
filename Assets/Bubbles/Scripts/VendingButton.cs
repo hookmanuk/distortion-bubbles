@@ -116,7 +116,7 @@ namespace BubbleDistortionPhysics
         {
             Vector3 localPosition = transform.root.InverseTransformPoint(position);
 
-            return (Direction == 1 ? localPosition.z : localPosition.x);
+            return (Direction == 1 ? localPosition.z : -localPosition.x);
         }
 
         private void SetYPosition(float position)
@@ -150,6 +150,14 @@ namespace BubbleDistortionPhysics
                         if (Type == DistorterType.Hint)
                         {
                             _vendingMachine.ActivateNextHint();
+                        }
+                        else if (Type == DistorterType.Settings)
+                        {
+                            _vendingMachine.CycleSettings();
+                        }
+                        else if (Type == DistorterType.Reset)
+                        {
+                            PlayerController.Instance.Reset(false);
                         }
                         else
                         {

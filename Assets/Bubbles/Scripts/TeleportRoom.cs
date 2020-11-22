@@ -45,7 +45,7 @@ namespace BubbleDistortionPhysics
             {
                 foreach (var item in room.MyPhysicsObjects)
                 {
-                    item.transform.localPosition = item.LocalPosition;
+                    item.transform.localPosition = item.LocalPosition;                    
                 }
             }
         }

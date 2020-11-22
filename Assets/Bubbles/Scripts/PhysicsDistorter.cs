@@ -408,6 +408,8 @@ namespace BubbleDistortionPhysics
         Light,
         OpenElevator,
         CloseElevator,
+        Settings,
+        Reset
     }
 
     public enum ExpandType

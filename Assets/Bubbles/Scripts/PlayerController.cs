@@ -39,6 +39,7 @@ namespace BubbleDistortionPhysics
         private bool _preventCharacterMovement;
         private bool _resetting;
         private bool _disolving;
+        private bool _resetPlayerPosition;
         private DateTime _lastSkipTime = DateTime.Now;
         private DateTime _lastQualityChange = DateTime.Now;
         private bool _flipping;
@@ -104,12 +105,13 @@ namespace BubbleDistortionPhysics
             impact = Vector3.Lerp(impact, Vector3.zero, 2 * Time.deltaTime);           
         }
 
-        public void Reset()
+        public void Reset(bool resetPlayerPosition = true)
         {
+            _resetPlayerPosition = resetPlayerPosition;
             _disolving = true;                        
         }
 
-        private void CycleGraphicsQuality()
+        public void CycleGraphicsQuality()
         {
             switch (GraphicsQuality.Name)
             {
@@ -322,11 +324,17 @@ namespace BubbleDistortionPhysics
                     _isAirbourne = false;
                     _resetting = false;
                     OutputLogManager.OutputText("no longer flipping, now reset");
+
                     Vector3 resetPosition = PhysicsManager.Instance.Reset();
-                    characterController.transform.position = resetPosition - new Vector3(1 + MainCamera.transform.localPosition.x, 0, MainCamera.transform.localPosition.z);
-                    capsuleCollider.height = MainCamera.transform.localPosition.y;
-                    capsuleCollider.center = new Vector3(MainCamera.transform.localPosition.x, MainCamera.transform.localPosition.y / 2, MainCamera.transform.localPosition.z);
-                    
+
+                    if (_resetPlayerPosition)
+                    {                        
+                        characterController.transform.position = resetPosition - new Vector3(1 + MainCamera.transform.localPosition.x, 0, MainCamera.transform.localPosition.z);
+                        capsuleCollider.height = MainCamera.transform.localPosition.y;
+                        capsuleCollider.center = new Vector3(MainCamera.transform.localPosition.x, MainCamera.transform.localPosition.y / 2, MainCamera.transform.localPosition.z);
+
+                        _resetPlayerPosition = false;
+                    }                    
                 }                
             }
             else
@@ -429,6 +437,15 @@ namespace BubbleDistortionPhysics
                     if (!Levels[i].activeSelf)
                     {
                         Levels[i].SetActive(true);
+                        foreach (var item in Levels[i].GetComponentsInChildren<PhysicsObject>())
+                        {
+                            item.Reset();
+                        }
+
+                        foreach (var item in Levels[i].GetComponentsInChildren<TeleportRoom>())
+                        {
+                            item.Reset();
+                        }
                     }
                 }
             }
@@ -633,7 +650,7 @@ namespace BubbleDistortionPhysics
         }
 
         public IEnumerator IntroMovement()
-        {
+        {            
             var currentPos = ElevatorFloor.transform.position;            
             var t = 0f;
             var endElevatorPosition = new Vector3(_startElevatorPos.x, 1f, _startElevatorPos.z);
@@ -648,9 +665,13 @@ namespace BubbleDistortionPhysics
 
             _preventCharacterMovement = false;
 
-            IntroStart = false;
+            IntroStart = false;            
+
+            StartCoroutine(AudioManager.Instance.VolumeOverTime(Elevator.StartDescentClip, 1f, 0));
 
             StartCoroutine(Elevator.OpenDoorAnimate());
+
+            yield return new WaitForSeconds(2f);                
         }
     }
 }

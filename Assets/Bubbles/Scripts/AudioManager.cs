@@ -100,23 +100,26 @@ namespace BubbleDistortionPhysics
             }
         }
 
-        IEnumerator VolumeOverTime(AudioSource source, float time, float volume)
+        public IEnumerator VolumeOverTime(AudioSource source, float time, float volume)
         {
             float currentTime = 0f;
             float originalVolume = source.volume;
             float differenceVolume = (volume - originalVolume);
 
-            if (!source.isPlaying)
+            if (!source.isPlaying && volume > 0)
             {
                 source.Play();
             }
 
-            while (currentTime < time)
+            if (!(source.volume == 0 && volume == 0))
             {
-                source.volume = originalVolume + (differenceVolume * currentTime / time);
-                
-                currentTime += Time.deltaTime;
-                yield return null;
+                while (currentTime < time)
+                {
+                    source.volume = originalVolume + (differenceVolume * currentTime / time);
+
+                    currentTime += Time.deltaTime;
+                    yield return null;
+                }
             }
 
             if (source.volume == 0)
