@@ -222,10 +222,12 @@ namespace BubbleDistortionPhysics
 
         public void FixedUpdate()
         {
-            Vector3 direction;            
-
+            Vector3 direction;
+            
             if (Path?.Length > 0)
             {
+                //TODO - This takes 0.33ms to move objects
+
                 if (_ticksSincePathChange > 10 && (RigidBody.transform.position - RigidBody.transform.parent.position - Path[_currentPathIndex]).magnitude < 0.05f)
                 {
                     _ticksSincePathChange = 0;
@@ -254,12 +256,6 @@ namespace BubbleDistortionPhysics
                 _ticksSincePathChange++;
             }
 
-            //if (Math.Abs(_lastBassLevelUsed - AudioManager.Instance.BassLevel / 2f) > 0.2f)
-            //{
-            //    _material.SetColor("_EmissiveColor", _emissiveColor * AudioManager.Instance.BassLevel / 2f);
-            //    _lastBassLevelUsed = AudioManager.Instance.BassLevel / 2f;
-            //}
-
             if (!IgnoreMusic && _material != null)
             {
                 if (AudioManager.Instance.BassLevel == 2f)
@@ -275,42 +271,6 @@ namespace BubbleDistortionPhysics
                     }
                 }
             }
-
-
-            //long ticksSinceBeat = DateTime.Now.Ticks - AudioManager.Instance.LastBeatTicks;
-            //if (ticksSinceBeat < 1000)
-            //{
-            //    if (!_isEmitting)
-            //    {
-            //        _isEmitting = true;
-            //        Color color = new Color(255, 255, 255);
-
-            //        // for some reason, the desired intensity value (set in the UI slider) needs to be modified slightly for proper internal consumption
-            //        //float adjustedIntensity = 0.3f;
-
-            //        // redefine the color with intensity factored in - this should result in the UI slider matching the desired value
-            //        //color *= Mathf.Pow(2.0F, adjustedIntensity);
-            //        _material.SetColor("_BaseColor", color);                    
-            //    }
-            //}
-            //else
-            //{
-            //    _isEmitting = false;
-            //    Color color = new Color(0, 0, 0);
-            //    _material.SetColor("_Color", color);
-            //}
-
-            //if (IsVoiceActivated)
-            //{                
-            //    float micLevel = MicInput.MicLoudness;
-            //    if (micLevel > 0.0001)
-            //    {                    
-            //        //Debug.Log(micLevel.ToString());
-            //        Vector3 diff = transform.position - PlayerController.Instance.MainCamera.transform.position;                                     
-                    
-            //        GetComponent<Rigidbody>().AddForce(diff.normalized * micLevel * -diff.magnitude, ForceMode.Impulse);
-            //    }
-            //}
 
             if (IgnoresGravityFlip && PlayerController.Instance.ReverseGravity)
             {

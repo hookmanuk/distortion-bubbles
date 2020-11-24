@@ -3,7 +3,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.HighDefinition;
 using UnityEngine.UI;
+using UnityEngine.VR;
 using UnityEngine.XR;
 
 public class DynamicResolution : MonoBehaviour
@@ -34,7 +37,7 @@ public class DynamicResolution : MonoBehaviour
     //void Start()
     //{
     //    int rezWidth = (int)Mathf.Ceil(ScalableBufferManager.widthScaleFactor * Screen.currentResolution.width);
-    //    int rezHeight = (int)Mathf.Ceil(ScalableBufferManager.heightScaleFactor * Screen.currentResolution.height);        
+    //    int rezHeight = (int)Mathf.Ceil(ScalableBufferManager.heightScaleFactor * Screen.currentResolution.height);
     //}
 
     //Doesnt actually do anything!
@@ -81,11 +84,11 @@ public class DynamicResolution : MonoBehaviour
     //        ScalableBufferManager.widthScaleFactor,
     //        ScalableBufferManager.heightScaleFactor,
     //        m_gpuFrameTime,
-    //        m_cpuFrameTime));            
+    //        m_cpuFrameTime));
     //    }
     //    DetermineResolution();
     //    int rezWidth = (int)Mathf.Ceil(ScalableBufferManager.widthScaleFactor * Screen.currentResolution.width);
-    //    int rezHeight = (int)Mathf.Ceil(ScalableBufferManager.heightScaleFactor * Screen.currentResolution.height);        
+    //    int rezHeight = (int)Mathf.Ceil(ScalableBufferManager.heightScaleFactor * Screen.currentResolution.height);
     //}
 
     // Estimate the next frame time and update the resolution scale if necessary.
@@ -112,38 +115,81 @@ public class DynamicResolution : MonoBehaviour
 
 
     //MJH This is my code for only lighting a certain distance around the player
-    //private float _fpsUpdate;
-    //private float _lastFps;
-    //private float _targetFps = 90f;
-    //private DateTime _lastChange;
-    //private double _timeToIncrease = 200;
-    //private int _currentFrame = 0;
-    //private int _frameWindow = 30;
+    private float _fpsUpdate;
+    private float _lastFps;
+    private float _targetFps = 90f;
+    private DateTime _lastChange;
+    private double _timeToIncrease = 200;
+    private int _currentFrame = 0;
+    private int _frameWindow = 4;
+    public HDRenderPipelineAsset PipelineSettings;
+    private float _resScale = 1f;
+    private float _reportedFps;
+    private float _lastReportedScale;
+    private bool _reportedScale1;
 
-    //private void Update()
-    //{
-    //    _currentFrame += 1;
+    private void Start()
+    {
+        DynamicResolutionHandler.SetDynamicResScaler(SetDynamicResolutionScale, DynamicResScalePolicyType.ReturnsMinMaxLerpFactor);
+    }
 
-    //    _lastFps += 1.0f / Time.deltaTime;
+    private float SetDynamicResolutionScale()
+    {
+        if (_resScale < 1)
+        {
+            if (_resScale != _lastReportedScale)
+            {
+                //Debug.Log(_reportedFps.ToString() + "fps, scale now " + _resScale.ToString());
+                _lastReportedScale = _resScale;
+            }            
+            _reportedScale1 = false;
+            return _resScale;
+        }
+        else
+        {
+            if (!_reportedScale1)
+            {
+                //Debug.Log(_reportedFps.ToString() + "fps, scale now 1");
+                _reportedScale1 = true;
+            }            
+            return 1;
+        }        
+    }
 
-    //    if (_currentFrame == _frameWindow)
-    //    {
-    //        _lastFps = _lastFps / _frameWindow;
-    //        if (_lastFps > 0 && PlayerController.Instance.LightsDistance >= 10f && _lastFps < _targetFps * 0.99f && (DateTime.Now - _lastChange).TotalMilliseconds > 200)
-    //        {
-    //            _timeToIncrease += 200;
-    //            _lastChange = DateTime.Now;
-    //            PlayerController.Instance.LightsDistance -= 1;
-    //            OutputLogManager.UpdateLogPerformance("GPU " + _lastFps.ToString() + " Lights distance " + PlayerController.Instance.LightsDistance);
-    //        }
-    //        else if (_lastFps >= _targetFps && PlayerController.Instance.LightsDistance < 20f && (DateTime.Now - _lastChange).TotalMilliseconds > _timeToIncrease)
-    //        {
-    //            _lastChange = DateTime.Now;
-    //            PlayerController.Instance.LightsDistance += 1;
-    //            OutputLogManager.UpdateLogPerformance("GPU " + _lastFps.ToString() + " Lights distance " + PlayerController.Instance.LightsDistance);
-    //        }
-    //        _lastFps = 0;
-    //        _currentFrame = 0;
-    //    }
-    //}
+    private void Update()
+    {
+        _currentFrame += 1;
+
+        _lastFps += 1.0f / Time.deltaTime;
+
+        if (_currentFrame == _frameWindow)
+        {
+            _lastFps = _lastFps / (float)_frameWindow;
+            
+            if (_resScale > 0 && _lastFps > 0 && _lastFps < _targetFps * 0.98f)// && (DateTime.Now - _lastChange).TotalMilliseconds > 200)
+            {
+                _reportedFps = _lastFps;
+                _timeToIncrease += 200;
+                _lastChange = DateTime.Now;
+                _resScale = (float)Math.Round(_resScale - 0.01f,2);
+                //PlayerController.Instance.LightsDistance -= 1;
+                //OutputLogManager.UpdateLogPerformance("GPU " + _lastFps.ToString() + " Lights distance " + PlayerController.Instance.LightsDistance);
+                //Debug.Log(_lastFps.ToString() + "fps, scale now " + _resScale.ToString());
+            }
+            else if (_resScale < 1 && _lastFps >= _targetFps)// && (DateTime.Now - _lastChange).TotalMilliseconds > _timeToIncrease)
+            {
+                _reportedFps = _lastFps;
+                _lastChange = DateTime.Now;
+                //PlayerController.Instance.LightsDistance += 1;
+                if (_resScale < 1)
+                {
+                    _resScale = (float)Math.Round(_resScale + 0.01f, 2);
+                }
+
+                //OutputLogManager.UpdateLogPerformance("GPU " + _lastFps.ToString() + " Lights distance " + PlayerController.Instance.LightsDistance);
+            }
+            _lastFps = 0;
+            _currentFrame = 0;
+        }
+    }
 }

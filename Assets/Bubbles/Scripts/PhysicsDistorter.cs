@@ -79,11 +79,6 @@ namespace BubbleDistortionPhysics
        
         public void FixedUpdate()
         {
-            //if (PlayerController.Instance.ReverseGravity)
-            //{
-            // _rigidbody.AddForce(Vector3.up * 9.81f * Time.deltaTime);
-            //}
-
             if (Expanded && DistorterType == DistorterType.BlackHole)
             {
                 //draw all objects nearby in
@@ -93,7 +88,7 @@ namespace BubbleDistortionPhysics
                 {
                     PhysicsObject physicsObject = item.GetComponent<PhysicsObject>();
                     if (physicsObject != null)
-                    {                        
+                    {
                         if (physicsObject.Path?.Length > 0)
                         {
                             physicsObject.Path = null;
@@ -108,12 +103,12 @@ namespace BubbleDistortionPhysics
                         }
                         else
                         {
-                            item.attachedRigidbody.AddForce(diff * (20f/ ((float)(Math.Pow(diff.magnitude,3)))), ForceMode.Acceleration);
+                            item.attachedRigidbody.AddForce(diff * (20f / ((float)(Math.Pow(diff.magnitude, 3)))), ForceMode.Acceleration);
                             if (item.attachedRigidbody.useGravity)
                             {
                                 item.attachedRigidbody.AddForce(-Physics.gravity, ForceMode.Acceleration); //counteract gravity
                             }
-                        }                        
+                        }
                     }
                 }
             }
@@ -123,7 +118,7 @@ namespace BubbleDistortionPhysics
                 if (_grabbed)
                 {
                     if (PlayerController.Instance.TriggerPercentage > 0)
-                    {                                                
+                    {
                         _material.SetColor("_EmissiveColor", _emissiveColor * PlayerController.Instance.TriggerPercentage * 2f);
                         //GetComponentInChildren<Light>().intensity = 20f + 250f * PlayerController.Instance.TriggerPercentage/5f;
                         GetComponentInChildren<Light>().intensity = 2f + 25f * PlayerController.Instance.TriggerPercentage / 5f;
@@ -139,50 +134,51 @@ namespace BubbleDistortionPhysics
                             _material.SetColor("_EmissiveColor", _emissiveColor * 0.1f);
                         }
                     }
-                }
-                //draw all objects nearby in
-                Collider[] hitObjects = Physics.OverlapSphere(transform.position, 5f);
 
-                foreach (Collider item in hitObjects)
-                {
-                    PhysicsObject physicsObject = item.GetComponent<PhysicsObject>();
-                    if (physicsObject != null)
+                    //draw all objects nearby in
+                    Collider[] hitObjects = Physics.OverlapSphere(transform.position, 5f);
+
+                    foreach (Collider item in hitObjects)
                     {
-                        if (physicsObject.FollowsLight)
+                        PhysicsObject physicsObject = item.GetComponent<PhysicsObject>();
+                        if (physicsObject != null)
                         {
-                            if (_grabbed)
+                            if (physicsObject.FollowsLight)
                             {
-                                //Vector3 diff = transform.position - item.transform.position;
-
-                                //item.attachedRigidbody.AddForce(diff * (20f / ((float)(Math.Pow(diff.magnitude, 3))) * PlayerController.Instance.TriggerPercentage), ForceMode.Acceleration);
-                                //if (item.attachedRigidbody.useGravity)
-                                //{
-                                item.attachedRigidbody.AddForce(Physics.gravity / 1, ForceMode.Acceleration); //stop them flying
-                                                                                                              //}
-                                Vector3 diff = transform.position - item.transform.position;
-                                item.attachedRigidbody.AddForce(diff.normalized * PlayerController.Instance.TriggerPercentage * Math.Max(Math.Min(diff.magnitude,2),1) / 500f, ForceMode.Impulse);
-                                Debug.Log(diff.magnitude);
-                                if (PlayerController.Instance.TriggerPercentage > 0 && _r.Next(1, 90 * 1) == 1) //~every 1 secs
+                                if (_grabbed)
                                 {
-                                    item.GetComponents<AudioSource>()[1].volume = 0.02f * PlayerController.Instance.TriggerPercentage * Math.Max(Math.Min(diff.magnitude, 5), 1);
-                                    item.GetComponents<AudioSource>()[1].Play();
-                                }
-                            }
-                            
-                            if (_r.Next(1, 90 * 10) == 1) //~every 10 secs
-                            {
-                                item.attachedRigidbody.AddForce((Vector3.up + Vector3.right * _r.Next(-100,100) / 300 + Vector3.forward * _r.Next(-100, 100) / 300) / 40f, ForceMode.Impulse);
-                                item.GetComponents<AudioSource>()[0].Play();
-                            };
+                                    //Vector3 diff = transform.position - item.transform.position;
 
-                            if (_r.Next(1, 90 * 1) == 1) //~every 1 secs
-                            {
-                                item.attachedRigidbody.AddForce((Vector3.up * 0.1f + Vector3.right * _r.Next(-100, 100) / 300 + Vector3.forward * _r.Next(-100, 100) / 300) / 40f, ForceMode.Impulse);                                
-                            };
+                                    //item.attachedRigidbody.AddForce(diff * (20f / ((float)(Math.Pow(diff.magnitude, 3))) * PlayerController.Instance.TriggerPercentage), ForceMode.Acceleration);
+                                    //if (item.attachedRigidbody.useGravity)
+                                    //{
+                                    item.attachedRigidbody.AddForce(Physics.gravity / 1, ForceMode.Acceleration); //stop them flying
+                                                                                                                  //}
+                                    Vector3 diff = transform.position - item.transform.position;
+                                    item.attachedRigidbody.AddForce(diff.normalized * PlayerController.Instance.TriggerPercentage * Math.Max(Math.Min(diff.magnitude, 2), 1) / 500f, ForceMode.Impulse);
+                                    Debug.Log(diff.magnitude);
+                                    if (PlayerController.Instance.TriggerPercentage > 0 && _r.Next(1, 90 * 1) == 1) //~every 1 secs
+                                    {
+                                        item.GetComponents<AudioSource>()[1].volume = 0.02f * PlayerController.Instance.TriggerPercentage * Math.Max(Math.Min(diff.magnitude, 5), 1);
+                                        item.GetComponents<AudioSource>()[1].Play();
+                                    }
+                                }
+
+                                if (_r.Next(1, 90 * 10) == 1) //~every 10 secs
+                                {
+                                    item.attachedRigidbody.AddForce((Vector3.up + Vector3.right * _r.Next(-100, 100) / 300 + Vector3.forward * _r.Next(-100, 100) / 300) / 40f, ForceMode.Impulse);
+                                    item.GetComponents<AudioSource>()[0].Play();
+                                };
+
+                                if (_r.Next(1, 90 * 1) == 1) //~every 1 secs
+                                {
+                                    item.attachedRigidbody.AddForce((Vector3.up * 0.1f + Vector3.right * _r.Next(-100, 100) / 300 + Vector3.forward * _r.Next(-100, 100) / 300) / 40f, ForceMode.Impulse);
+                                };
+                            }
                         }
                     }
-                }                                 
-            }            
+                }                
+            }
         }
 
         private void Update()

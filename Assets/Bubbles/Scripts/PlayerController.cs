@@ -32,6 +32,7 @@ namespace BubbleDistortionPhysics
         public int[] LevelCeilings;
         public int[] LevelFloors;
         public VendingMachine CurrentVendingMachine { get; set; }
+        public VendingMachine NextVendingMachine { get; set; }
         public List<PhysicsDistorter> Bubbles { get; set; } = new List<PhysicsDistorter>();
         public GameObject ElevatorFloor;
         public Elevator Elevator;
@@ -73,7 +74,7 @@ namespace BubbleDistortionPhysics
 
         private void Start()
         {            
-            GraphicsQuality = QualitySettings.Instance.QualityMedium;
+            GraphicsQuality = QualitySettings.Instance.QualityLow;
             
             characterController = GetComponent<CharacterController>();
             capsuleCollider = GetComponent<CapsuleCollider>();
@@ -89,10 +90,16 @@ namespace BubbleDistortionPhysics
             if (IntroStart)
             {
                 _startElevatorPos = ElevatorFloor.transform.position;
-                
 
                 //_preventCharacterMovement = true;                
-            }
+                CurrentVendingMachine = PhysicsManager.Instance.VendingMachines.OrderBy(vm => vm.Order).First();
+                CurrentVendingMachine.NextGlow.SetActive(true);
+
+                //set initial player pos
+                characterController.transform.position = new Vector3(-2.53f, 86.4f, -9.09f);
+                //capsuleCollider.height = MainCamera.transform.localPosition.y;
+                //capsuleCollider.center = new Vector3(MainCamera.transform.localPosition.x, MainCamera.transform.localPosition.y / 2, MainCamera.transform.localPosition.z);
+            }            
         }
 
         private void Update()

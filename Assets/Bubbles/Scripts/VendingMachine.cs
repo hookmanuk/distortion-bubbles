@@ -33,6 +33,7 @@ namespace BubbleDistortionPhysics
         public SimpleHelvetica Info;
 
         public Light PointLight;
+        public GameObject NextGlow;
         public int Order;
 
         public List<HintArea> HintAreas;
@@ -124,6 +125,14 @@ namespace BubbleDistortionPhysics
         {
             LastButtonPressed = DateTime.Now;
             PlayerController.Instance.CurrentVendingMachine = this;
+            PlayerController.Instance.NextVendingMachine = PhysicsManager.Instance.VendingMachines.Where(vm => vm.Order > this.Order).OrderBy(vm => vm.Order).FirstOrDefault();
+
+            if (PlayerController.Instance.NextVendingMachine != null)
+            {
+                PlayerController.Instance.NextVendingMachine.NextGlow.SetActive(true);
+            }
+            NextGlow.SetActive(false);
+
 
             //set counter going to then show hint
             if (_intSecondsSincePressed == 0)
