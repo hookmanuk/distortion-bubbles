@@ -116,17 +116,18 @@ public class DynamicResolution : MonoBehaviour
 
     //MJH This is my code for only lighting a certain distance around the player
     private float _fpsUpdate;
-    private float _lastFps;
+    public static float LastFPS;
     private float _targetFps = 90f;
     private DateTime _lastChange;
     private double _timeToIncrease = 200;
     private int _currentFrame = 0;
-    private int _frameWindow = 4;
+    private int _frameWindow = 1;
     public HDRenderPipelineAsset PipelineSettings;
-    private float _resScale = 1f;
-    private float _reportedFps;
+    public static float ResScale = 1f;
+    public static float ReportedFPS;
     private float _lastReportedScale;
     private bool _reportedScale1;
+    public static bool DynamicResolutionEnabled = true;
 
     private void Start()
     {
@@ -135,61 +136,80 @@ public class DynamicResolution : MonoBehaviour
 
     private float SetDynamicResolutionScale()
     {
-        if (_resScale < 1)
+        if (DynamicResolutionEnabled)
         {
-            if (_resScale != _lastReportedScale)
+            if (ResScale < 1)
             {
-                //Debug.Log(_reportedFps.ToString() + "fps, scale now " + _resScale.ToString());
-                _lastReportedScale = _resScale;
-            }            
-            _reportedScale1 = false;
-            return _resScale;
+                if (ResScale != _lastReportedScale)
+                {
+                    //Debug.Log(_reportedFps.ToString() + "fps, scale now " + _resScale.ToString());
+                    _lastReportedScale = ResScale;
+                }
+                _reportedScale1 = false;
+                return ResScale;
+            }
+            else
+            {
+                if (!_reportedScale1)
+                {
+                    //Debug.Log(_reportedFps.ToString() + "fps, scale now 1");
+                    _reportedScale1 = true;
+                }
+                return 1;
+            }
         }
         else
         {
-            if (!_reportedScale1)
-            {
-                //Debug.Log(_reportedFps.ToString() + "fps, scale now 1");
-                _reportedScale1 = true;
-            }            
             return 1;
-        }        
+        }
     }
 
     private void Update()
     {
-        _currentFrame += 1;
-
-        _lastFps += 1.0f / Time.deltaTime;
-
-        if (_currentFrame == _frameWindow)
+        if (DynamicResolutionEnabled)
         {
-            _lastFps = _lastFps / (float)_frameWindow;
-            
-            if (_resScale > 0 && _lastFps > 0 && _lastFps < _targetFps * 0.98f)// && (DateTime.Now - _lastChange).TotalMilliseconds > 200)
+            _currentFrame += 1;
+
+            var frameFPS = 1.0f / Time.deltaTime;
+            LastFPS += frameFPS;
+
+            //run increase loop every framewindow
+            if (_currentFrame == _frameWindow)
             {
-                _reportedFps = _lastFps;
+                LastFPS = (float)Math.Round(LastFPS / (float)_frameWindow, 1);
+
+                if (ResScale < 1 && LastFPS >= _targetFps * 0.99f)// && (DateTime.Now - _lastChange).TotalMilliseconds > _timeToIncrease)
+                {
+                    ReportedFPS = LastFPS;
+                    _lastChange = DateTime.Now;
+                    //PlayerController.Instance.LightsDistance += 1;
+                    if (ResScale < 1)
+                    {
+                        ResScale = (float)Math.Round(ResScale + 0.01f, 2);
+                    }
+
+                    //OutputLogManager.UpdateLogPerformance("GPU " + _lastFps.ToString() + " Lights distance " + PlayerController.Instance.LightsDistance);
+                }
+                LastFPS = 0;
+                _currentFrame = 0;
+            }
+
+            //run decrease loop every frame
+
+            if (ResScale > 0 && frameFPS > 0 && frameFPS < _targetFps * 0.90f)// && (DateTime.Now - _lastChange).TotalMilliseconds > 200)
+            {
+                ReportedFPS = (float)Math.Round(frameFPS, 2);
                 _timeToIncrease += 200;
                 _lastChange = DateTime.Now;
-                _resScale = (float)Math.Round(_resScale - 0.01f,2);
+                ResScale = (float)Math.Round(ResScale - 0.1f, 2);
                 //PlayerController.Instance.LightsDistance -= 1;
                 //OutputLogManager.UpdateLogPerformance("GPU " + _lastFps.ToString() + " Lights distance " + PlayerController.Instance.LightsDistance);
                 //Debug.Log(_lastFps.ToString() + "fps, scale now " + _resScale.ToString());
             }
-            else if (_resScale < 1 && _lastFps >= _targetFps)// && (DateTime.Now - _lastChange).TotalMilliseconds > _timeToIncrease)
-            {
-                _reportedFps = _lastFps;
-                _lastChange = DateTime.Now;
-                //PlayerController.Instance.LightsDistance += 1;
-                if (_resScale < 1)
-                {
-                    _resScale = (float)Math.Round(_resScale + 0.01f, 2);
-                }
-
-                //OutputLogManager.UpdateLogPerformance("GPU " + _lastFps.ToString() + " Lights distance " + PlayerController.Instance.LightsDistance);
-            }
-            _lastFps = 0;
-            _currentFrame = 0;
+        }
+        else
+        {
+            ReportedFPS = (float)Math.Round(1.0f / Time.deltaTime, 2);
         }
     }
 }

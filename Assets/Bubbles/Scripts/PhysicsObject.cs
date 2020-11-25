@@ -224,58 +224,58 @@ namespace BubbleDistortionPhysics
         {
             Vector3 direction;
             
-            if (Path?.Length > 0)
-            {
-                //TODO - This takes 0.33ms to move objects
+            //if (Path?.Length > 0)
+            //{
+            //    //TODO - This takes 0.33ms to move objects
 
-                if (_ticksSincePathChange > 10 && (RigidBody.transform.position - RigidBody.transform.parent.position - Path[_currentPathIndex]).magnitude < 0.05f)
-                {
-                    _ticksSincePathChange = 0;
-                    _currentPathIndex += _pathIncrement;
+            //    if (_ticksSincePathChange > 10 && (RigidBody.transform.position - RigidBody.transform.parent.position - Path[_currentPathIndex]).magnitude < 0.05f)
+            //    {
+            //        _ticksSincePathChange = 0;
+            //        _currentPathIndex += _pathIncrement;
 
-                    if (_currentPathIndex > Path.Length - 1)
-                    {
-                        _pathIncrement = -_pathIncrement;
-                        _currentPathIndex += _pathIncrement;
-                        _currentPathIndex += _pathIncrement;
-                    }
-                    else if (_currentPathIndex < 0)
-                    {
-                        _pathIncrement = -_pathIncrement;
-                        _currentPathIndex += _pathIncrement;
-                        _currentPathIndex += _pathIncrement;
-                    }
-                }
+            //        if (_currentPathIndex > Path.Length - 1)
+            //        {
+            //            _pathIncrement = -_pathIncrement;
+            //            _currentPathIndex += _pathIncrement;
+            //            _currentPathIndex += _pathIncrement;
+            //        }
+            //        else if (_currentPathIndex < 0)
+            //        {
+            //            _pathIncrement = -_pathIncrement;
+            //            _currentPathIndex += _pathIncrement;
+            //            _currentPathIndex += _pathIncrement;
+            //        }
+            //    }
 
-                direction = (Path[_currentPathIndex] - (RigidBody.transform.position - RigidBody.transform.parent.position));
-                direction.Normalize();
+            //    direction = (Path[_currentPathIndex] - (RigidBody.transform.position - RigidBody.transform.parent.position));
+            //    direction.Normalize();
 
-                RigidBody.MovePosition(RigidBody.transform.position + direction * Speed * Time.deltaTime);
-                RigidBody.velocity = Speed * RigidBody.velocity.normalized;
+            //    RigidBody.MovePosition(RigidBody.transform.position + direction * Speed * Time.deltaTime);
+            //    RigidBody.velocity = Speed * RigidBody.velocity.normalized;
 
-                _ticksSincePathChange++;
-            }
+            //    _ticksSincePathChange++;
+            //}
 
-            if (!IgnoreMusic && _material != null)
-            {
-                if (AudioManager.Instance.BassLevel == 2f)
-                {
-                    _lastEmission = DateTime.Now;
-                    _material.SetColor("_EmissiveColor", _emissiveColor * AudioManager.Instance.BassLevel / 2f);
-                }
-                else
-                {
-                    if ((DateTime.Now - _lastEmission).TotalMilliseconds > 100)
-                    {
-                        _material.SetColor("_EmissiveColor", _emissiveColor * 0);
-                    }
-                }
-            }
+            //if (!IgnoreMusic && _material != null)
+            //{
+            //    if (AudioManager.Instance.BassLevel == 2f)
+            //    {
+            //        _lastEmission = DateTime.Now;
+            //        _material.SetColor("_EmissiveColor", _emissiveColor * AudioManager.Instance.BassLevel / 2f);
+            //    }
+            //    else
+            //    {
+            //        if ((DateTime.Now - _lastEmission).TotalMilliseconds > 100)
+            //        {
+            //            _material.SetColor("_EmissiveColor", _emissiveColor * 0);
+            //        }
+            //    }
+            //}
 
-            if (IgnoresGravityFlip && PlayerController.Instance.ReverseGravity)
-            {
-                RigidBody.AddForce(-Physics.gravity * 2, ForceMode.Acceleration); //reverse flipped gravity back to normal
-            }
+            //if (IgnoresGravityFlip && PlayerController.Instance.ReverseGravity)
+            //{
+            //    RigidBody.AddForce(-Physics.gravity * 2, ForceMode.Acceleration); //reverse flipped gravity back to normal
+            //}
         }
 
         private void Update()

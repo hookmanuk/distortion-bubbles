@@ -405,7 +405,10 @@ namespace BubbleDistortionPhysics
         OpenElevator,
         CloseElevator,
         Settings,
-        Reset
+        Reset,
+        GraphicsToggle,
+        DynamicResToggle,
+        SettingsBack
     }
 
     public enum ExpandType

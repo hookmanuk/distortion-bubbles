@@ -207,6 +207,7 @@ public class SimpleHelvetica : MonoBehaviour {
 				//Debug.Log("previous letter: "+childTransform.name);
 				//running game need to use destroy, editor should use destroyimmediate
 				//DestroyImmediate(childTransform.gameObject);	
+				//prefab editor should use deactivate & destroy!
 				//childTransform.gameObject.SetActive(false);
 				Destroy(childTransform.gameObject);
 			}

@@ -23,7 +23,7 @@ namespace BubbleDistortionPhysics
         private XRBaseInteractor hoverInteractor;
         public GameObject DisabledQuad;
         public int Direction;
-        private bool _lastClosed = false;
+        private bool _lastClosed = false;        
 
         protected override void Awake()
         {
@@ -153,7 +153,19 @@ namespace BubbleDistortionPhysics
                         }
                         else if (Type == DistorterType.Settings)
                         {
-                            _vendingMachine.CycleSettings();
+                            _vendingMachine.ShowSettings();
+                        }
+                        else if (Type == DistorterType.SettingsBack)
+                        {
+                            _vendingMachine.HideSettings();
+                        }
+                        else if (Type == DistorterType.GraphicsToggle)
+                        {
+                            GetComponentInParent<Menu>().CycleSettings();
+                        }
+                        else if (Type == DistorterType.DynamicResToggle)
+                        {
+                            GetComponentInParent<Menu>().ToggleDynamicResolution();
                         }
                         else if (Type == DistorterType.Reset)
                         {

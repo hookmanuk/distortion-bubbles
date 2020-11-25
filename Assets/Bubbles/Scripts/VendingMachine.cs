@@ -31,6 +31,8 @@ namespace BubbleDistortionPhysics
         public VendingButton SettingsButton;
         public VendingButton ResetButton;
         public SimpleHelvetica Info;
+        public GameObject Distortions;
+        public GameObject SettingsMenu;
 
         public Light PointLight;
         public GameObject NextGlow;
@@ -291,12 +293,21 @@ namespace BubbleDistortionPhysics
             }
         }
 
-        public void CycleSettings()
+        public void ShowSettings()
         {
-            PlayerController.Instance.CycleGraphicsQuality();
-            Info.Text = PlayerController.Instance.GraphicsQuality.Name + " Quality Set";
+            Info.Text = "Change graphics settings below_";
             Info.GenerateText();
-        }        
+            Distortions.SetActive(false);
+            SettingsMenu.SetActive(true);
+        }
+
+        public void HideSettings()
+        {
+            Info.Text = "Select your distortion to vend below_";
+            Info.GenerateText();
+            Distortions.SetActive(true);
+            SettingsMenu.SetActive(false);
+        }
 
         public void ActivateNextHint()
         {

@@ -74,7 +74,7 @@ namespace BubbleDistortionPhysics
 
         private void Start()
         {            
-            GraphicsQuality = QualitySettings.Instance.QualityLow;
+            GraphicsQuality = QualitySettings.Instance.QualityMedium;
             
             characterController = GetComponent<CharacterController>();
             capsuleCollider = GetComponent<CapsuleCollider>();
