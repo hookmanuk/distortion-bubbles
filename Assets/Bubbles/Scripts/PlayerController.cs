@@ -124,12 +124,36 @@ namespace BubbleDistortionPhysics
             {
                 case "Low":
                     GraphicsQuality = QualitySettings.Instance.QualityMedium;
+                    foreach (var item in PhysicsManager.Instance.PhysicsObjects)
+                    {
+                        MeshRenderer meshRenderer = item.GetComponent<MeshRenderer>();
+                        if (meshRenderer != null)
+                        {
+                            meshRenderer.shadowCastingMode = ShadowCastingMode.Off;
+                        }
+                    }
                     break;
                 case "Medium":
                     GraphicsQuality = QualitySettings.Instance.QualityHigh;
+                    foreach (var item in PhysicsManager.Instance.PhysicsObjects)
+                    {
+                        MeshRenderer meshRenderer = item.GetComponent<MeshRenderer>();
+                        if (meshRenderer != null)
+                        {
+                            meshRenderer.shadowCastingMode = ShadowCastingMode.On;
+                        }                        
+                    }
                     break;
                 case "High":
                     GraphicsQuality = QualitySettings.Instance.QualityLow;
+                    foreach (var item in PhysicsManager.Instance.PhysicsObjects)
+                    {
+                        MeshRenderer meshRenderer = item.GetComponent<MeshRenderer>();
+                        if (meshRenderer != null)
+                        {
+                            meshRenderer.shadowCastingMode = ShadowCastingMode.Off;
+                        }
+                    }
                     break;
                 default:
                     break;

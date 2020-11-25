@@ -131,7 +131,7 @@ namespace BubbleDistortionPhysics
             _instance = this;
 
             QualityLow = new QualitySetting() { Name = "Low", DrawDistance = DrawDistance.Low, LightsDistance = LightsDistance.Low, Effects = Effects.Low };
-            QualityMedium = new QualitySetting() { Name = "Medium", DrawDistance = DrawDistance.Medium, LightsDistance = LightsDistance.Low, Effects = Effects.Medium };
+            QualityMedium = new QualitySetting() { Name = "Medium", DrawDistance = DrawDistance.Medium, LightsDistance = LightsDistance.Medium, Effects = Effects.Medium };
             QualityHigh = new QualitySetting() { Name = "High", DrawDistance = DrawDistance.High, LightsDistance = LightsDistance.Medium, Effects = Effects.High };
         }
     }
