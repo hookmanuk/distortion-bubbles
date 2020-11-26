@@ -127,6 +127,8 @@ namespace BubbleDistortionPhysics
         {
             LastButtonPressed = DateTime.Now;
             PlayerController.Instance.CurrentVendingMachine = this;
+            PlayerPrefs.SetInt("CurrentVendingMachine", this.Order);
+            PlayerPrefs.Save();
             PlayerController.Instance.NextVendingMachine = PhysicsManager.Instance.VendingMachines.Where(vm => vm.Order > this.Order).OrderBy(vm => vm.Order).FirstOrDefault();
 
             if (PlayerController.Instance.NextVendingMachine != null)

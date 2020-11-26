@@ -285,7 +285,7 @@ MonoBehaviour:
     dynamicResolutionSettings:
       enabled: 1
       maxPercentage: 100
-      minPercentage: 50
+      minPercentage: 75
       dynResType: 1
       upsampleFilter: 1
       forceResolution: 0

@@ -127,10 +127,16 @@ public class DynamicResolution : MonoBehaviour
     public static float ReportedFPS;
     private float _lastReportedScale;
     private bool _reportedScale1;
-    public static bool DynamicResolutionEnabled = true;
+    public static bool DynamicResolutionEnabled = false;
+
+    private static DynamicResolution _instance;
+    public static DynamicResolution Instance { get { return _instance; } }
+
+    public static float MinDynamicResolution { get { return Instance.PipelineSettings.currentPlatformRenderPipelineSettings.dynamicResolutionSettings.minPercentage; } }
 
     private void Start()
     {
+        _instance = this;
         DynamicResolutionHandler.SetDynamicResScaler(SetDynamicResolutionScale, DynamicResScalePolicyType.ReturnsMinMaxLerpFactor);
     }
 

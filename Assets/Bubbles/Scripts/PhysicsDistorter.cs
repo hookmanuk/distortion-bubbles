@@ -408,7 +408,9 @@ namespace BubbleDistortionPhysics
         Reset,
         GraphicsToggle,
         DynamicResToggle,
-        SettingsBack
+        SettingsBack,
+        ResumeGame,
+        SkipMachine
     }
 
     public enum ExpandType

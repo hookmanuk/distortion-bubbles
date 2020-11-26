@@ -58,6 +58,8 @@ namespace BubbleDistortionPhysics
         private bool _introRunning;
         private float triggerHeldTime = 0;
         private Vector3 _startElevatorPos;
+        private float fltHeight5SecondsAgo;
+        private DateTime datLastHeighCheck = DateTime.Now;
 
         public float LightsDistance { get; set; } = 10f;
 
@@ -273,23 +275,48 @@ namespace BubbleDistortionPhysics
             //impact += dir.normalized * force / mass;
             impact += dir * force / mass;
         }
+
+        public void SkipMachine()
+        {
+            int LastVend = -1;
+
+            _lastSkipTime = DateTime.Now;
+            VendingMachine vendingMachine = PhysicsManager.Instance.VendingMachines.OrderByDescending(vm => vm.LastButtonPressed).FirstOrDefault();
+
+            if (vendingMachine != null)
+            {
+                LastVend = vendingMachine.Order;
+            }
+            LastVend++;
+
+            OutputLogManager.OutputText("Skipping to machine " + LastVend.ToString());
+
+            vendingMachine = PhysicsManager.Instance.VendingMachines.Where(vm => vm.Order == LastVend).FirstOrDefault();
+
+            if (vendingMachine == null)
+            {
+                vendingMachine = PhysicsManager.Instance.VendingMachines.Where(vm => vm.Order == 0).FirstOrDefault();
+            }
+
+            vendingMachine.LastButtonPressed = DateTime.Now;
+
+            Reset();
+        }
         
         void FixedUpdate()
         {
             bool blnResetClicked = false;
             bool blnDebugSkipClicked = false;
             bool blnCycleQualityClicked = false;
-            int LastVend = -1;
+            
 
-            RightController?.inputDevice.TryGetFeatureValue(CommonUsages.secondaryButton, out blnCycleQualityClicked);
+            //RightController?.inputDevice.TryGetFeatureValue(CommonUsages.secondaryButton, out blnCycleQualityClicked);
 
-            if (blnCycleQualityClicked && _lastQualityChange < DateTime.Now.AddSeconds(-.5f))
-            {
-                _lastQualityChange = DateTime.Now;
-                CycleGraphicsQuality();
-            }
-
-            RightController?.inputDevice.TryGetFeatureValue(CommonUsages.secondary2DAxisClick, out blnDebugSkipClicked);
+            //if (blnCycleQualityClicked && _lastQualityChange < DateTime.Now.AddSeconds(-.5f))
+            //{
+            //    _lastQualityChange = DateTime.Now;
+            //    CycleGraphicsQuality();
+            //}            
 
             RightController?.inputDevice.TryGetFeatureValue(CommonUsages.trigger, out TriggerPercentage);
 
@@ -305,37 +332,18 @@ namespace BubbleDistortionPhysics
                 }
             }
 
-            if (blnDebugSkipClicked && _lastSkipTime < DateTime.Now.AddSeconds(-.5f))
-            {
-                _lastSkipTime = DateTime.Now;
-                VendingMachine vendingMachine = PhysicsManager.Instance.VendingMachines.OrderByDescending(vm => vm.LastButtonPressed).FirstOrDefault();
+            //RightController?.inputDevice.TryGetFeatureValue(CommonUsages.secondary2DAxisClick, out blnDebugSkipClicked);
+            //if (blnDebugSkipClicked && _lastSkipTime < DateTime.Now.AddSeconds(-.5f))
+            //{
+            //    SkipMachine();
+            //}            
 
-                if (vendingMachine != null)
-                {
-                    LastVend = vendingMachine.Order;
-                }
-                LastVend++;
+            //LeftController?.inputDevice.TryGetFeatureValue(CommonUsages.secondaryButton, out blnResetClicked);
 
-                OutputLogManager.OutputText("Skipping to machine " + LastVend.ToString());
-
-                vendingMachine = PhysicsManager.Instance.VendingMachines.Where(vm => vm.Order == LastVend).FirstOrDefault();
-
-                if (vendingMachine == null)
-                { 
-                    vendingMachine = PhysicsManager.Instance.VendingMachines.Where(vm => vm.Order == 0).FirstOrDefault();
-                }
-             
-                vendingMachine.LastButtonPressed = DateTime.Now;             
-
-                Reset();
-            }            
-
-            LeftController?.inputDevice.TryGetFeatureValue(CommonUsages.secondaryButton, out blnResetClicked);
-
-            if (blnResetClicked)
-            {
-                Reset();
-            }
+            //if (blnResetClicked)
+            //{
+            //    Reset();
+            //}
 
             if (_disolving)
             {
@@ -529,6 +537,18 @@ namespace BubbleDistortionPhysics
             //        }
             //    }
             //}
+
+            //check how far fallen in last 5 secs
+            if (!IntroStart && DateTime.Now.Subtract(datLastHeighCheck).TotalSeconds >= 5)
+            {                                 
+                if (fltHeight5SecondsAgo != -1 && fltHeight5SecondsAgo - characterController.transform.position.y > 10f)
+                {
+                    Reset();
+                }
+
+                fltHeight5SecondsAgo = characterController.transform.position.y;
+                datLastHeighCheck = DateTime.Now;
+            }
         }
 
         private void OnCollisionEnter(Collision collision)
