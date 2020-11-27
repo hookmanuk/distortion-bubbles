@@ -31,7 +31,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseColorMap:
-        m_Texture: {fileID: 2800000, guid: b3acf902ef563f54f9f7d86901a6d22b, type: 3}
+        m_Texture: {fileID: 2800000, guid: b53e3022b429ece419c84942bd23dd62, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BentNormalMap:
@@ -91,7 +91,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: b3acf902ef563f54f9f7d86901a6d22b, type: 3}
+        m_Texture: {fileID: 2800000, guid: b53e3022b429ece419c84942bd23dd62, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskMap:
@@ -290,6 +290,7 @@ Material:
     - _UVDetailsMappingMask: {r: 1, g: 0, b: 0, a: 0}
     - _UVMappingMask: {r: 1, g: 0, b: 0, a: 0}
     - _UVMappingMaskEmissive: {r: 1, g: 0, b: 0, a: 0}
+  m_BuildTextureStacks: []
 --- !u!114 &6800394220236482011
 MonoBehaviour:
   m_ObjectHideFlags: 11
