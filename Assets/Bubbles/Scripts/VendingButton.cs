@@ -181,6 +181,7 @@ namespace BubbleDistortionPhysics
                     else if (Type == DistorterType.Reset)
                     {
                         PlayerController.Instance.Reset(false);
+                        _vendingMachine.IncrementHintCheck();
                     }
                     else if (Type == DistorterType.SettingsBack)
                     {

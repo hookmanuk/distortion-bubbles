@@ -298,7 +298,7 @@ namespace BubbleDistortionPhysics
                 vendingMachine = PhysicsManager.Instance.VendingMachines.Where(vm => vm.Order == 0).FirstOrDefault();
             }
 
-            vendingMachine.LastButtonPressed = DateTime.Now;
+            vendingMachine.LastButtonPressed = DateTime.Now.AddMilliseconds(100);
 
             Reset();
         }

@@ -72,7 +72,7 @@ namespace BubbleDistortionPhysics
 
         private bool _firstButtonPress = true;
         private bool _showHints = false;
-        private int _intSecondsSincePressed = 0;
+        private int _intResetTimes = 0;
         private int _totalHints;
         private int _nextHint = 1;
 
@@ -139,34 +139,20 @@ namespace BubbleDistortionPhysics
 
 
             //set counter going to then show hint
-            if (_intSecondsSincePressed == 0)
-            {
-                StartCoroutine(CountSincePressed());
-            }
+            //if (_intSecondsSincePressed == 0)
+            //{
+            //    StartCoroutine(CountSincePressed());
+            //}
         }
 
-        public IEnumerator CountSincePressed()
+        public void ShowHints()
         {
-            if (_totalHints > 0)
+            if (!_showHints)
             {
-                while (!_showHints)
-                {
-                    yield return new WaitForSeconds(1);
-                    _intSecondsSincePressed++;
-
-                    if (_intSecondsSincePressed >= 60)
-                    {
-                        VendingMachine vendingMachine = PhysicsManager.Instance.VendingMachines.OrderByDescending(vm => vm.LastButtonPressed).FirstOrDefault();
-                        if (vendingMachine == this)
-                        {
-                            _intSecondsSincePressed = 0;
-                            _showHints = true;
-                            ShowHintButton.GetComponent<AudioSource>().Play();
-                            //ShowHintGlowQuad.GetComponent<MeshRenderer>().material.SetFloat("GLOW_ALPHA", 0.1f); Doesn't work :(
-                            SetStockShowHintLevel(_totalHints);
-                        }
-                    }
-                }
+                _showHints = true;
+                ShowHintButton.GetComponent<AudioSource>().Play();
+                //ShowHintGlowQuad.GetComponent<MeshRenderer>().material.SetFloat("GLOW_ALPHA", 0.1f); Doesn't work :(
+                SetStockShowHintLevel(_totalHints);
             }
         }
 
@@ -212,6 +198,21 @@ namespace BubbleDistortionPhysics
             InitStockLevels(false);
 
             _firstButtonPress = true;
+
+            CheckHint();
+        }
+
+        public void IncrementHintCheck()
+        {
+            _intResetTimes++;
+        }
+
+        private void CheckHint()
+        {            
+            if (_intResetTimes == 2)
+            {
+                ShowHints();
+            }
         }
 
         public void SetStockSlowLevel(int stockLevel)
@@ -374,6 +375,14 @@ namespace BubbleDistortionPhysics
                 StockShowHintLevel--;
                 SetStockShowHintLevel(StockShowHintLevel);
                 _nextHint++;
+            }
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (NextGlow.activeSelf && other.gameObject == PlayerController.Instance.gameObject)
+            {
+                NextGlow.SetActive(false);
             }
         }
     }

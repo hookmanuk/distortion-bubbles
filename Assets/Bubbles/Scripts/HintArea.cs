@@ -32,7 +32,9 @@ public class HintArea : MonoBehaviour
 
     public void EnableGlow()
     {
-        _material.SetFloat("GLOW_ALPHA", 0.5f);
+        _material.SetFloat("GLOW_ALPHA", 0.03f);
+        _material.SetFloat("FRESNEL_POWER", 0.62f);
+        _material.SetFloat("GLOW_MULTIPLIER", 0.08f);
     }
 
     public void DisableGlow()
