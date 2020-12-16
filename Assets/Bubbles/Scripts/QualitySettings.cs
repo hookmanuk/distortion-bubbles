@@ -23,9 +23,9 @@ namespace BubbleDistortionPhysics
                 switch (DrawDistance)
                 {
                     case DrawDistance.Low:
-                        return 5;
-                    case DrawDistance.Medium:
                         return 10;
+                    case DrawDistance.Medium:
+                        return 20;
                     case DrawDistance.High:
                         return 30;
                     default:
@@ -41,9 +41,9 @@ namespace BubbleDistortionPhysics
                 switch (DrawDistance)
                 {
                     case DrawDistance.Low:
-                        return 5;
-                    case DrawDistance.Medium:
                         return 12;
+                    case DrawDistance.Medium:
+                        return 24;
                     case DrawDistance.High:
                         return 40;
                     default:
@@ -52,7 +52,7 @@ namespace BubbleDistortionPhysics
             }
         }
 
-        public int LightsDistanceAbove
+        public float LightsDistanceAbove
         {
             get
             {
@@ -70,7 +70,7 @@ namespace BubbleDistortionPhysics
             }
         }
 
-        public int LightsDistanceBelow
+        public float LightsDistanceBelow
         {
             get
             {
@@ -88,14 +88,14 @@ namespace BubbleDistortionPhysics
             }
         }
 
-        public int LightsDistanceHorizontal
+        public float LightsDistanceHorizontal
         {
             get
             {
                 switch (LightsDistance)
                 {
                     case LightsDistance.Low:
-                        return 8;
+                        return 10;
                     case LightsDistance.Medium:
                         return 20;
                     case LightsDistance.High:

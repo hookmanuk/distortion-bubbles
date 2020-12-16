@@ -72,7 +72,9 @@ namespace BubbleDistortionPhysics
         Vector3 direction;
 
         float mass = 1.0F; // defines the character mass
-        Vector3 impact = Vector3.zero;        
+        Vector3 impact = Vector3.zero;
+        int _frameInterval = 90;
+        int _frameCounter = 0;
 
         private void Start()
         {            
@@ -309,6 +311,12 @@ namespace BubbleDistortionPhysics
             bool blnDebugSkipClicked = false;
             bool blnCycleQualityClicked = false;
             
+            _frameCounter++;
+
+            if (_frameCounter > _frameInterval)
+            {
+                _frameCounter = 0;
+            }
 
             //RightController?.inputDevice.TryGetFeatureValue(CommonUsages.secondaryButton, out blnCycleQualityClicked);
 
@@ -462,92 +470,106 @@ namespace BubbleDistortionPhysics
             //    }
             //}            
 
-            for (int i = 0; i < Levels.Length; i++)
+            if (_frameCounter == 0)
             {
-                if (gameObject.transform.position.y - GraphicsQuality.DrawDistanceBelow > LevelCeilings[i] || gameObject.transform.position.y + GraphicsQuality.DrawDistanceAbove < LevelFloors[i])
+                for (int i = 0; i < Levels.Length; i++)
                 {
-                    if (Levels[i].activeSelf)
+                    if (gameObject.transform.position.y - GraphicsQuality.DrawDistanceBelow > LevelCeilings[i] || gameObject.transform.position.y + GraphicsQuality.DrawDistanceAbove < LevelFloors[i])
                     {
-                        Levels[i].SetActive(false);
-                    }
-                }
-                else
-                {
-                    if (!Levels[i].activeSelf)
-                    {
-                        Levels[i].SetActive(true);
-                        foreach (var item in Levels[i].GetComponentsInChildren<PhysicsObject>())
+                        if (Levels[i].activeSelf)
                         {
-                            item.Reset();
-                        }
-
-                        foreach (var item in Levels[i].GetComponentsInChildren<TeleportRoom>())
-                        {
-                            item.Reset();
+                            Levels[i].SetActive(false);
                         }
                     }
-                }
-            }
-
-            for (int i = 0; i < PhysicsManager.Instance.LightStrips.Count; i++)
-            {
-                if (PhysicsManager.Instance.LightStrips[i].transform.position.y - gameObject.transform.position.y > GraphicsQuality.LightsDistanceAbove ||
-                    gameObject.transform.position.y - PhysicsManager.Instance.LightStrips[i].transform.position.y > GraphicsQuality.LightsDistanceBelow ||
-                    (Vector3.Distance(gameObject.transform.position, PhysicsManager.Instance.LightStrips[i].transform.position) > GraphicsQuality.LightsDistanceHorizontal && !IntroStart))
-                {
-                    if (PhysicsManager.Instance.LightStrips[i].gameObject.activeSelf)
+                    else
                     {
-                        PhysicsManager.Instance.LightStrips[i].gameObject.SetActive(false);
+                        if (!Levels[i].activeSelf)
+                        {
+                            Levels[i].SetActive(true);
+                            foreach (var item in Levels[i].GetComponentsInChildren<PhysicsObject>())
+                            {
+                                item.Reset();
+                            }
+
+                            foreach (var item in Levels[i].GetComponentsInChildren<TeleportRoom>())
+                            {
+                                item.Reset();
+                            }
+                        }
                     }
                 }
-                else
+
+                for (int i = 0; i < PhysicsManager.Instance.LightStrips.Count; i++)
                 {
-                    if (!PhysicsManager.Instance.LightStrips[i].gameObject.activeSelf)
+                    if (PhysicsManager.Instance.LightStrips[i].AlwaysOn || IntroStart)
                     {
                         PhysicsManager.Instance.LightStrips[i].gameObject.SetActive(true);
                     }
-                }
-            }
-
-            if (GraphicsQuality.Effects == Effects.Medium)
-            {
-                foreach (PhysicsDistorter item in Bubbles)
-                {
-                    if (item.SourceMachine != CurrentVendingMachine && item.GetComponent<ParticleSystem>() != null)
+                    else
                     {
-                        item.GetComponent<ParticleSystem>().Stop();
+                        float dist = Vector3.Distance(gameObject.transform.position, PhysicsManager.Instance.LightStrips[i].transform.position);
+
+                        if (PhysicsManager.Instance.LightStrips[i].transform.position.y - gameObject.transform.position.y > (GraphicsQuality.LightsDistanceAbove + 0.5f) ||
+                            gameObject.transform.position.y - PhysicsManager.Instance.LightStrips[i].transform.position.y > (GraphicsQuality.LightsDistanceBelow + 0.5f) ||
+                            (dist > (GraphicsQuality.LightsDistanceHorizontal + 0.5f) && !IntroStart))
+                        {
+                            if (PhysicsManager.Instance.LightStrips[i].gameObject.activeSelf)
+                            {
+                                PhysicsManager.Instance.LightStrips[i].gameObject.SetActive(false);
+                            }
+                        }
+                        else if (PhysicsManager.Instance.LightStrips[i].transform.position.y - gameObject.transform.position.y < (GraphicsQuality.LightsDistanceAbove - 0.5f) ||
+                            gameObject.transform.position.y - PhysicsManager.Instance.LightStrips[i].transform.position.y < (GraphicsQuality.LightsDistanceBelow - 0.5f) ||
+                            (dist < (GraphicsQuality.LightsDistanceHorizontal - 0.5f) && !IntroStart))
+                        {
+                            if (!PhysicsManager.Instance.LightStrips[i].gameObject.activeSelf)
+                            {
+                                PhysicsManager.Instance.LightStrips[i].gameObject.SetActive(true);
+                            }
+                        }
                     }
                 }
-            }            
 
-            //for (int i = 0; i < Levels.Length - 1; i++)
-            //{
-            //    if (gameObject.transform.position.y + 20 < LevelFloors[i])
-            //    {
-            //        if (Levels[i].activeSelf)
-            //        {
-            //            Levels[i].SetActive(false);
-            //        }
-            //    }
-            //    else
-            //    {
-            //        if (!Levels[i].activeSelf)
-            //        {
-            //            Levels[i].SetActive(true);
-            //        }
-            //    }
-            //}
-
-            //check how far fallen in last 5 secs
-            if (!IntroStart && DateTime.Now.Subtract(datLastHeighCheck).TotalSeconds >= 5)
-            {                                 
-                if (fltHeight5SecondsAgo != -1 && fltHeight5SecondsAgo - characterController.transform.position.y > 10f)
+                if (GraphicsQuality.Effects == Effects.Medium)
                 {
-                    Reset();
+                    foreach (PhysicsDistorter item in Bubbles)
+                    {
+                        if (item.SourceMachine != CurrentVendingMachine && item.GetComponent<ParticleSystem>() != null)
+                        {
+                            item.GetComponent<ParticleSystem>().Stop();
+                        }
+                    }
                 }
 
-                fltHeight5SecondsAgo = characterController.transform.position.y;
-                datLastHeighCheck = DateTime.Now;
+                //for (int i = 0; i < Levels.Length - 1; i++)
+                //{
+                //    if (gameObject.transform.position.y + 20 < LevelFloors[i])
+                //    {
+                //        if (Levels[i].activeSelf)
+                //        {
+                //            Levels[i].SetActive(false);
+                //        }
+                //    }
+                //    else
+                //    {
+                //        if (!Levels[i].activeSelf)
+                //        {
+                //            Levels[i].SetActive(true);
+                //        }
+                //    }
+                //}
+
+                //check how far fallen in last 5 secs
+                if (!IntroStart && DateTime.Now.Subtract(datLastHeighCheck).TotalSeconds >= 5)
+                {
+                    if (fltHeight5SecondsAgo != -1 && fltHeight5SecondsAgo - characterController.transform.position.y > 10f)
+                    {
+                        Reset();
+                    }
+
+                    fltHeight5SecondsAgo = characterController.transform.position.y;
+                    datLastHeighCheck = DateTime.Now;
+                }
             }
         }
 
@@ -697,7 +719,7 @@ namespace BubbleDistortionPhysics
                 yield return null;
             }
 
-            _resetting = true;
+            //_resetting = true;
         }
 
         public IEnumerator IntroMovement()

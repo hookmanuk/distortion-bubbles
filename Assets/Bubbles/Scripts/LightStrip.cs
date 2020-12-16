@@ -11,7 +11,8 @@ namespace BubbleDistortionPhysics
         private Light _light;
         private float _lightIntensity;
         private MeshRenderer _meshRenderer;
-        public bool Flickers = true;        
+        public bool Flickers = true;
+        public bool AlwaysOn;
 
         public void Start()
         {

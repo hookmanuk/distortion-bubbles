@@ -29,7 +29,7 @@ namespace BubbleDistortionPhysics
         public bool IsCubit;
         public int CloneSpread = 1;        
         private PhysicsObject[] _clonedCubits;
-        public bool Destroyed { get; set; }
+        public bool IsClone { get; set; }
         public Vector3 LocalPosition;
 
         private bool _isSlowed;
@@ -156,45 +156,51 @@ namespace BubbleDistortionPhysics
 
         public virtual void Reset()
         {
-            if(!Destroyed && !gameObject.activeSelf)
+            if (IsClone)
             {
-                gameObject.SetActive(true);
+                gameObject.SetActive(false);
             }
-            if (RigidBody != null)
+            else
             {
-                RigidBody.velocity = Vector3.zero;
-            }
-            transform.position = _startPosition;
-            transform.rotation = _startRotation;            
-            _currentPathIndex = 0;
-            if (IsShrunk)
-            {
-                IsShrunk = false;
-            }
-            if (IsGrown)
-            {
-                IsGrown = false;
-            }
-            if (IsSlowed)
-            {
-                IsSlowed = false;
-            }
-            if (OriginalSpawnClones > 0)
-            {
-                if (_clonedCubits != null && _clonedCubits.Length > 0)
+                if (!gameObject.activeSelf)
                 {
-                    for (int i = 0; i < _clonedCubits.Length; i++)
-                    {
-                        if (_clonedCubits[i] != null)
-                        {
-                            _clonedCubits[i].Destroyed = true;
-                            _clonedCubits[i].gameObject.SetActive(false);
-                        }
-                    }                    
+                    gameObject.SetActive(true);
                 }
+                if (RigidBody != null)
+                {
+                    RigidBody.velocity = Vector3.zero;
+                }
+                transform.position = _startPosition;
+                transform.rotation = _startRotation;
+                _currentPathIndex = 0;
+                if (IsShrunk)
+                {
+                    IsShrunk = false;
+                }
+                if (IsGrown)
+                {
+                    IsGrown = false;
+                }
+                if (IsSlowed)
+                {
+                    IsSlowed = false;
+                }
+                if (OriginalSpawnClones > 0)
+                {
+                    if (_clonedCubits != null && _clonedCubits.Length > 0)
+                    {
+                        for (int i = 0; i < _clonedCubits.Length; i++)
+                        {
+                            if (_clonedCubits[i] != null)
+                            {
+                                _clonedCubits[i].gameObject.SetActive(false);
+                            }
+                        }
+                    }
 
-                _clonedCubits = new PhysicsObject[OriginalSpawnClones];
-                StartCoroutine(SpawnClonesOnTimer());
+                    _clonedCubits = new PhysicsObject[OriginalSpawnClones];
+                    StartCoroutine(SpawnClonesOnTimer());
+                }
             }
         }
 
@@ -212,7 +218,9 @@ namespace BubbleDistortionPhysics
             for (int i = 0; i < localClones.Length; i++)
             {
                 Vector3 pos = gameObject.transform.position + (Vector3.left * ((float)_r.Next(-100, 100) / 500f * CloneSpread)) + (Vector3.forward * ((float)_r.Next(-100, 100) / 500f * CloneSpread));
-                PhysicsObject clone = Instantiate(this, pos, gameObject.transform.rotation, gameObject.transform.parent);                
+                PhysicsObject clone = Instantiate(this, pos, gameObject.transform.rotation, gameObject.transform.parent);
+                clone.OriginalSpawnClones = 0; //new line to stop clones cloning!
+                clone.IsClone = true;
                 localClones[i] = clone;
                 yield return new WaitForSeconds(0.05f);
             }

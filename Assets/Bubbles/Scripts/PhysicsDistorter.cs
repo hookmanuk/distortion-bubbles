@@ -156,7 +156,7 @@ namespace BubbleDistortionPhysics
                                                                                                                   //}
                                     Vector3 diff = transform.position - item.transform.position;
                                     item.attachedRigidbody.AddForce(diff.normalized * PlayerController.Instance.TriggerPercentage * Math.Max(Math.Min(diff.magnitude, 2), 1) / 500f, ForceMode.Impulse);
-                                    Debug.Log(diff.magnitude);
+                                    
                                     if (PlayerController.Instance.TriggerPercentage > 0 && _r.Next(1, 90 * 1) == 1) //~every 1 secs
                                     {
                                         item.GetComponents<AudioSource>()[1].volume = 0.02f * PlayerController.Instance.TriggerPercentage * Math.Max(Math.Min(diff.magnitude, 5), 1);
