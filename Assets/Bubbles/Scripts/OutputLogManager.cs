@@ -36,50 +36,50 @@ namespace BubbleDistortionPhysics
             }            
         }
 
-        private void Update()
-        {
-            Vector2 currentState;
+        //private void Update()
+        //{
+        //    Vector2 currentState;
 
-            if (PlayerController.Instance.RightController.inputDevice.TryGetFeatureValue(CommonUsages.secondary2DAxis, out currentState))
-            {
-                if ((DateTime.Now - _lastToggle).TotalMilliseconds > 1500 && currentState.magnitude > 0.8)
-                {
-                    _lastToggle = DateTime.Now;
-                    if (currentState.y > 0.8)
-                    {
-                        EnableLogText = !EnableLogText;
+        //    if (PlayerController.Instance.RightController.inputDevice.TryGetFeatureValue(CommonUsages.secondary2DAxis, out currentState))
+        //    {
+        //        if ((DateTime.Now - _lastToggle).TotalMilliseconds > 1500 && currentState.magnitude > 0.8)
+        //        {
+        //            _lastToggle = DateTime.Now;
+        //            if (currentState.y > 0.8)
+        //            {
+        //                EnableLogText = !EnableLogText;
 
-                        if (!EnableLogText)
-                        {
-                            _LogText = "";                            
-                        }
-                        else
-                        {
-                            _LogText = "Logging text enabled";
-                        }
-                        HMDLog.Text = _LogPerformance + Environment.NewLine + _LogText;
-                        HMDLog.Text = HMDLog.Text.Replace("\r", "");
-                        HMDLog.GenerateText();
-                    }
-                    if (currentState.x > 0.8)
-                    {
-                        EnableLogPerformance = !EnableLogPerformance;
+        //                if (!EnableLogText)
+        //                {
+        //                    _LogText = "";                            
+        //                }
+        //                else
+        //                {
+        //                    _LogText = "Logging text enabled";
+        //                }
+        //                HMDLog.Text = _LogPerformance + Environment.NewLine + _LogText;
+        //                HMDLog.Text = HMDLog.Text.Replace("\r", "");
+        //                HMDLog.GenerateText();
+        //            }
+        //            if (currentState.x > 0.8)
+        //            {
+        //                EnableLogPerformance = !EnableLogPerformance;
 
-                        if (!EnableLogPerformance)
-                        {
-                            _LogPerformance = "";                            
-                        }
-                        else
-                        {
-                            _LogPerformance = "Performance logging enabled";
-                        }
-                        HMDLog.Text = _LogPerformance + Environment.NewLine + _LogText;
-                        HMDLog.Text = HMDLog.Text.Replace("\r", "");
-                        HMDLog.GenerateText();
-                    }
-                }
-            }
-        }
+        //                if (!EnableLogPerformance)
+        //                {
+        //                    _LogPerformance = "";                            
+        //                }
+        //                else
+        //                {
+        //                    _LogPerformance = "Performance logging enabled";
+        //                }
+        //                HMDLog.Text = _LogPerformance + Environment.NewLine + _LogText;
+        //                HMDLog.Text = HMDLog.Text.Replace("\r", "");
+        //                HMDLog.GenerateText();
+        //            }
+        //        }
+        //    }
+        //}
 
         public static void OutputText(string text)
         {

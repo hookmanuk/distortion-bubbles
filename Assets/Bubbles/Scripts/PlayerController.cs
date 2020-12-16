@@ -76,7 +76,7 @@ namespace BubbleDistortionPhysics
 
         private void Start()
         {            
-            GraphicsQuality = QualitySettings.Instance.QualityMedium;
+            GraphicsQuality = QualitySettings.Instance.QualityLow;
             
             characterController = GetComponent<CharacterController>();
             capsuleCollider = GetComponent<CapsuleCollider>();
@@ -122,56 +122,56 @@ namespace BubbleDistortionPhysics
 
         public void CycleGraphicsQuality()
         {
-            switch (GraphicsQuality.Name)
+            //switch (GraphicsQuality.Name)
+            //{
+            //    case "Low":
+            //        GraphicsQuality = QualitySettings.Instance.QualityMedium;
+            //        foreach (var item in PhysicsManager.Instance.PhysicsObjects)
+            //        {
+            //            MeshRenderer meshRenderer = item.GetComponent<MeshRenderer>();
+            //            if (meshRenderer != null)
+            //            {
+            //                meshRenderer.shadowCastingMode = ShadowCastingMode.Off;
+            //            }
+            //        }
+            //        break;
+            //    case "Medium":
+            //        GraphicsQuality = QualitySettings.Instance.QualityHigh;
+            //        foreach (var item in PhysicsManager.Instance.PhysicsObjects)
+            //        {
+            //            MeshRenderer meshRenderer = item.GetComponent<MeshRenderer>();
+            //            if (meshRenderer != null)
+            //            {
+            //                meshRenderer.shadowCastingMode = ShadowCastingMode.On;
+            //            }                        
+            //        }
+            //        break;
+            //    case "High":
+            //        GraphicsQuality = QualitySettings.Instance.QualityLow;
+            //        foreach (var item in PhysicsManager.Instance.PhysicsObjects)
+            //        {
+            //            MeshRenderer meshRenderer = item.GetComponent<MeshRenderer>();
+            //            if (meshRenderer != null)
+            //            {
+            //                meshRenderer.shadowCastingMode = ShadowCastingMode.Off;
+            //            }
+            //        }
+            //        break;
+            //    default:
+            //        break;
+            //}
+            if (GraphicsQuality == QualitySettings.Instance.QualityLow)
             {
-                case "Low":
-                    GraphicsQuality = QualitySettings.Instance.QualityMedium;
-                    foreach (var item in PhysicsManager.Instance.PhysicsObjects)
-                    {
-                        MeshRenderer meshRenderer = item.GetComponent<MeshRenderer>();
-                        if (meshRenderer != null)
-                        {
-                            meshRenderer.shadowCastingMode = ShadowCastingMode.Off;
-                        }
-                    }
-                    break;
-                case "Medium":
-                    GraphicsQuality = QualitySettings.Instance.QualityHigh;
-                    foreach (var item in PhysicsManager.Instance.PhysicsObjects)
-                    {
-                        MeshRenderer meshRenderer = item.GetComponent<MeshRenderer>();
-                        if (meshRenderer != null)
-                        {
-                            meshRenderer.shadowCastingMode = ShadowCastingMode.On;
-                        }                        
-                    }
-                    break;
-                case "High":
-                    GraphicsQuality = QualitySettings.Instance.QualityLow;
-                    foreach (var item in PhysicsManager.Instance.PhysicsObjects)
-                    {
-                        MeshRenderer meshRenderer = item.GetComponent<MeshRenderer>();
-                        if (meshRenderer != null)
-                        {
-                            meshRenderer.shadowCastingMode = ShadowCastingMode.Off;
-                        }
-                    }
-                    break;
-                default:
-                    break;
+                GraphicsQuality = QualitySettings.Instance.QualityMedium;
             }
-            //if (GraphicsQuality == QualitySettings.Instance.QualityLow)
-            //{
-            //    GraphicsQuality = QualitySettings.Instance.QualityMedium;
-            //}
-            //else if (GraphicsQuality == QualitySettings.Instance.QualityMedium)
-            //{
-            //    GraphicsQuality = QualitySettings.Instance.QualityHigh;
-            //}
-            //else if (GraphicsQuality == QualitySettings.Instance.QualityHigh)
-            //{
-            //    GraphicsQuality = QualitySettings.Instance.QualityLow;
-            //}
+            else if (GraphicsQuality == QualitySettings.Instance.QualityMedium)
+            {
+                GraphicsQuality = QualitySettings.Instance.QualityHigh;
+            }
+            else if (GraphicsQuality == QualitySettings.Instance.QualityHigh)
+            {
+                GraphicsQuality = QualitySettings.Instance.QualityLow;
+            }
         }
 
         private bool _blnReversingGravity = false;
@@ -494,7 +494,7 @@ namespace BubbleDistortionPhysics
                 if (PhysicsManager.Instance.LightStrips[i].transform.position.y - gameObject.transform.position.y > GraphicsQuality.LightsDistanceAbove ||
                     gameObject.transform.position.y - PhysicsManager.Instance.LightStrips[i].transform.position.y > GraphicsQuality.LightsDistanceBelow ||
                     (Vector3.Distance(gameObject.transform.position, PhysicsManager.Instance.LightStrips[i].transform.position) > GraphicsQuality.LightsDistanceHorizontal && !IntroStart))
-                {                        
+                {
                     if (PhysicsManager.Instance.LightStrips[i].gameObject.activeSelf)
                     {
                         PhysicsManager.Instance.LightStrips[i].gameObject.SetActive(false);
@@ -506,7 +506,7 @@ namespace BubbleDistortionPhysics
                     {
                         PhysicsManager.Instance.LightStrips[i].gameObject.SetActive(true);
                     }
-                }            
+                }
             }
 
             if (GraphicsQuality.Effects == Effects.Medium)

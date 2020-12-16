@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace BubbleDistortionPhysics
 {
-    public class QualitySetting : MonoBehaviour
+    public class QualitySetting
     {         
         public QualitySetting()
         {                        
@@ -61,9 +61,9 @@ namespace BubbleDistortionPhysics
                     case LightsDistance.Low:
                         return 6;
                     case LightsDistance.Medium:
-                        return 8;
+                        return 6;
                     case LightsDistance.High:
-                        return 20;
+                        return 8;
                     default:
                         return 8;
                 }
@@ -77,11 +77,11 @@ namespace BubbleDistortionPhysics
                 switch (LightsDistance)
                 {
                     case LightsDistance.Low:
-                        return 6;
+                        return 3;
                     case LightsDistance.Medium:
-                        return 8;
+                        return 3;
                     case LightsDistance.High:
-                        return 20;
+                        return 8;
                     default:
                         return 8;
                 }
@@ -113,15 +113,27 @@ namespace BubbleDistortionPhysics
         public Effects Effects { get; set; } = Effects.Medium;
     }
 
-    public class QualitySettings : MonoBehaviour
+    public class QualitySettings
     {
         private static QualitySettings _instance;
-        public static QualitySettings Instance { get { if (_instance == null)
+        public static QualitySettings Instance
+        {
+            get
+            {
+                if (_instance == null)
                 {
                     _instance = new QualitySettings();
                 }
-                return _instance; 
-            } }
+                return _instance;
+            }
+        }
+        //public static QualitySettings Instance
+        //{
+        //    get
+        //    {
+        //        return new QualitySettings();                
+        //    }
+        //}
 
         public QualitySetting QualityLow { get; set; }
         public QualitySetting QualityMedium { get; set; }
@@ -132,7 +144,7 @@ namespace BubbleDistortionPhysics
 
             QualityLow = new QualitySetting() { Name = "Low", DrawDistance = DrawDistance.Low, LightsDistance = LightsDistance.Low, Effects = Effects.Low };
             QualityMedium = new QualitySetting() { Name = "Medium", DrawDistance = DrawDistance.Medium, LightsDistance = LightsDistance.Medium, Effects = Effects.Medium };
-            QualityHigh = new QualitySetting() { Name = "High", DrawDistance = DrawDistance.High, LightsDistance = LightsDistance.Medium, Effects = Effects.High };
+            QualityHigh = new QualitySetting() { Name = "High", DrawDistance = DrawDistance.High, LightsDistance = LightsDistance.High, Effects = Effects.High };
         }
     }
 

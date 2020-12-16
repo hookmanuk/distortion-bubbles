@@ -18,6 +18,7 @@ namespace BubbleDistortionPhysics
         public SimpleHelvetica DynamicResInfo;
         public GameObject StartOptions;
         public GameObject InGameOptions;
+        public GameObject GenericOptions;
         public bool IsStartMenu;
 
         private int _frameUpdate = 90;
@@ -32,7 +33,8 @@ namespace BubbleDistortionPhysics
                 {
                     StartOptions.SetActive(true);
                 }
-                InGameOptions.SetActive(false);                
+                InGameOptions.SetActive(false);
+                GenericOptions.SetActive(false); //disable graphics as nothing to see here??
             }
             SetText();
         }
