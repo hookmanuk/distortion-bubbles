@@ -251,16 +251,7 @@ namespace BubbleDistortionPhysics
                         _vendingMachine.MyBubbles.Add(bubbleClone);
                         _vendingMachine.PointLight.gameObject.SetActive(true);
                         bubbleClone.GetComponent<PhysicsDistorter>().SourceMachine = _vendingMachine;
-                    }
-
-                    if (_vendingMachine.Order >= 16)
-                    {
-                        Level3Start.Instance.StartLevel3();
-                    }
-                    else if (_vendingMachine.Order >= 11)
-                    {
-                        Level2Start.Instance.StartLevel2();
-                    }                                
+                    }                                               
                 }                                
 
                 _myLastPress = DateTime.Now;

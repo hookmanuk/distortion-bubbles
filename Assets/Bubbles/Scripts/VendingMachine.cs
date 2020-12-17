@@ -137,6 +137,14 @@ namespace BubbleDistortionPhysics
             }
             NextGlow.SetActive(false);
 
+            if (Order >= 16)
+            {
+                Level3Start.Instance.StartLevel3();
+            }
+            else if (Order >= 11)
+            {
+                Level2Start.Instance.StartLevel2();
+            }
 
             //set counter going to then show hint
             //if (_intSecondsSincePressed == 0)

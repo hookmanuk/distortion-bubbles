@@ -61,8 +61,10 @@ namespace BubbleDistortionPhysics
 
         public void ResumeGame()
         {
+            PlayerController.Instance.IntroStart = false;
+
             int intCurrentVendingMachine = PlayerPrefs.GetInt("CurrentVendingMachine");
-            VendingMachine vend = PhysicsManager.Instance.VendingMachines.Where(vm => vm.Order == intCurrentVendingMachine).FirstOrDefault();            
+            VendingMachine vend = PhysicsManager.Instance.VendingMachines.Where(vm => vm.Order == intCurrentVendingMachine).FirstOrDefault();
 
             for (int i = 0; i < PlayerController.Instance.Levels.Length; i++)
             {
@@ -79,7 +81,8 @@ namespace BubbleDistortionPhysics
             }
 
             vend.ButtonPressed();
-            PlayerController.Instance.Reset(true);            
+
+            PlayerController.Instance.Reset(true);
         }
 
         private void FixedUpdate()

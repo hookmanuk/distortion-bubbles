@@ -56,7 +56,7 @@ namespace BubbleDistortionPhysics
             {                
                 vendingMachine.Reset();
 
-                newPlayerPosition = vendingMachine.transform.position + new Vector3(-1, 0, 0);
+                newPlayerPosition = vendingMachine.transform.position + new Vector3(-1, 2f, 0);
             }
 
             return newPlayerPosition;

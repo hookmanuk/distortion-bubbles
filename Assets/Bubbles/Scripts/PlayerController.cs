@@ -310,7 +310,12 @@ namespace BubbleDistortionPhysics
             bool blnResetClicked = false;
             bool blnDebugSkipClicked = false;
             bool blnCycleQualityClicked = false;
-            
+            float leftTrigger;
+            float rightTrigger;
+
+            leftTrigger = 0;
+            rightTrigger = 0;
+
             _frameCounter++;
 
             if (_frameCounter > _frameInterval)
@@ -326,7 +331,10 @@ namespace BubbleDistortionPhysics
             //    CycleGraphicsQuality();
             //}            
 
-            RightController?.inputDevice.TryGetFeatureValue(CommonUsages.trigger, out TriggerPercentage);
+            RightController?.inputDevice.TryGetFeatureValue(CommonUsages.trigger, out rightTrigger);
+            LeftController?.inputDevice.TryGetFeatureValue(CommonUsages.trigger, out leftTrigger);
+
+            TriggerPercentage = Math.Max(leftTrigger, rightTrigger);
 
             //intro replaced by elevator
             if (IntroStart && TriggerPercentage > 0.1f && !_introRunning)
@@ -375,10 +383,12 @@ namespace BubbleDistortionPhysics
                     Vector3 resetPosition = PhysicsManager.Instance.Reset();
 
                     if (_resetPlayerPosition)
-                    {                        
+                    {
+                        fltHeight5SecondsAgo = 0; //dont trigger double reset if moving player down
+
                         characterController.transform.position = resetPosition - new Vector3(1 + MainCamera.transform.localPosition.x, 0, MainCamera.transform.localPosition.z);
                         capsuleCollider.height = MainCamera.transform.localPosition.y;
-                        capsuleCollider.center = new Vector3(MainCamera.transform.localPosition.x, MainCamera.transform.localPosition.y / 2, MainCamera.transform.localPosition.z);
+                        capsuleCollider.center = new Vector3(MainCamera.transform.localPosition.x, MainCamera.transform.localPosition.y / 2 + 1f, MainCamera.transform.localPosition.z);
 
                         _resetPlayerPosition = false;
                     }                    
