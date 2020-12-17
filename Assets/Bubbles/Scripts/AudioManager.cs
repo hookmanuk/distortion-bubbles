@@ -68,6 +68,22 @@ namespace BubbleDistortionPhysics
             }
         }
 
+        public void LevelHeavenTriggered()
+        {
+            foreach (var item in Level1Speakers)
+            {
+                StartCoroutine(VolumeOverTime(item.GetComponent<AudioSource>(), 4f, 0));
+            }
+            foreach (var item in Level2Speakers)
+            {
+                StartCoroutine(VolumeOverTime(item.GetComponent<AudioSource>(), 4f, 0));
+            }
+            foreach (var item in Level3Speakers)
+            {
+                StartCoroutine(VolumeOverTime(item.GetComponent<AudioSource>(), 4f, 0));
+            }
+        }
+
         public void Level2Triggered()
         {
             foreach (var item in Level1Speakers)

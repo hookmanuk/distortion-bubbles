@@ -385,10 +385,13 @@ namespace BubbleDistortionPhysics
                     if (_resetPlayerPosition)
                     {
                         fltHeight5SecondsAgo = 0; //dont trigger double reset if moving player down
-
-                        characterController.transform.position = resetPosition - new Vector3(1 + MainCamera.transform.localPosition.x, 0, MainCamera.transform.localPosition.z);
+                        
+                        characterController.transform.position = resetPosition - new Vector3(1 + MainCamera.transform.localPosition.x, 0, MainCamera.transform.localPosition.z);                        
                         capsuleCollider.height = MainCamera.transform.localPosition.y;
                         capsuleCollider.center = new Vector3(MainCamera.transform.localPosition.x, MainCamera.transform.localPosition.y / 2 + 1f, MainCamera.transform.localPosition.z);
+
+                        //reenable levels!
+                        _frameCounter = 0;
 
                         _resetPlayerPosition = false;
                     }                    
