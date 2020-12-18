@@ -409,7 +409,7 @@ namespace BubbleDistortionPhysics
 
 
                     InputDevice device = LeftController.inputDevice;
-                    InputFeatureUsage<Vector2> feature = CommonUsages.secondary2DAxis;
+                    InputFeatureUsage<Vector2> feature = CommonUsages.primary2DAxis;
                     Vector3 movement;
 
                     //movement = new Vector3(0, -9.81f * GravityMultiplier, 0) * Time.deltaTime;

@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
 using UnityEngine.UI;
-using UnityEngine.VR;
+//using UnityEngine.VR;
 using UnityEngine.XR;
 
 public class DynamicResolution : MonoBehaviour
