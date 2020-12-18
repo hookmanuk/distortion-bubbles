@@ -75,11 +75,14 @@ namespace BubbleDistortionPhysics
         Vector3 impact = Vector3.zero;
         int _frameInterval = 90;
         int _frameCounter = 0;
+        public float RefreshRate;
 
         private void Start()
         {            
             GraphicsQuality = QualitySettings.Instance.QualityLow;
-            
+            RefreshRate = XRDevice.refreshRate;
+            Time.fixedDeltaTime = (float)Math.Round(1 / XRDevice.refreshRate, 8);
+
             characterController = GetComponent<CharacterController>();
             capsuleCollider = GetComponent<CapsuleCollider>();
             MainCamera = GameObject.FindGameObjectWithTag("MainCamera");
@@ -583,6 +586,12 @@ namespace BubbleDistortionPhysics
                     fltHeight5SecondsAgo = characterController.transform.position.y;
                     datLastHeighCheck = DateTime.Now;
                 }
+
+                //doesn't change when headset refresh rate changes
+                //if (Time.fixedDeltaTime != (float)Math.Round(1 / XRDevice.refreshRate,8))
+                //{                    
+                //    Time.fixedDeltaTime = (float)Math.Round(1 / XRDevice.refreshRate,8);
+                //}
             }
         }
 
