@@ -71,6 +71,7 @@ namespace BubbleDistortionPhysics
         private int _startStockLightLevel;
 
         private bool _firstButtonPress = true;
+        private bool _init = true;
         private bool _showHints = false;
         private int _intResetTimes = 0;
         private int _totalHints;
@@ -167,6 +168,7 @@ namespace BubbleDistortionPhysics
         private void InitStockLevels(bool blnInitialSetup)
         {
             _firstButtonPress = false;
+            _init = true;
 
             SetStockSlowLevel(_startStockSlowLevel);
             SetStockGrowLevel(_startStockGrowLevel);
@@ -183,6 +185,7 @@ namespace BubbleDistortionPhysics
             }
 
             _firstButtonPress = true;
+            _init = false;
         }
 
         public void OnDestroy()
@@ -213,6 +216,9 @@ namespace BubbleDistortionPhysics
         public void IncrementHintCheck()
         {
             _intResetTimes++;
+
+            Info.Text = "Puzzle has been reset_";
+            Info.GenerateText();
         }
 
         private void CheckHint()
@@ -228,6 +234,12 @@ namespace BubbleDistortionPhysics
             StockSlowLevel = stockLevel;
             SlowButton.SetStockLevel(stockLevel);
             CheckForKeyReset();
+
+            if (!_init)
+            {
+                Info.Text = "Slow bubble dispensed below_";
+                Info.GenerateText();
+            }
         }
 
         public void SetStockGrowLevel(int stockLevel)
@@ -235,6 +247,12 @@ namespace BubbleDistortionPhysics
             StockGrowLevel = stockLevel;
             GrowButton.SetStockLevel(stockLevel);
             CheckForKeyReset();
+
+            if (!_init)
+            {
+                Info.Text = "Enlarge bubble dispensed below_";
+                Info.GenerateText();
+            }
         }
 
         public void SetStockShrinkLevel(int stockLevel)
@@ -242,6 +260,12 @@ namespace BubbleDistortionPhysics
             StockShrinkLevel = stockLevel;
             ShrinkButton.SetStockLevel(stockLevel);
             CheckForKeyReset();
+
+            if (!_init)
+            {
+                Info.Text = "Shrink bubble dispensed below_";
+                Info.GenerateText();
+            }
         }
 
         public void SetStockGravityLevel(int stockLevel)
@@ -249,6 +273,12 @@ namespace BubbleDistortionPhysics
             StockGravityLevel = stockLevel;
             GravityButton.SetStockLevel(stockLevel);
             CheckForKeyReset();
+
+            if (!_init)
+            {
+                Info.Text = "Gravity flip disc dispensed below_";
+                Info.GenerateText();
+            }
         }
 
         public void SetStockLaunchLevel(int stockLevel)
@@ -256,6 +286,12 @@ namespace BubbleDistortionPhysics
             StockLaunchLevel = stockLevel;
             LaunchButton.SetStockLevel(stockLevel);
             CheckForKeyReset();
+
+            if (!_init)
+            {
+                Info.Text = "Launch disc dispensed below_";
+                Info.GenerateText();
+            }
         }       
 
         public void SetStockShowLevel(int stockLevel)
@@ -263,6 +299,12 @@ namespace BubbleDistortionPhysics
             StockShowLevel = stockLevel;
             ShowButton.SetStockLevel(stockLevel);
             CheckForKeyReset();
+
+            if (!_init)
+            {
+                Info.Text = "Object scanner dispensed below_";
+                Info.GenerateText();
+            }
         }
 
         public void SetStockBlackHoleLevel(int stockLevel)
@@ -270,6 +312,12 @@ namespace BubbleDistortionPhysics
             StockBlackHoleLevel = stockLevel;
             BlackHoleButton.SetStockLevel(stockLevel);
             CheckForKeyReset();
+
+            if (!_init)
+            {
+                Info.Text = "Black hole dispensed below_";
+                Info.GenerateText();
+            }
         }
 
         public void SetStockLightLevel(int stockLevel)
@@ -277,6 +325,12 @@ namespace BubbleDistortionPhysics
             StockLightLevel = stockLevel;
             LightButton.SetStockLevel(stockLevel);
             CheckForKeyReset();
+
+            if (!_init)
+            {
+                Info.Text = "Enlighten ball dispensed,\n use trigger to light up_";                
+                Info.GenerateText();
+            }
         }
 
         public void SetStockShowHintLevel(int stockLevel)
@@ -383,6 +437,9 @@ namespace BubbleDistortionPhysics
                 StockShowHintLevel--;
                 SetStockShowHintLevel(StockShowHintLevel);
                 _nextHint++;
+
+                Info.Text = "Hint now visible_";
+                Info.GenerateText();
             }
         }
 

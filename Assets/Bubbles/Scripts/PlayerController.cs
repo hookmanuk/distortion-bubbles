@@ -75,11 +75,12 @@ namespace BubbleDistortionPhysics
         Vector3 impact = Vector3.zero;
         int _frameInterval = 90;
         int _frameCounter = 0;
+        public float RefreshRate { get; set; }
 
         private void Start()
         {            
-            GraphicsQuality = QualitySettings.Instance.QualityLow;
-            
+            GraphicsQuality = QualitySettings.Instance.QualityLow;            
+
             characterController = GetComponent<CharacterController>();
             capsuleCollider = GetComponent<CapsuleCollider>();
             MainCamera = GameObject.FindGameObjectWithTag("MainCamera");
@@ -114,6 +115,11 @@ namespace BubbleDistortionPhysics
             if (impact.magnitude > 0.2F) characterController.Move(impact * Time.deltaTime);
             // consumes the impact energy each cycle:
             impact = Vector3.Lerp(impact, Vector3.zero, 2 * Time.deltaTime);           
+        }
+
+        private void Awake()
+        {
+           
         }
 
         public void Reset(bool resetPlayerPosition = true)
@@ -302,6 +308,8 @@ namespace BubbleDistortionPhysics
 
             vendingMachine.LastButtonPressed = DateTime.Now.AddMilliseconds(100);
 
+            vendingMachine.Info.Text = "Previous puzzle bypassed_";
+            vendingMachine.Info.GenerateText();
             Reset();
         }
         
@@ -318,6 +326,12 @@ namespace BubbleDistortionPhysics
 
             _frameCounter++;
 
+            if (XRDevice.refreshRate > RefreshRate)
+            {
+                RefreshRate = XRDevice.refreshRate;
+                Time.fixedDeltaTime = (float)Math.Round(1 / XRDevice.refreshRate, 8);
+            }
+            
             if (_frameCounter > _frameInterval)
             {
                 _frameCounter = 0;
@@ -409,7 +423,7 @@ namespace BubbleDistortionPhysics
 
 
                     InputDevice device = LeftController.inputDevice;
-                    InputFeatureUsage<Vector2> feature = CommonUsages.secondary2DAxis;
+                    InputFeatureUsage<Vector2> feature = CommonUsages.primary2DAxis;
                     Vector3 movement;
 
                     //movement = new Vector3(0, -9.81f * GravityMultiplier, 0) * Time.deltaTime;
@@ -516,7 +530,10 @@ namespace BubbleDistortionPhysics
                 {
                     if (PhysicsManager.Instance.LightStrips[i].AlwaysOn || IntroStart)
                     {
-                        PhysicsManager.Instance.LightStrips[i].gameObject.SetActive(true);
+                        if (!PhysicsManager.Instance.LightStrips[i].gameObject.activeSelf)
+                        {
+                            PhysicsManager.Instance.LightStrips[i].gameObject.SetActive(true);
+                        }                            
                     }
                     else
                     {
@@ -583,6 +600,12 @@ namespace BubbleDistortionPhysics
                     fltHeight5SecondsAgo = characterController.transform.position.y;
                     datLastHeighCheck = DateTime.Now;
                 }
+
+                //doesn't change when headset refresh rate changes
+                //if (Time.fixedDeltaTime != (float)Math.Round(1 / XRDevice.refreshRate,8))
+                //{                    
+                //    Time.fixedDeltaTime = (float)Math.Round(1 / XRDevice.refreshRate,8);
+                //}
             }
         }
 

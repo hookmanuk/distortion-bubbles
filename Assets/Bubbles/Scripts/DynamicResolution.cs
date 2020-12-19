@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
 using UnityEngine.UI;
-using UnityEngine.VR;
+//using UnityEngine.VR;
 using UnityEngine.XR;
 
 public class DynamicResolution : MonoBehaviour
@@ -116,8 +116,7 @@ public class DynamicResolution : MonoBehaviour
 
     //MJH This is my code for only lighting a certain distance around the player
     private float _fpsUpdate;
-    public static float LastFPS;
-    private float _targetFps = 90f;
+    public static float LastFPS;    
     private DateTime _lastChange;
     private double _timeToIncrease = 200;
     private int _currentFrame = 0;
@@ -172,6 +171,13 @@ public class DynamicResolution : MonoBehaviour
 
     private void Update()
     {
+        //float gpuTimeLastFrame;
+        //int droppedFrameCount;
+        //XRStats.TryGetGPUTimeLastFrame(out gpuTimeLastFrame);
+        //XRStats.TryGetDroppedFrameCount(out droppedFrameCount);
+
+        float targetFPS = PlayerController.Instance.RefreshRate;
+
         if (DynamicResolutionEnabled)
         {
             _currentFrame += 1;
@@ -184,7 +190,7 @@ public class DynamicResolution : MonoBehaviour
             {
                 LastFPS = (float)Math.Round(LastFPS / (float)_frameWindow, 1);
 
-                if (ResScale < 1 && LastFPS >= _targetFps * 0.99f)// && (DateTime.Now - _lastChange).TotalMilliseconds > _timeToIncrease)
+                if (ResScale < 1 && LastFPS >= targetFPS * 0.99f)// && (DateTime.Now - _lastChange).TotalMilliseconds > _timeToIncrease)
                 {
                     ReportedFPS = LastFPS;
                     _lastChange = DateTime.Now;
@@ -202,7 +208,7 @@ public class DynamicResolution : MonoBehaviour
 
             //run decrease loop every frame
 
-            if (ResScale > 0 && frameFPS > 0 && frameFPS < _targetFps * 0.90f)// && (DateTime.Now - _lastChange).TotalMilliseconds > 200)
+            if (ResScale > 0 && frameFPS > 0 && frameFPS < targetFPS * 0.90f)// && (DateTime.Now - _lastChange).TotalMilliseconds > 200)
             {
                 ReportedFPS = (float)Math.Round(frameFPS, 2);
                 _timeToIncrease += 200;
