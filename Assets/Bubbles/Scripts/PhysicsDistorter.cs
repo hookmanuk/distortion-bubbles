@@ -271,10 +271,20 @@ namespace BubbleDistortionPhysics
             //you did well!
             GetComponents<AudioSource>()[1].Play();
 
-            if (PlayerController.Instance.GraphicsQuality.Effects != Effects.Low)
+            if (PlayerController.Instance.GraphicsQuality.Effects == Effects.Low)
             {
-                GetComponent<ParticleSystem>()?.Play();
+                foreach (PhysicsDistorter item in PlayerController.Instance.Bubbles)
+                {
+                    if (item.GetComponent<ParticleSystem>() != null)
+                    {
+                        item.GetComponent<ParticleSystem>().Stop();
+                    }
+                }
             }
+            //if (PlayerController.Instance.GraphicsQuality.Effects != Effects.Low)
+            //{
+            GetComponent<ParticleSystem>()?.Play();
+            //}
         }
 
         private void OnTriggerEnter(Collider other)
