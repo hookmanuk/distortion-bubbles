@@ -75,13 +75,11 @@ namespace BubbleDistortionPhysics
         Vector3 impact = Vector3.zero;
         int _frameInterval = 90;
         int _frameCounter = 0;
-        public float RefreshRate;
+        public float RefreshRate { get; set; }
 
         private void Start()
         {            
-            GraphicsQuality = QualitySettings.Instance.QualityLow;
-            RefreshRate = XRDevice.refreshRate;
-            Time.fixedDeltaTime = (float)Math.Round(1 / XRDevice.refreshRate, 8);
+            GraphicsQuality = QualitySettings.Instance.QualityLow;            
 
             characterController = GetComponent<CharacterController>();
             capsuleCollider = GetComponent<CapsuleCollider>();
@@ -117,6 +115,11 @@ namespace BubbleDistortionPhysics
             if (impact.magnitude > 0.2F) characterController.Move(impact * Time.deltaTime);
             // consumes the impact energy each cycle:
             impact = Vector3.Lerp(impact, Vector3.zero, 2 * Time.deltaTime);           
+        }
+
+        private void Awake()
+        {
+           
         }
 
         public void Reset(bool resetPlayerPosition = true)
@@ -321,6 +324,12 @@ namespace BubbleDistortionPhysics
 
             _frameCounter++;
 
+            if (XRDevice.refreshRate > RefreshRate)
+            {
+                RefreshRate = XRDevice.refreshRate;
+                Time.fixedDeltaTime = (float)Math.Round(1 / XRDevice.refreshRate, 8);
+            }
+            
             if (_frameCounter > _frameInterval)
             {
                 _frameCounter = 0;
