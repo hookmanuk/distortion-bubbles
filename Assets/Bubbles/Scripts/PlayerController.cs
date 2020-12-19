@@ -308,6 +308,8 @@ namespace BubbleDistortionPhysics
 
             vendingMachine.LastButtonPressed = DateTime.Now.AddMilliseconds(100);
 
+            vendingMachine.Info.Text = "Previous puzzle bypassed_";
+            vendingMachine.Info.GenerateText();
             Reset();
         }
         
@@ -528,7 +530,10 @@ namespace BubbleDistortionPhysics
                 {
                     if (PhysicsManager.Instance.LightStrips[i].AlwaysOn || IntroStart)
                     {
-                        PhysicsManager.Instance.LightStrips[i].gameObject.SetActive(true);
+                        if (!PhysicsManager.Instance.LightStrips[i].gameObject.activeSelf)
+                        {
+                            PhysicsManager.Instance.LightStrips[i].gameObject.SetActive(true);
+                        }                            
                     }
                     else
                     {

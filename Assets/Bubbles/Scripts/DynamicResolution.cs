@@ -176,7 +176,7 @@ public class DynamicResolution : MonoBehaviour
         //XRStats.TryGetGPUTimeLastFrame(out gpuTimeLastFrame);
         //XRStats.TryGetDroppedFrameCount(out droppedFrameCount);
 
-        float targetFPS = XRDevice.refreshRate;
+        float targetFPS = PlayerController.Instance.RefreshRate;
 
         if (DynamicResolutionEnabled)
         {
