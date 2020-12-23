@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: HookmanUK
-  productName: Distortings
+  productName: The Distortist - Episode One
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.1792453, g: 0.1547259, b: 0.16087978, a: 1}
@@ -39,9 +39,7 @@ PlayerSettings:
     y: 0
     width: 1
     height: 1
-  m_SplashScreenLogos:
-  - logo: {fileID: 21300000, guid: 38fd30c2bcfee374d8538e9cb77ee70d, type: 3}
-    duration: 2
+  m_SplashScreenLogos: []
   m_VirtualRealitySplashScreen: {fileID: 0}
   m_HolographicTrackingLossScreen: {fileID: 0}
   defaultScreenWidth: 1920
@@ -129,7 +127,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: 0.21
+  bundleVersion: 0.3
   preloadedAssets:
   - {fileID: 11400000, guid: 50c3d3e8b17cb064488d7c48089255a6, type: 2}
   - {fileID: 593085747950416579, guid: 54b6d8333cb0a7b4991dda822b2b64cd, type: 2}
