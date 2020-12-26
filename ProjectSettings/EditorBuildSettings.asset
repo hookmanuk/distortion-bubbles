@@ -9,7 +9,11 @@ EditorBuildSettings:
     path: Assets/Scenes/WorldInteractionDemo.unity
     guid: cd5458b6a8920b348b4fbd0dd1cd06f4
   m_configObjects:
+    Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 456efdfe180953c4e9efec7c4fbe4ced,
+      type: 2}
     Unity.XR.OpenVR.Settings: {fileID: 11400000, guid: feb3d557a1fe9f744899ccb5248a95e8,
+      type: 2}
+    Unity.XR.WindowsMR.Settings: {fileID: 11400000, guid: 6be2fbc6da013d947867739e7b78158c,
       type: 2}
     com.unity.input.settings: {fileID: 11400000, guid: 50c3d3e8b17cb064488d7c48089255a6,
       type: 2}
