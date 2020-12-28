@@ -264,21 +264,21 @@ namespace BubbleDistortionPhysics
                 _ticksSincePathChange++;
             }
 
-            if (!IgnoreMusic && _material != null)
-            {
-                if (AudioManager.Instance.BassLevel == 2f)
-                {
-                    _lastEmission = DateTime.Now;
-                    _material.SetColor("_EmissiveColor", _emissiveColor * AudioManager.Instance.BassLevel / 2f);
-                }
-                else
-                {
-                    if ((DateTime.Now - _lastEmission).TotalMilliseconds > 100)
-                    {
-                        _material.SetColor("_EmissiveColor", _emissiveColor * 0);
-                    }
-                }
-            }
+            //if (!IgnoreMusic && _material != null)
+            //{
+            //    if (AudioManager.Instance.BassLevel == 2f)
+            //    {
+            //        _lastEmission = DateTime.Now;
+            //        _material.SetColor("_EmissiveColor", _emissiveColor * AudioManager.Instance.BassLevel / 2f);
+            //    }
+            //    else
+            //    {
+            //        if ((DateTime.Now - _lastEmission).TotalMilliseconds > 100)
+            //        {
+            //            _material.SetColor("_EmissiveColor", _emissiveColor * 0);
+            //        }
+            //    }
+            //}
 
             if (IgnoresGravityFlip && PlayerController.Instance.ReverseGravity)
             {

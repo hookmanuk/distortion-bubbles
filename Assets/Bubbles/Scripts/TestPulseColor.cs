@@ -24,42 +24,42 @@ namespace BubbleDistortionPhysics
 
       
     
-        public void FixedUpdate()
-        {
-            if (_frameCount == 1)
-            {
-                _material.SetColor("_EmissiveColor", _emissiveColor * AudioManager.Instance.BassLevel / 2f);
-                _frameCount = 0;
-            }
-            else
-            {
-                _frameCount++;
-            }
+        //public void FixedUpdate()
+        //{
+        //    if (_frameCount == 1)
+        //    {
+        //        _material.SetColor("_EmissiveColor", _emissiveColor * AudioManager.Instance.BassLevel / 2f);
+        //        _frameCount = 0;
+        //    }
+        //    else
+        //    {
+        //        _frameCount++;
+        //    }
 
-            //double millisecondsSinceBeat = (DateTime.Now - AudioManager.Instance.LastBeat).TotalMilliseconds;
-            //if (millisecondsSinceBeat < 100)
-            //{
-            //    if (!_isEmitting)
-            //    {
-            //        _isEmitting = true;
-            //        Color color = new Color(0.1f, 0, 0);
+        //    //double millisecondsSinceBeat = (DateTime.Now - AudioManager.Instance.LastBeat).TotalMilliseconds;
+        //    //if (millisecondsSinceBeat < 100)
+        //    //{
+        //    //    if (!_isEmitting)
+        //    //    {
+        //    //        _isEmitting = true;
+        //    //        Color color = new Color(0.1f, 0, 0);
 
-            //        // for some reason, the desired intensity value (set in the UI slider) needs to be modified slightly for proper internal consumption
-            //        //float adjustedIntensity = 0.3f;
+        //    //        // for some reason, the desired intensity value (set in the UI slider) needs to be modified slightly for proper internal consumption
+        //    //        //float adjustedIntensity = 0.3f;
 
-            //        // redefine the color with intensity factored in - this should result in the UI slider matching the desired value
-            //        //color *= Mathf.Pow(2.0F, adjustedIntensity);
-            //        _material.SetColor("_EmissiveColor", _emissiveColor);
-            //        //_material.SetFloat("_EmissionIntensity", 0.1f);
-            //    }
-            //}
-            //else
-            //{
-            //    _isEmitting = false;
-            //    Color color = new Color(0, 0, 0);
-            //    _material.SetColor("_EmissiveColor", _standardColor);
-            //}
-        }
+        //    //        // redefine the color with intensity factored in - this should result in the UI slider matching the desired value
+        //    //        //color *= Mathf.Pow(2.0F, adjustedIntensity);
+        //    //        _material.SetColor("_EmissiveColor", _emissiveColor);
+        //    //        //_material.SetFloat("_EmissionIntensity", 0.1f);
+        //    //    }
+        //    //}
+        //    //else
+        //    //{
+        //    //    _isEmitting = false;
+        //    //    Color color = new Color(0, 0, 0);
+        //    //    _material.SetColor("_EmissiveColor", _standardColor);
+        //    //}
+        //}
 
         private void Update()
         {            

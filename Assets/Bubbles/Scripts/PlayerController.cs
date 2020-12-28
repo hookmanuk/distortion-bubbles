@@ -98,12 +98,15 @@ namespace BubbleDistortionPhysics
 
                 //_preventCharacterMovement = true;                
                 CurrentVendingMachine = PhysicsManager.Instance.VendingMachines.OrderBy(vm => vm.Order).First();
+                AudioManager.Instance.SetAudioClip(CurrentVendingMachine.Music);
                 CurrentVendingMachine.NextGlow.SetActive(true);
 
                 //set initial player pos
                 characterController.transform.position = new Vector3(-2.53f, 86.4f, -9.09f);
                 //capsuleCollider.height = MainCamera.transform.localPosition.y;
                 //capsuleCollider.center = new Vector3(MainCamera.transform.localPosition.x, MainCamera.transform.localPosition.y / 2, MainCamera.transform.localPosition.z);
+
+                AudioManager.Instance.SetAudioClip("Serenity-in-the-Sky_Looping");
             }            
         }
 

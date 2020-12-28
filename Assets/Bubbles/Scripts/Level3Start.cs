@@ -49,7 +49,7 @@ public class Level3Start : MonoBehaviour
             if (!_isLevel3)
             {
                 OutputLogManager.OutputText("Entering Level 3");
-                AudioManager.Instance.Level3Triggered();
+                //AudioManager.Instance.Level3Triggered();
                 _isLevel3 = !_isLevel3;
                 _lastTrigger = DateTime.Now;
             }

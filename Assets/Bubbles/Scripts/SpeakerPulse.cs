@@ -13,23 +13,23 @@ namespace BubbleDistortionPhysics
 
         public DateTime LastBeat { get; set; }
 
-        private void FixedUpdate()
-        {
-            if (!isAboveMax && AudioManager.Instance.BassLevel >= 2)
-            {
-                StartCoroutine(ScaleOverTime(0.04f));
-                isAboveMax = true;                
-            }
-            else if (isAboveMax && AudioManager.Instance.BassLevel < 2)
-            {
-                if ((DateTime.Now - AudioManager.Instance.LastBeat).TotalMilliseconds > 100)
-                {
-                    isAboveMax = false;
-                    ball[0].transform.localScale = new Vector3(1f, 1f, 1f);
-                    ball[1].transform.localScale = new Vector3(1f, 1f, 1f);
-                }
-            }
-        }
+        //private void FixedUpdate()
+        //{
+        //    if (!isAboveMax && AudioManager.Instance.BassLevel >= 2)
+        //    {
+        //        StartCoroutine(ScaleOverTime(0.04f));
+        //        isAboveMax = true;                
+        //    }
+        //    else if (isAboveMax && AudioManager.Instance.BassLevel < 2)
+        //    {
+        //        if ((DateTime.Now - AudioManager.Instance.LastBeat).TotalMilliseconds > 100)
+        //        {
+        //            isAboveMax = false;
+        //            ball[0].transform.localScale = new Vector3(1f, 1f, 1f);
+        //            ball[1].transform.localScale = new Vector3(1f, 1f, 1f);
+        //        }
+        //    }
+        //}
 
         IEnumerator ScaleOverTime(float time)
         {

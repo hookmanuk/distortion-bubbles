@@ -9,9 +9,15 @@ namespace BubbleDistortionPhysics
 {
     class AudioManager : MonoBehaviour
     {
+        private AudioClip _currentAudioClip;
+        public List<AudioClip> _nextAudioClips = new List<AudioClip>();
+        public AudioSource PlayerAudioSource;
+        private int _nextIndex = 0;
+
         public AudioManager()
         {                        
-        }
+
+        }        
 
         private static AudioManager _instance;
         public static AudioManager Instance { 
@@ -23,96 +29,47 @@ namespace BubbleDistortionPhysics
                 }
                 return _instance;
             }            
-        }
-
-        int freq = 0;
-        float[] number = new float[256];
-        public float BassLevel;        
-        bool isAboveMax = false;
-        public GameObject[] Level1Speakers;
-        public GameObject[] Level2Speakers;
-        public GameObject[] Level3Speakers;
-
-        public DateTime LastBeat { get; set; }        
+        }                
 
         private void FixedUpdate()
         {            
-            AudioListener.GetSpectrumData(number, 0, FFTWindow.Hamming);
-            //OutputLogManager.OutputText((number[freq] * 25f).ToString());
-            BassLevel = Math.Max(Math.Min(number[freq] * 28f, 2f), 0.5f);
-
-            if (!isAboveMax && AudioManager.Instance.BassLevel >= 2)
+            if (!PlayerAudioSource.isPlaying)
             {
-                isAboveMax = true;
-                LastBeat = DateTime.Now;
-            }
-            else if (isAboveMax && BassLevel < 2)
-            {
-                isAboveMax = false;
-            }
-        }
-
-        public void Level3Triggered()
-        {
-            foreach (var item in Level1Speakers)
-            {
-                StartCoroutine(VolumeOverTime(item.GetComponent<AudioSource>(), 4f, 0));
-            }
-            foreach (var item in Level2Speakers)
-            {
-                StartCoroutine(VolumeOverTime(item.GetComponent<AudioSource>(), 4f, 0));
-            }
-            foreach (var item in Level3Speakers)
-            {
-                StartCoroutine(VolumeOverTime(item.GetComponent<AudioSource>(), 4f, 0.2f));
+                if (_nextAudioClips.Count > 0)
+                {
+                    if (_nextAudioClips.Count > _nextIndex + 1)
+                    {
+                        _nextIndex++;
+                    }
+                    PlayerAudioSource.PlayOneShot(_nextAudioClips[_nextIndex]);
+                }
+                else if (_currentAudioClip != null)
+                {
+                    PlayerAudioSource.PlayOneShot(_currentAudioClip);
+                }
             }
         }
 
-        public void LevelHeavenTriggered()
+        public void SetAudioClip(string strAudioClip)
         {
-            foreach (var item in Level1Speakers)
-            {
-                StartCoroutine(VolumeOverTime(item.GetComponent<AudioSource>(), 4f, 0));
-            }
-            foreach (var item in Level2Speakers)
-            {
-                StartCoroutine(VolumeOverTime(item.GetComponent<AudioSource>(), 4f, 0));
-            }
-            foreach (var item in Level3Speakers)
-            {
-                StartCoroutine(VolumeOverTime(item.GetComponent<AudioSource>(), 4f, 0));
-            }
+            AudioClip audioClip = Resources.Load<AudioClip>("Music/" + strAudioClip);
+
+            SetAudioClip(audioClip);
         }
 
-        public void Level2Triggered()
+        public void SetAudioClip(AudioClip audioClip)
         {
-            foreach (var item in Level1Speakers)
+            if (audioClip != null)
             {
-                StartCoroutine(VolumeOverTime(item.GetComponent<AudioSource>(), 4f, 0));                
-            }
-            foreach (var item in Level2Speakers)
-            {
-                StartCoroutine(VolumeOverTime(item.GetComponent<AudioSource>(), 4f, 0.2f));
-            }
-            foreach (var item in Level3Speakers)
-            {
-                StartCoroutine(VolumeOverTime(item.GetComponent<AudioSource>(), 4f, 0));
-            }
-        }
-
-        public void Level1Triggered()
-        {
-            foreach (var item in Level1Speakers)
-            {
-                StartCoroutine(VolumeOverTime(item.GetComponent<AudioSource>(), 4f, 0.2f));
-            }
-            foreach (var item in Level2Speakers)
-            {
-                StartCoroutine(VolumeOverTime(item.GetComponent<AudioSource>(), 4f, 0));
-            }            
-            foreach (var item in Level3Speakers)
-            {
-                StartCoroutine(VolumeOverTime(item.GetComponent<AudioSource>(), 4f, 0));
+                if (_currentAudioClip == null)
+                {
+                    _currentAudioClip = audioClip;
+                    PlayerAudioSource.PlayOneShot(_currentAudioClip);
+                }
+                else
+                {
+                    _nextAudioClips.Add(audioClip);
+                }
             }
         }
 

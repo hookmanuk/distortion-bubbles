@@ -49,7 +49,7 @@ public class Level2Start : MonoBehaviour
             if (!_isLevel2)
             {
                 OutputLogManager.OutputText("Entering Level 2");
-                AudioManager.Instance.Level2Triggered();
+                //AudioManager.Instance.Level2Triggered();
                 _isLevel2 = !_isLevel2;
                 _lastTrigger = DateTime.Now;
             }

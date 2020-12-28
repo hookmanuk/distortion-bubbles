@@ -51,7 +51,7 @@ public class LevelHeavenStart : MonoBehaviour
             {
                 OutputLogManager.OutputText("Entering Level Heaven");
                 HeavenAudio.SetActive(true);
-                AudioManager.Instance.LevelHeavenTriggered();
+                //AudioManager.Instance.LevelHeavenTriggered();
                 _isLevelHeaven = !_isLevelHeaven;
                 _lastTrigger = DateTime.Now;
             }

@@ -80,11 +80,11 @@ namespace BubbleDistortionPhysics
                 yield return null;
             }
 
-            foreach (var item in AudioManager.Instance.Level1Speakers)
-            {
-                item.GetComponent<AudioSource>().Play();
-            }
-
+            //foreach (var item in AudioManager.Instance.Level1Speakers)
+            //{
+            //    item.GetComponent<AudioSource>().Play();
+            //}
+            
             StartDescentClip.Play();
             StartCoroutine(PlayerController.Instance.IntroMovement());
 

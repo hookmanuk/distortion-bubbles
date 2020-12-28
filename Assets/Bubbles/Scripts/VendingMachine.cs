@@ -59,6 +59,8 @@ namespace BubbleDistortionPhysics
 
         public GameObject ShowHintGlowQuad;
 
+        public AudioClip Music;
+
         private int _startStockSlowLevel;
         private int _startStockGrowLevel;
         private int _startStockShrinkLevel;
@@ -127,24 +129,31 @@ namespace BubbleDistortionPhysics
         public void ButtonPressed()
         {
             LastButtonPressed = DateTime.Now;
-            PlayerController.Instance.CurrentVendingMachine = this;
-            PlayerPrefs.SetInt("CurrentVendingMachine", this.Order);
-            PlayerPrefs.Save();
-            PlayerController.Instance.NextVendingMachine = PhysicsManager.Instance.VendingMachines.Where(vm => vm.Order > this.Order).OrderBy(vm => vm.Order).FirstOrDefault();
 
-            if (PlayerController.Instance.NextVendingMachine != null)
-            {
-                PlayerController.Instance.NextVendingMachine.NextGlow.SetActive(true);
-            }
-            NextGlow.SetActive(false);
 
-            if (Order >= 16)
+            if (PlayerController.Instance.CurrentVendingMachine != this)
             {
-                Level3Start.Instance.StartLevel3();
-            }
-            else if (Order >= 11)
-            {
-                Level2Start.Instance.StartLevel2();
+                PlayerController.Instance.CurrentVendingMachine = this;
+                PlayerPrefs.SetInt("CurrentVendingMachine", this.Order);
+                PlayerPrefs.Save();
+                PlayerController.Instance.NextVendingMachine = PhysicsManager.Instance.VendingMachines.Where(vm => vm.Order > this.Order).OrderBy(vm => vm.Order).FirstOrDefault();
+
+                if (PlayerController.Instance.NextVendingMachine != null)
+                {
+                    PlayerController.Instance.NextVendingMachine.NextGlow.SetActive(true);
+                }
+                NextGlow.SetActive(false);
+
+                if (Order >= 16)
+                {
+                    Level3Start.Instance.StartLevel3();
+                }
+                else if (Order >= 11)
+                {
+                    Level2Start.Instance.StartLevel2();
+                }
+
+                AudioManager.Instance.SetAudioClip(Music);
             }
 
             //set counter going to then show hint
