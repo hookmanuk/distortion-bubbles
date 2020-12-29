@@ -223,13 +223,29 @@ namespace BubbleDistortionPhysics
         private IEnumerator RotatePlayer()
         {            
             var t = 0f;
-            var intTimeToOpen = 0.7f;
+            var intTimeToOpen = 0.7f;            
+
+            //transform.RotateAround(MainCamera.transform.position, Vector3.left, (ReverseGravity ? t : (1 - t)) * 180);
+
             while (t < 1)
             {
                 t += Time.deltaTime / intTimeToOpen;
-                
-                transform.rotation = Quaternion.Euler(0, 0, (ReverseGravity ? t : (1 - t)) * 180);
+
+                //transform.rotation = Quaternion.Euler(0, (ReverseGravity ? t : (1 - t)) * 180, (ReverseGravity ? t : (1 - t)) * 180);
+                transform.RotateAround(MainCamera.transform.position, Vector3.right, 180 * Time.deltaTime / intTimeToOpen);
+                //transform.RotateAround(MainCamera.transform.position, Vector3.forward, 180 * Time.deltaTime / intTimeToOpen);
+
                 yield return null;
+            }
+
+            //ensure rotation actually finishes on the right rotation
+            if (ReverseGravity)
+            {
+                transform.rotation = Quaternion.Euler(-180, 0, 0);                
+            }
+            else
+            {
+                transform.rotation = Quaternion.Euler(0, 0, 0);
             }
 
             _flipping = false;
@@ -239,28 +255,31 @@ namespace BubbleDistortionPhysics
 
         public void FlipGravity()
         {
-            _flipping = true;
-
-            SetHeldObjectsUninteractable();
-
-            KeyObject keyObject = LeftController.gameObject.GetComponentInChildren<KeyObject>();
-            if (keyObject != null)
+            if (!_flipping)
             {
-                keyObject.GetComponent<Rigidbody>().isKinematic = true;
-            }
+                _flipping = true;
 
-            if (ReverseGravity)
-            {
-                PhysicsManager.Instance.GravityNormal();
-            }
-            else
-            {                
-                PhysicsManager.Instance.GravityInverse();
-            }
-            
-            StartCoroutine(ReversePlayerGravity());
+                SetHeldObjectsUninteractable();
 
-            StartCoroutine(RotatePlayer());
+                KeyObject keyObject = LeftController.gameObject.GetComponentInChildren<KeyObject>();
+                if (keyObject != null)
+                {
+                    keyObject.GetComponent<Rigidbody>().isKinematic = true;
+                }
+
+                if (ReverseGravity)
+                {
+                    PhysicsManager.Instance.GravityNormal();
+                }
+                else
+                {
+                    PhysicsManager.Instance.GravityInverse();
+                }
+
+                StartCoroutine(ReversePlayerGravity());
+
+                StartCoroutine(RotatePlayer());
+            }
         }
 
         public void LaunchPlayer()
@@ -763,18 +782,35 @@ namespace BubbleDistortionPhysics
             var currentPos = ElevatorFloor.transform.position;            
             var t = 0f;
             var endElevatorPosition = new Vector3(_startElevatorPos.x, 1f, _startElevatorPos.z);
-
+            int intLevel = 4;
+            
             while (t < 1)
             {                
                 t += Time.deltaTime / 25f;
                 ElevatorFloor.transform.position = Vector3.Lerp(currentPos, endElevatorPosition, t);             
 
+                if (intLevel == 4 && t > 0.1f)
+                {
+                    AudioManager.Instance.Level3Triggered();
+                    intLevel = 3;
+                }
+                if (intLevel == 3 && t > 0.33f)
+                {
+                    AudioManager.Instance.Level2Triggered();
+                    intLevel = 2;
+                }
+                else if (intLevel == 2 && t > 0.66f)
+                {
+                    AudioManager.Instance.Level1Triggered();
+                    intLevel = 1;
+                }
+                
                 yield return new WaitForFixedUpdate();
             }
 
             _preventCharacterMovement = false;
 
-            IntroStart = false;            
+            IntroStart = false;           
 
             StartCoroutine(AudioManager.Instance.VolumeOverTime(Elevator.StartDescentClip, 1f, 0));
 
