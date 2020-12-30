@@ -367,19 +367,7 @@ namespace BubbleDistortionPhysics
             RightController?.inputDevice.TryGetFeatureValue(CommonUsages.trigger, out rightTrigger);
             LeftController?.inputDevice.TryGetFeatureValue(CommonUsages.trigger, out leftTrigger);
 
-            TriggerPercentage = Math.Max(leftTrigger, rightTrigger);
-
-            //intro replaced by elevator
-            if (IntroStart && TriggerPercentage > 0.1f && !_introRunning)
-            {
-                triggerHeldTime += Time.deltaTime;
-
-                if (triggerHeldTime > 1f)
-                {
-                    _introRunning = true;
-                    StartCoroutine(IntroMovement());
-                }
-            }
+            TriggerPercentage = Math.Max(leftTrigger, rightTrigger);            
 
             //RightController?.inputDevice.TryGetFeatureValue(CommonUsages.secondary2DAxisClick, out blnDebugSkipClicked);
             //if (blnDebugSkipClicked && _lastSkipTime < DateTime.Now.AddSeconds(-.5f))
@@ -421,7 +409,7 @@ namespace BubbleDistortionPhysics
                         
                         characterController.transform.position = resetPosition - new Vector3(1 + MainCamera.transform.localPosition.x, 0, MainCamera.transform.localPosition.z);                        
                         capsuleCollider.height = MainCamera.transform.localPosition.y;
-                        capsuleCollider.center = new Vector3(MainCamera.transform.localPosition.x, MainCamera.transform.localPosition.y / 2 + 1f, MainCamera.transform.localPosition.z);
+                        capsuleCollider.center = new Vector3(MainCamera.transform.localPosition.x, MainCamera.transform.localPosition.y / 2, MainCamera.transform.localPosition.z);
 
                         //reenable levels!
                         _frameCounter = 0;
