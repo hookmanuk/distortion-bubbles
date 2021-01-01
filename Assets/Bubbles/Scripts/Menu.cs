@@ -42,12 +42,6 @@ namespace BubbleDistortionPhysics
 
         public void CycleSettings()
         {
-            PlayerController.Instance.CycleGraphicsQuality();
-            SetText();
-        }
-
-        public void ToggleDynamicResolution()
-        {
             if (UnityEngine.QualitySettings.GetQualityLevel() == 3)
             {
                 UnityEngine.QualitySettings.SetQualityLevel(0);
@@ -55,16 +49,31 @@ namespace BubbleDistortionPhysics
             else
             {
                 UnityEngine.QualitySettings.SetQualityLevel(UnityEngine.QualitySettings.GetQualityLevel() + 1);
-            }                        
+            }
+            switch (UnityEngine.QualitySettings.GetQualityLevel())
+            {
+                case 0:
+                case 1:
+                    PlayerController.Instance.GraphicsQuality = QualitySettings.Instance.QualityLow;
+                    break;
+                case 2:
+                    PlayerController.Instance.GraphicsQuality = QualitySettings.Instance.QualityLow;
+                    break;
+                case 3:
+                    PlayerController.Instance.GraphicsQuality = QualitySettings.Instance.QualityMedium;
+                    break;
+                default:
+                    break;
+            }
             SetText();
-        }
+        }        
 
         private void SetText()
         {
-            GraphicsInfo.Text = PlayerController.Instance.GraphicsQuality.Name + " Quality";
+            GraphicsInfo.Text = UnityEngine.QualitySettings.names[UnityEngine.QualitySettings.GetQualityLevel()] + " Quality";
             GraphicsInfo.GenerateText();
-            ResInfo.Text = UnityEngine.QualitySettings.names[UnityEngine.QualitySettings.GetQualityLevel()];
-            ResInfo.GenerateText();
+            //ResInfo.Text = UnityEngine.QualitySettings.names[UnityEngine.QualitySettings.GetQualityLevel()];
+            //ResInfo.GenerateText();
         }
 
         public void ResumeGame()

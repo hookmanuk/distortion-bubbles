@@ -49,7 +49,7 @@ namespace BubbleDistortionPhysics
             MeshRenderer meshRenderer;
             if (TryGetComponent(out meshRenderer))
             {
-                _material = meshRenderer.material;
+                _material = meshRenderer.material;                
                 _emissiveColor = _material.GetColor("_EmissiveColor");
             }
 

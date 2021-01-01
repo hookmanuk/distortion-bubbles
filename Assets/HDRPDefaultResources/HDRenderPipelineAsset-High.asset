@@ -348,9 +348,9 @@ MonoBehaviour:
       DoFHighQualityFiltering: 000101
       DoFPhysicallyBased: 000000
       MotionBlurSampleCount: 04000000080000000c000000
-      BloomRes: 040000000200000002000000
-      BloomHighQualityFiltering: 000101
-      BloomHighQualityPrefiltering: 000001
+      BloomRes: 020000000200000002000000
+      BloomHighQualityFiltering: 010101
+      BloomHighQualityPrefiltering: 010101
       ChromaticAberrationMaxSamples: 03000000060000000c000000
     lightSettings:
       useContactShadow:

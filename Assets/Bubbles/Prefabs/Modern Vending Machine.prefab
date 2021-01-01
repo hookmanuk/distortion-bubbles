@@ -50164,6 +50164,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5186570740159656122}
     m_Modifications:
+    - target: {fileID: 1238075318159045815, guid: 71defd5c5809c684f92996588d08d85d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1614085320649128579, guid: 71defd5c5809c684f92996588d08d85d,
         type: 3}
       propertyPath: Text
@@ -50240,6 +50245,11 @@ PrefabInstance:
       value: Menu
       objectReference: {fileID: 0}
     - target: {fileID: 2669763356674672708, guid: 71defd5c5809c684f92996588d08d85d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3013838398206527837, guid: 71defd5c5809c684f92996588d08d85d,
         type: 3}
       propertyPath: m_IsActive
       value: 0

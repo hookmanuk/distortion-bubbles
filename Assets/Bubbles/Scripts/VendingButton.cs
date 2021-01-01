@@ -146,10 +146,10 @@ namespace BubbleDistortionPhysics
                 {
                     GetComponentInParent<Menu>().CycleSettings();
                 }
-                else if (Type == DistorterType.DynamicResToggle)
-                {
-                    GetComponentInParent<Menu>().ToggleDynamicResolution();
-                }
+                //else if (Type == DistorterType.DynamicResToggle)
+                //{
+                //    GetComponentInParent<Menu>().ToggleDynamicResolution();
+                //}
                 else if (Type == DistorterType.ResumeGame)
                 {
                     GetComponentInParent<Menu>().ResumeGame();
