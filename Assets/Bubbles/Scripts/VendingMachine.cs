@@ -146,6 +146,10 @@ namespace BubbleDistortionPhysics
             {
                 Level2Start.Instance.StartLevel2();
             }
+            else
+            {
+                Level1Start.Instance.StartLevel1();
+            }
 
             //set counter going to then show hint
             //if (_intSecondsSincePressed == 0)

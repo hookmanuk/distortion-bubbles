@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 274c02963f889a64e90bc2e596e21d13, type: 3}
   m_Name: HTCViveControllerProfile Standalone
   m_EditorClassIdentifier: 
-  m_enabled: 0
+  m_enabled: 1
   nameUi: HTC Vive Controller Profile
   version: 0.0.1
   featureIdInternal: com.unity.openxr.feature.input.htcvive
@@ -155,10 +155,10 @@ MonoBehaviour:
   - {fileID: 9077772957818256935}
   - {fileID: 4591834819704022156}
   - {fileID: 4329532871977395328}
+  - {fileID: 5838522178815161550}
+  - {fileID: -4822664842358953539}
   - {fileID: -5568727287211518384}
   - {fileID: -6759375708211738469}
-  - {fileID: -4822664842358953539}
-  - {fileID: 5838522178815161550}
   m_renderMode: 1
   m_depthSubmissionMode: 0
 --- !u!114 &4329532871977395328
@@ -173,7 +173,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 761fdd4502cb7a84e9ec7a2b24f33f37, type: 3}
   m_Name: MicrosoftMotionControllerProfile Standalone
   m_EditorClassIdentifier: 
-  m_enabled: 0
+  m_enabled: 1
   nameUi: Microsoft Motion Controller Profile
   version: 0.0.1
   featureIdInternal: com.unity.openxr.feature.input.microsoftmotioncontroller
