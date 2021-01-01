@@ -224,41 +224,21 @@ namespace BubbleDistortionPhysics
                 _blnReversingGravity = false;
             }
         }
-
         private IEnumerator RotatePlayer()
-        {            
+        {
             var t = 0f;
             var intTimeToOpen = 0.7f;
-            var cameraPos = MainCamera.transform.position;
-            //var forwardDir = Vector3.ProjectOnPlane(MainCamera.transform.forward, Vector3.up);            
-            var forwardDir = MainCamera.transform.forward;
-
-            // now project forwardDir to the XZ plane, and give a normalized vector.
-            forwardDir.y = 0;            
-            forwardDir.Normalize();
-
-            var startPosition = transform.position;
-            var localPosOfCamera = MainCamera.transform.localPosition;
-            localPosOfCamera.y = 0;            
-            
-            //Debug.Log(localPosOfCamera);
-            //Debug.Log(transform.position);
-            //transform.position = transform.position - (2 * localPosOfCamera);  //try and move the room so that when flipped the player is directly above
-            //Debug.Log(transform.position);
-            //Debug.Break();            
-
             while (t < 1)
             {
                 t += Time.deltaTime / intTimeToOpen;
-                
-                transform.RotateAround(cameraPos, forwardDir, 180 * Time.deltaTime / intTimeToOpen);
-                yield return null;
-            }            
 
-            //ensure rotation actually finishes on the right rotation
+                transform.rotation = Quaternion.Euler((ReverseGravity ? t : (1 - t)) * 180, 0, 0);
+                yield return null;
+            }
+
             if (ReverseGravity)
             {
-                transform.rotation = Quaternion.Euler(0, 0, 180);
+                transform.rotation = Quaternion.Euler(-180, 0, 0);
             }
             else
             {
@@ -266,9 +246,57 @@ namespace BubbleDistortionPhysics
             }
 
             _flipping = false;
-
             SetHeldObjectsInteractable();
         }
+
+        //new non working version!
+        //private IEnumerator RotatePlayer()
+        //{            
+        //    var t = 0f;
+        //    var intTimeToOpen = 0.7f;
+        //    var cameraPos = MainCamera.transform.position;
+        //    //var forwardDir = Vector3.ProjectOnPlane(MainCamera.transform.forward, Vector3.up);            
+        //    var forwardDir = MainCamera.transform.forward;
+
+        //    // now project forwardDir to the XZ plane, and give a normalized vector.
+        //    forwardDir.y = 0;            
+        //    forwardDir.Normalize();
+
+        //    var startPosition = transform.position;
+        //    var localPosOfCamera = MainCamera.transform.localPosition;
+        //    localPosOfCamera.y = 0;            
+
+        //    //Debug.Log(localPosOfCamera);
+        //    //Debug.Log(transform.position);
+        //    //transform.position = transform.position - (2 * localPosOfCamera);  //try and move the room so that when flipped the player is directly above
+        //    //Debug.Log(transform.position);
+        //    //Debug.Break();            
+
+        //    while (t < 1)
+        //    {
+        //        t += Time.deltaTime / intTimeToOpen;
+
+        //        transform.RotateAround(cameraPos, forwardDir, 180 * Time.deltaTime / intTimeToOpen);
+        //        //transform.RotateAround(cameraPos, Vector3.forward, 180 * Time.deltaTime / intTimeToOpen);
+        //        yield return null;
+        //    }            
+
+        //    //ensure rotation actually finishes on the right rotation
+        //    if (ReverseGravity)
+        //    {
+        //        transform.rotation = Quaternion.Euler(0, 0, 180);
+        //    }
+        //    else
+        //    {
+        //        transform.rotation = Quaternion.Euler(0, 0, 0);
+        //    }
+
+        //    _flipping = false;
+
+        //    SetHeldObjectsInteractable();
+        //}
+
+
 
         public void FlipGravity()
         {

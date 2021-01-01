@@ -80,6 +80,8 @@ namespace BubbleDistortionPhysics
         {
             PlayerController.Instance.IntroStart = false;
 
+            PlayerController.Instance.CurrentVendingMachine.NextGlow.SetActive(false);
+
             int intCurrentVendingMachine = PlayerPrefs.GetInt("CurrentVendingMachine");
             VendingMachine vend = PhysicsManager.Instance.VendingMachines.Where(vm => vm.Order == intCurrentVendingMachine).FirstOrDefault();
 
