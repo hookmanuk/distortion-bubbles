@@ -242,7 +242,7 @@ MonoBehaviour:
     decalLayerName5: Decal Layer 5
     decalLayerName6: Decal Layer 6
     decalLayerName7: Decal Layer 7
-    msaaSampleCount: 1
+    msaaSampleCount: 4
     supportMotionVectors: 1
     supportRuntimeDebugDisplay: 1
     supportRuntimeAOVAPI: 0
@@ -320,7 +320,7 @@ MonoBehaviour:
     dynamicResolutionSettings:
       enabled: 1
       maxPercentage: 100
-      minPercentage: 75
+      minPercentage: 85
       dynResType: 1
       upsampleFilter: 1
       forceResolution: 0

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.XR.Interaction.Toolkit;
 
 namespace BubbleDistortionPhysics
@@ -47,7 +48,14 @@ namespace BubbleDistortionPhysics
 
         public void ToggleDynamicResolution()
         {
-            DynamicResolution.DynamicResolutionEnabled = !DynamicResolution.DynamicResolutionEnabled;
+            if (UnityEngine.QualitySettings.GetQualityLevel() == 3)
+            {
+                UnityEngine.QualitySettings.SetQualityLevel(0);
+            }
+            else
+            {
+                UnityEngine.QualitySettings.SetQualityLevel(UnityEngine.QualitySettings.GetQualityLevel() + 1);
+            }                        
             SetText();
         }
 
@@ -55,7 +63,7 @@ namespace BubbleDistortionPhysics
         {
             GraphicsInfo.Text = PlayerController.Instance.GraphicsQuality.Name + " Quality";
             GraphicsInfo.GenerateText();
-            ResInfo.Text = (DynamicResolution.DynamicResolutionEnabled ? "Enabled" : "Disabled");
+            ResInfo.Text = UnityEngine.QualitySettings.names[UnityEngine.QualitySettings.GetQualityLevel()];
             ResInfo.GenerateText();
         }
 
@@ -87,21 +95,21 @@ namespace BubbleDistortionPhysics
 
         private void FixedUpdate()
         {
-            if (!IsStartMenu)
-            {
-                _currentFrame++;
+            //if (!IsStartMenu)
+            //{
+            //    _currentFrame++;
 
-                if (_currentFrame == _frameUpdate)
-                {
-                    FPSInfo.Text = DynamicResolution.ReportedFPS.ToString();
-                    FPSInfo.GenerateText();
+            //    if (_currentFrame == _frameUpdate)
+            //    {
+            //        FPSInfo.Text = DynamicResolution.ReportedFPS.ToString();
+            //        FPSInfo.GenerateText();
 
-                    DynamicResInfo.Text = (DynamicResolution.DynamicResolutionEnabled ? Math.Round(DynamicResolution.MinDynamicResolution + (100 - DynamicResolution.MinDynamicResolution) * DynamicResolution.ResScale, 0).ToString() + "%" : "100%");
-                    DynamicResInfo.GenerateText();
+            //        DynamicResInfo.Text = (DynamicResolution.DynamicResolutionEnabled ? Math.Round(DynamicResolution.MinDynamicResolution + (100 - DynamicResolution.MinDynamicResolution) * DynamicResolution.ResScale, 0).ToString() + "%" : "100%");
+            //        DynamicResInfo.GenerateText();
 
-                    _currentFrame = 0;
-                }
-            }
+            //        _currentFrame = 0;
+            //    }
+            //}
         }
     }
 }

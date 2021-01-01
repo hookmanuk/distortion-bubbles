@@ -40,6 +40,7 @@ namespace BubbleDistortionPhysics
         private bool _preventCharacterMovement;
         private bool _resetting;
         private bool _disolving;
+        private bool _disolvingHappening;
         private bool _resetPlayerPosition;
         private DateTime _lastSkipTime = DateTime.Now;
         private DateTime _lastQualityChange = DateTime.Now;
@@ -124,8 +125,12 @@ namespace BubbleDistortionPhysics
 
         public void Reset(bool resetPlayerPosition = true)
         {
-            _resetPlayerPosition = resetPlayerPosition;
-            _disolving = true;                        
+            if (!_resetting && !_disolvingHappening)
+            {
+                _resetPlayerPosition = resetPlayerPosition;
+                _disolving = true;
+                _disolvingHappening = true;
+            }
         }
 
         public void CycleGraphicsQuality()
@@ -223,25 +228,37 @@ namespace BubbleDistortionPhysics
         private IEnumerator RotatePlayer()
         {            
             var t = 0f;
-            var intTimeToOpen = 0.7f;            
+            var intTimeToOpen = 0.7f;
+            var cameraPos = MainCamera.transform.position;
+            //var forwardDir = Vector3.ProjectOnPlane(MainCamera.transform.forward, Vector3.up);            
+            var forwardDir = MainCamera.transform.forward;
 
-            //transform.RotateAround(MainCamera.transform.position, Vector3.left, (ReverseGravity ? t : (1 - t)) * 180);
+            // now project forwardDir to the XZ plane, and give a normalized vector.
+            forwardDir.y = 0;            
+            forwardDir.Normalize();
+
+            var startPosition = transform.position;
+            var localPosOfCamera = MainCamera.transform.localPosition;
+            localPosOfCamera.y = 0;            
+            
+            //Debug.Log(localPosOfCamera);
+            //Debug.Log(transform.position);
+            //transform.position = transform.position - (2 * localPosOfCamera);  //try and move the room so that when flipped the player is directly above
+            //Debug.Log(transform.position);
+            //Debug.Break();            
 
             while (t < 1)
             {
                 t += Time.deltaTime / intTimeToOpen;
-
-                //transform.rotation = Quaternion.Euler(0, (ReverseGravity ? t : (1 - t)) * 180, (ReverseGravity ? t : (1 - t)) * 180);
-                transform.RotateAround(MainCamera.transform.position, Vector3.right, 180 * Time.deltaTime / intTimeToOpen);
-                //transform.RotateAround(MainCamera.transform.position, Vector3.forward, 180 * Time.deltaTime / intTimeToOpen);
-
+                
+                transform.RotateAround(cameraPos, forwardDir, 180 * Time.deltaTime / intTimeToOpen);
                 yield return null;
-            }
+            }            
 
             //ensure rotation actually finishes on the right rotation
             if (ReverseGravity)
             {
-                transform.rotation = Quaternion.Euler(-180, 0, 0);                
+                transform.rotation = Quaternion.Euler(0, 0, 180);
             }
             else
             {
@@ -596,10 +613,10 @@ namespace BubbleDistortionPhysics
                 //    }
                 //}
 
-                //check how far fallen in last 5 secs
+                //check how far fallen in last 3 secs
                 if (!IntroStart && DateTime.Now.Subtract(datLastHeighCheck).TotalSeconds >= 5)
                 {
-                    if (fltHeight5SecondsAgo != -1 && fltHeight5SecondsAgo - characterController.transform.position.y > 10f)
+                    if (fltHeight5SecondsAgo != 0 && Math.Abs(fltHeight5SecondsAgo - characterController.transform.position.y) > 33f)
                     {
                         Reset();
                     }
@@ -742,6 +759,7 @@ namespace BubbleDistortionPhysics
                 yield return null;
             }
 
+            _disolvingHappening = false;
             _resetting = true;
 
             yield return new WaitForSeconds(0.5f);

@@ -126,7 +126,7 @@ public class DynamicResolution : MonoBehaviour
     public static float ReportedFPS;
     private float _lastReportedScale;
     private bool _reportedScale1;
-    public static bool DynamicResolutionEnabled = false;
+    public static bool DynamicResolutionEnabled = false;    
 
     private static DynamicResolution _instance;
     public static DynamicResolution Instance { get { return _instance; } }
@@ -141,32 +141,33 @@ public class DynamicResolution : MonoBehaviour
 
     private float SetDynamicResolutionScale()
     {
-        if (DynamicResolutionEnabled)
-        {
-            if (ResScale < 1)
-            {
-                if (ResScale != _lastReportedScale)
-                {
-                    //Debug.Log(_reportedFps.ToString() + "fps, scale now " + _resScale.ToString());
-                    _lastReportedScale = ResScale;
-                }
-                _reportedScale1 = false;
-                return ResScale;
-            }
-            else
-            {
-                if (!_reportedScale1)
-                {
-                    //Debug.Log(_reportedFps.ToString() + "fps, scale now 1");
-                    _reportedScale1 = true;
-                }
-                return 1;
-            }
-        }
-        else
-        {
-            return 1;
-        }
+        //if (DynamicResolutionEnabled)
+        //{
+        //    if (ResScale < 1)
+        //    {
+        //        if (ResScale != _lastReportedScale)
+        //        {
+        //            //Debug.Log(_reportedFps.ToString() + "fps, scale now " + _resScale.ToString());
+        //            _lastReportedScale = ResScale;
+        //        }
+        //        _reportedScale1 = false;
+        //        return ResScale;
+        //    }
+        //    else
+        //    {
+        //        if (!_reportedScale1)
+        //        {
+        //            //Debug.Log(_reportedFps.ToString() + "fps, scale now 1");
+        //            _reportedScale1 = true;
+        //        }
+        //        return 1;
+        //    }
+        //}
+        //else
+        //{
+        //    return 1;
+        //}
+        return 0; //hardcoded to 85% res with MSAA 4x
     }
 
     private void Update()
