@@ -116,8 +116,19 @@ namespace BubbleDistortionPhysics
         private float GetLocalYPosition(Vector3 position)
         {
             Vector3 localPosition = transform.root.InverseTransformPoint(position);
-
-            return (Direction == 1 ? localPosition.z : -localPosition.x);
+            
+            if (Direction == 1)
+            {
+                return localPosition.z;
+            }
+            else if (Direction == 0)
+            {
+                return -localPosition.x;
+            }
+            else
+            {
+                return localPosition.x;
+            }
         }
 
         private void SetYPosition(float position)
